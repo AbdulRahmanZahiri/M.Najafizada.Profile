@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Funding — Dr. Maisam Najafizada</title>
+  <meta name="description" content="Research funding portfolio of Dr. Maisam Najafizada — $4.17M+ across 23 grants from CIHR, SSHRC, Health Canada, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#060f1e;pointer-events:none;"></div>
+
+  <!-- NAV -->
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="nav-badge">MN</span>
+        <span class="nav-name">Dr. Maisam Najafizada<small>Memorial University · Population Health</small></span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false">Menu</button>
+      <nav class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="funding.html" class="active-page">Funding</a>
+        <a href="publications.html">Publications</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="teaching.html#contact" class="nav-contact-link">Contact</a>
+      </nav>
+      <a class="nav-cta" href="teaching.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="kicker">Research Support</span>
+      <h1>Funding Portfolio</h1>
+      <p class="subtitle">$4,173,791 secured across 23 grants from CIHR, SSHRC, Health Canada, provincial funders, and international development agencies.</p>
+    </div>
+  </div>
+
+  <!-- METRIC CARDS -->
+  <section class="section-dark">
+    <div class="content-wrap">
+      <div class="grid-3 reveal">
+        <div class="metric-card sky">
+          <p class="metric-label">Total Research Funding</p>
+          <p class="metric-num">$4.17M+</p>
+          <p class="metric-sub">Across 23 grants, 2014–2027</p>
+        </div>
+        <div class="metric-card gold">
+          <p class="metric-label">As NPA / PA / Co-PA</p>
+          <p class="metric-num">$2.16M</p>
+          <p class="metric-sub">Program leadership grants</p>
+        </div>
+        <div class="metric-card violet">
+          <p class="metric-label">As Co-Applicant</p>
+          <p class="metric-num">$1.36M</p>
+          <p class="metric-sub">Multi-investigator research</p>
+        </div>
+      </div>
+
+      <!-- DONUT CHART -->
+      <div class="sec-head on-dark reveal" style="margin-top:3rem;">
+        <span class="sec-kicker on-dark">Portfolio Breakdown</span>
+        <h2>Funding by Role</h2>
+        <p class="sec-lead on-dark">Distribution of total funding across investigator roles, reflecting depth of research leadership.</p>
+      </div>
+
+      <div class="funding-visual reveal">
+        <div class="donut-wrap">
+          <div class="donut-chart"></div>
+          <div class="donut-center">
+            <span class="donut-total">$4.17M</span>
+            <span class="donut-sub">Total</span>
+          </div>
+        </div>
+
+        <div class="donut-legend">
+          <div class="legend-item">
+            <div class="legend-dot sky"></div>
+            <div class="legend-text">
+              <strong>NPA / PA / Co-PA — 51.7%</strong>
+              <span>$2,156,521 · Primary investigator leadership roles</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot gold"></div>
+            <div class="legend-text">
+              <strong>Co-Applicant — 32.5%</strong>
+              <span>$1,357,840 · Multi-investigator collaborations</span>
+            </div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot coral"></div>
+            <div class="legend-text">
+              <strong>Collaborator — 15.8%</strong>
+              <span>$659,430 · Broader research network contributions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRANT BAR CHART -->
+  <section class="section-light">
+    <div class="content-wrap">
+      <div class="sec-head reveal">
+        <span class="sec-kicker">Top Awards</span>
+        <h2>Largest Grants by Value</h2>
+        <p class="sec-lead">The eight largest individual research awards by funding amount, spanning institutional, national, and international funders.</p>
+      </div>
+
+      <div id="grant-bars" class="grant-bars reveal"></div>
+    </div>
+  </section>
+
+  <!-- FULL GRANT LIST -->
+  <section class="section-light" style="background:var(--surface);">
+    <div class="content-wrap">
+      <div class="sec-head reveal">
+        <div class="card-row">
+          <h2>Complete Grant Portfolio</h2>
+          <span class="count-chip">23 awards</span>
+        </div>
+        <p class="sec-lead">All research grants, contracts, and fellowships in reverse chronological order.</p>
+      </div>
+
+      <div id="grant-list" class="entry-list reveal"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand"><div class="footer-badge">MN</div><span class="footer-name">Dr. Maisam Najafizada</span></div>
+        <p class="footer-bio">Associate Professor in Population Health and Health Policy at Memorial University of Newfoundland.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="funding.html">Funding</a></li>
+          <li><a href="publications.html">Publications</a></li>
+          <li><a href="teaching.html">Teaching</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Research Areas</h4>
+        <ul class="footer-areas">
+          <li>Primary Care Transformation</li>
+          <li>Health Equity &amp; Refugee Health</li>
+          <li>Global Health Systems</li>
+          <li>Cannabis Policy</li>
+          <li>Social Accountability</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-line"><span class="contact-icon">✉</span><a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a></div>
+          <div class="contact-line"><span class="contact-icon">📞</span><a href="tel:+17098643376">+1 709 864 3376</a></div>
+          <div class="contact-line"><span class="contact-icon">🔗</span><a href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Dr. Maisam Najafizada · Memorial University of Newfoundland</span>
+      <span class="footer-tag">Content baseline: May 2026</span>
+    </div>
+  </footer>
+
+  <button id="back-top" aria-label="Back to top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html>

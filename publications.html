@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Publications — Dr. Maisam Najafizada</title>
+  <meta name="description" content="All 36 peer-reviewed publications by Dr. Maisam Najafizada, with filters by research theme." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#060f1e;pointer-events:none;"></div>
+
+  <!-- NAV -->
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="nav-badge">MN</span>
+        <span class="nav-name">Dr. Maisam Najafizada<small>Memorial University · Population Health</small></span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false">Menu</button>
+      <nav class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="funding.html">Funding</a>
+        <a href="publications.html" class="active-page">Publications</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="teaching.html#contact" class="nav-contact-link">Contact</a>
+      </nav>
+      <a class="nav-cta" href="teaching.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="kicker">Scholarship</span>
+      <h1>Publications</h1>
+      <p class="subtitle">36 peer-reviewed journal articles spanning primary care, global health, cannabis policy, and health equity — with filters by research theme.</p>
+    </div>
+  </div>
+
+  <!-- YEAR DISTRIBUTION CHART -->
+  <section class="section-light">
+    <div class="content-wrap">
+      <div class="sec-head reveal">
+        <span class="sec-kicker">Output Overview</span>
+        <h2>Publication Timeline</h2>
+        <p class="sec-lead">Annual distribution of peer-reviewed output across research themes.</p>
+      </div>
+
+      <div id="year-chart" class="year-chart reveal"></div>
+
+      <!-- FILTER + LIST -->
+      <div class="pub-toolbar reveal">
+        <span id="pub-count" class="count-chip">36 peer-reviewed articles</span>
+        <div class="filter-row" role="tablist">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="primary-care">Primary Care</button>
+          <button class="filter-btn" data-filter="cannabis-policy">Cannabis Policy</button>
+          <button class="filter-btn" data-filter="global-health">Global Health</button>
+          <button class="filter-btn" data-filter="equity">Equity &amp; Systems</button>
+        </div>
+      </div>
+
+      <div id="publication-list" class="pub-list reveal"></div>
+
+      <!-- UNDER REVIEW -->
+      <div class="subsec-head reveal">
+        <h3>Papers Under Review</h3>
+        <p class="subsec-lead">Manuscripts currently in peer review at leading journals.</p>
+      </div>
+      <div id="under-review-list" class="pub-list reveal"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand"><div class="footer-badge">MN</div><span class="footer-name">Dr. Maisam Najafizada</span></div>
+        <p class="footer-bio">Associate Professor in Population Health and Health Policy at Memorial University of Newfoundland.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="funding.html">Funding</a></li>
+          <li><a href="publications.html">Publications</a></li>
+          <li><a href="teaching.html">Teaching</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Research Areas</h4>
+        <ul class="footer-areas">
+          <li>Primary Care Transformation</li>
+          <li>Health Equity &amp; Refugee Health</li>
+          <li>Global Health Systems</li>
+          <li>Cannabis Policy</li>
+          <li>Social Accountability</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-line"><span class="contact-icon">✉</span><a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a></div>
+          <div class="contact-line"><span class="contact-icon">📞</span><a href="tel:+17098643376">+1 709 864 3376</a></div>
+          <div class="contact-line"><span class="contact-icon">🔗</span><a href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Dr. Maisam Najafizada · Memorial University of Newfoundland</span>
+      <span class="footer-tag">Content baseline: May 2026</span>
+    </div>
+  </footer>
+
+  <button id="back-top" aria-label="Back to top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html>
