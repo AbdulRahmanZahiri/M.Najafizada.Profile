@@ -508,7 +508,7 @@ img { max-width: 100%; }
   width: 160px;
   height: 160px;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center top;
   display: block;
 }
 
