@@ -498,17 +498,19 @@ img { max-width: 100%; }
 }
 
 .orb-photo {
-  background: none;
-  border: 2px solid rgba(16,185,129,.5);
+  background: #060f1e !important;
+  border: 3px solid rgba(16,185,129,.6) !important;
   overflow: hidden;
   padding: 0;
 }
 .orb-photo img {
-  width: 100%; height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center top;
   display: block;
-  border-radius: 50%;
 }
 
 .orb-ring {
