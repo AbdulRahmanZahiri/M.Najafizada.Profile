@@ -1220,5 +1220,21 @@ footer .copyright {
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 
+<a id="back-portal" href="index.html" style="
+  position:fixed;bottom:1.8rem;left:1.5rem;z-index:900;
+  display:inline-flex;align-items:center;gap:.38rem;
+  padding:.42rem 1rem;border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(10,8,6,.82);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:rgba(241,231,208,.65);
+  font-family:'Cormorant Garamond',serif;
+  font-size:.82rem;font-weight:600;letter-spacing:.04em;
+  text-decoration:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  transition:all .25s ease;
+" onmouseover="this.style.color='#b8842a';this.style.borderColor='rgba(184,132,42,.4)';this.style.boxShadow='0 4px 24px rgba(184,132,42,.25)';this.style.transform='translateY(-1px)';"
+   onmouseout="this.style.color='rgba(241,231,208,.65)';this.style.borderColor='rgba(255,255,255,.15)';this.style.boxShadow='0 4px 20px rgba(0,0,0,.35)';this.style.transform='';">← Menu</a>
+
 </body>
 </html>
