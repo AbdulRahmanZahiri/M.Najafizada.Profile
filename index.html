@@ -260,6 +260,47 @@
     @keyframes hintPulse{0%,100%{opacity:.3}50%{opacity:.6}}
     .split:hover .hint{opacity:0!important;animation:none}
 
+    /* ─── ALWAYS-VISIBLE NAV BUTTONS ─── */
+    .panel-nav {
+      position:absolute;bottom:2.2rem;z-index:10;
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.52rem 1.25rem .52rem 1rem;
+      border-radius:999px;
+      font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      text-decoration:none;cursor:pointer;
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      transition:transform .28s ease,box-shadow .28s ease,background .28s ease,opacity .28s ease;
+    }
+    .panel-academic .panel-nav {
+      left:clamp(2.5rem,6vw,5rem);
+      color:var(--emerald);
+      background:rgba(16,185,129,.13);
+      border:1px solid rgba(16,185,129,.32);
+    }
+    .panel-author .panel-nav {
+      right:clamp(2.5rem,6vw,5rem);
+      color:var(--lapis);
+      background:rgba(31,58,107,.13);
+      border:1px solid rgba(31,58,107,.3);
+    }
+    .panel-academic .panel-nav:hover {
+      background:rgba(16,185,129,.24);
+      box-shadow:0 6px 24px rgba(16,185,129,.4);
+      transform:translateY(-3px);
+      text-decoration:none;color:var(--emerald);
+    }
+    .panel-author .panel-nav:hover {
+      background:rgba(31,58,107,.24);
+      box-shadow:0 6px 24px rgba(31,58,107,.35);
+      transform:translateY(-3px);
+      text-decoration:none;color:var(--lapis);
+    }
+    .panel-nav .arr {
+      display:inline-block;
+      transition:transform .2s ease;font-style:normal;
+    }
+    .panel-nav:hover .arr{transform:translateX(4px)}
+
     /* ─── MOBILE ─── */
     @media(max-width:700px){
       html,body{overflow:auto}
@@ -288,6 +329,8 @@
       .divider-wrap,.hint{display:none}
       .split:has(.panel:first-child:hover) .panel:last-child{flex:none!important}
       .panel-name{font-size:2.2rem}
+      .panel-nav{position:static;margin-top:.75rem;align-self:center;}
+      .panel-academic .panel-nav,.panel-author .panel-nav{left:auto;right:auto;}
     }
   </style>
 </head>
@@ -315,6 +358,7 @@
         <p class="panel-desc">Research, publications, funding, and teaching — Faculty of Medicine, Memorial University of Newfoundland.</p>
         <span class="enter-btn">Explore Academic Profile <span class="arr">→</span></span>
       </div>
+      <span class="panel-nav">Academic Profile <span class="arr">→</span></span>
     </a>
 
     <!-- ── CENTRE ── -->
@@ -341,6 +385,7 @@
         <p class="panel-desc">Literary works exploring memory, displacement, and identity — from Kabul to Newfoundland.</p>
         <span class="enter-btn">Explore Books &amp; Writings <span class="arr">→</span></span>
       </div>
+      <span class="panel-nav">Books &amp; Writings <span class="arr">→</span></span>
     </a>
 
   </div>
