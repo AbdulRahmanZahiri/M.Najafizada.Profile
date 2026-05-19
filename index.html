@@ -3,369 +3,376 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Dr. Maisam Najafizada — Health Policy and Systems Research</title>
-  <meta name="description" content="Dr. Maisam Najafizada, Associate Professor at Memorial University of Newfoundland. Research on primary care, health equity, and global health policy." />
+  <title>Maisam Najafizada</title>
+  <meta name="description" content="Maisam Najafizada — Academic & Author. Choose your path." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --t: .45s cubic-bezier(.4,0,.2,1);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: "Public Sans", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SPLIT CONTAINER ── */
+    .split {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    /* ── SHARED PANEL ── */
+    .panel {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: flex var(--t);
+      text-decoration: none;
+    }
+    .panel:hover { flex: 1.55; }
+    .panel:hover ~ .panel,
+    .split:has(.panel:first-child:hover) .panel:last-child { flex: .55; }
+
+    /* ── DIVIDER LINE ── */
+    .divider {
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: rgba(255,255,255,.18);
+      z-index: 10;
+      pointer-events: none;
+      transform: translateX(-50%);
+      transition: opacity var(--t);
+    }
+    .split:hover .divider { opacity: 0; }
+
+    /* ── ACADEMIC PANEL (left) ── */
+    .panel-academic {
+      background: #060f1e;
+    }
+    .panel-academic::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 70% at 30% 50%, rgba(16,185,129,.13) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(139,92,246,.07) 0%, transparent 60%);
+      transition: opacity var(--t);
+    }
+    .panel-academic:hover::before { opacity: 1.4; }
+
+    /* mesh grid */
+    .panel-academic::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(16,185,129,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,185,129,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0;
+      transition: opacity var(--t);
+    }
+    .panel-academic:hover::after { opacity: 1; }
+
+    /* ── AUTHOR PANEL (right) ── */
+    .panel-author {
+      background: #f1e7d0;
+    }
+    .panel-author::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 70% 55%, rgba(184,132,42,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 20% 30%, rgba(122,39,35,.08) 0%, transparent 60%);
+      transition: opacity var(--t);
+    }
+    .panel-author:hover::before { opacity: 1.4; }
+
+    /* texture dots */
+    .panel-author::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(28,20,14,.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0;
+      transition: opacity var(--t);
+    }
+    .panel-author:hover::after { opacity: 1; }
+
+    /* ── PANEL CONTENT ── */
+    .panel-body {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      max-width: 440px;
+    }
+
+    .label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 999px;
+      transition: transform var(--t);
+    }
+    .panel-academic .label {
+      color: #10b981;
+      border: 1px solid rgba(16,185,129,.4);
+      background: rgba(16,185,129,.08);
+    }
+    .panel-author .label {
+      color: #7a2723;
+      border: 1px solid rgba(122,39,35,.35);
+      background: rgba(122,39,35,.07);
+    }
+    .panel:hover .label { transform: translateY(-4px); }
+
+    .panel-name {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -.01em;
+      transition: transform var(--t);
+    }
+    .panel-academic .panel-name {
+      color: #fff;
+    }
+    .panel-author .panel-name {
+      color: #1c140e;
+    }
+    .panel:hover .panel-name { transform: translateY(-6px); }
+
+    .panel-role {
+      font-size: clamp(.8rem, 1.4vw, .95rem);
+      font-weight: 400;
+      letter-spacing: .02em;
+      line-height: 1.5;
+      transition: transform var(--t), opacity var(--t);
+    }
+    .panel-academic .panel-role { color: rgba(255,255,255,.55); }
+    .panel-author .panel-role   { color: rgba(28,20,14,.55); }
+    .panel:hover .panel-role { transform: translateY(-4px); opacity: 1 !important; }
+
+    .panel-desc {
+      font-size: clamp(.78rem, 1.2vw, .88rem);
+      line-height: 1.65;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--t), transform var(--t);
+      max-width: 320px;
+    }
+    .panel-academic .panel-desc { color: rgba(255,255,255,.45); }
+    .panel-author .panel-desc   { color: rgba(28,20,14,.5); }
+    .panel:hover .panel-desc { opacity: 1; transform: translateY(0); }
+
+    .enter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .7rem 1.8rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      border: none;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity var(--t), transform var(--t), background var(--t), box-shadow .2s;
+      pointer-events: none;
+    }
+    .panel-academic .enter-btn {
+      background: #10b981;
+      color: #fff;
+      box-shadow: 0 0 0 rgba(16,185,129,0);
+    }
+    .panel-academic:hover .enter-btn {
+      box-shadow: 0 8px 30px rgba(16,185,129,.35);
+    }
+    .panel-author .enter-btn {
+      background: #1f3a6b;
+      color: #f1e7d0;
+      box-shadow: 0 0 0 rgba(31,58,107,0);
+    }
+    .panel-author:hover .enter-btn {
+      box-shadow: 0 8px 30px rgba(31,58,107,.3);
+    }
+    .panel:hover .enter-btn {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .enter-btn .arrow {
+      transition: transform .2s;
+    }
+    .enter-btn:hover .arrow { transform: translateX(4px); }
+
+    /* ── CENTRE NAME BADGE ── */
+    .centre-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      pointer-events: none;
+      transition: opacity var(--t);
+      text-align: center;
+    }
+    .centre-badge {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981 0%, #1f3a6b 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.3rem; font-weight: 700;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,.35);
+      border: 2px solid rgba(255,255,255,.2);
+    }
+    .centre-tagline {
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      background: rgba(0,0,0,.4);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+    .split:hover .centre-name { opacity: 0; }
+
+    /* ── CORNER DECORATION ── */
+    .panel-corner {
+      position: absolute;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(7rem, 18vw, 15rem);
+      font-weight: 700;
+      line-height: 1;
+      opacity: .04;
+      pointer-events: none;
+      transition: opacity var(--t), transform var(--t);
+      user-select: none;
+    }
+    .panel-academic .panel-corner {
+      color: #10b981;
+      bottom: -2rem; right: -1rem;
+    }
+    .panel-author .panel-corner {
+      color: #1f3a6b;
+      bottom: -2rem; left: -1rem;
+    }
+    .panel:hover .panel-corner { opacity: .07; transform: scale(1.04); }
+
+    /* ── SCROLL HINT (bottom) ── */
+    .scroll-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      z-index: 30;
+      pointer-events: none;
+      transition: opacity var(--t);
+    }
+    .split:hover .scroll-hint { opacity: 0; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 680px) {
+      html, body { overflow: auto; }
+      .split {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+      .panel {
+        flex: none !important;
+        min-height: 50vh;
+        transition: none;
+      }
+      .panel:hover { flex: none !important; }
+      .panel-desc { opacity: 1 !important; transform: none !important; }
+      .enter-btn  { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
+      .divider    { display: none; }
+      .centre-name { display: none; }
+      .scroll-hint { display: none; }
+      .split:has(.panel:first-child:hover) .panel:last-child { flex: none !important; }
+    }
+  </style>
 </head>
 <body>
-  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#060f1e;pointer-events:none;"></div>
 
-  <!-- ── FIXED NAV ──────────────────────────────────────────── -->
-  <header class="site-nav" id="site-nav">
-    <div class="nav-inner">
-      <a class="nav-brand" href="index.html">
-        <span class="nav-badge">MN</span>
-        <span class="nav-name">
-          Dr. Maisam Najafizada
-          <small>Memorial University · Health Policy &amp; Systems</small>
-        </span>
-      </a>
+  <div class="split">
 
-      <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false">Menu</button>
-
-      <nav class="nav-links" id="nav-links">
-        <a href="index.html" class="active-page">Home</a>
-        <a href="research.html">Research</a>
-        <a href="funding.html">Funding</a>
-        <a href="publications.html">Publications</a>
-        <a href="teaching.html">Teaching</a>
-        <a href="teaching.html#contact" class="nav-contact-link">Contact</a>
-      </nav>
-
-      <a class="nav-cta" href="teaching.html#contact">Contact</a>
-    </div>
-  </header>
-
-  <!-- ── HERO ──────────────────────────────────────────────────── -->
-  <section class="hero-full">
-    <div class="hero-mesh" aria-hidden="true"></div>
-
-    <div class="hero-body">
-      <div class="hero-text reveal">
-        <span class="hero-eyebrow">Faculty of Medicine · Memorial University of Newfoundland</span>
-        <h1 class="grad-text">Dr. Maisam<br>Najafizada</h1>
-        <p class="hero-role">Associate Professor in Health Policy and Systems Research</p>
-        <p class="hero-subtitle">
-          Building equitable, community-engaged, and evidence-driven health systems —
-          spanning primary care transformation, refugee health, global health policy,
-          and cannabis policy reform in Canada and beyond.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-sky" href="teaching.html#contact">Collaborate →</a>
-          <a class="btn btn-outline-light" href="research.html">Explore Research</a>
-        </div>
+    <!-- ── LEFT: ACADEMIC ── -->
+    <a class="panel panel-academic" href="academic.html">
+      <span class="panel-corner">A</span>
+      <div class="panel-body">
+        <span class="label">Academic</span>
+        <h1 class="panel-name">Dr. Maisam<br>Najafizada</h1>
+        <p class="panel-role">Associate Professor in Health Policy<br>and Systems Research</p>
+        <p class="panel-desc">Research, funding, publications, and teaching at Memorial University of Newfoundland's Faculty of Medicine.</p>
+        <span class="enter-btn">Enter <span class="arrow">→</span></span>
       </div>
+    </a>
 
-      <div class="hero-orb" aria-hidden="true">
-        <div class="orb-core orb-photo">
-          <img src="Maisam.jpg" alt="Dr. Maisam Najafizada" />
-        </div>
-        <span class="orb-ring orb-r1"></span>
-        <span class="orb-ring orb-r2"></span>
-        <span class="orb-ring orb-r3"></span>
-      </div>
+    <!-- ── CENTRE BADGE ── -->
+    <div class="centre-name">
+      <div class="centre-badge">MN</div>
+      <span class="centre-tagline">Choose a path</span>
     </div>
 
-    <!-- Stats strip -->
-    <div class="stats-strip">
-      <div class="stat-cell">
-        <strong class="stat-num c-sky" data-target="4.17" data-prefix="$" data-suffix="M+">$4.17M+</strong>
-        <span class="stat-label">Research funding secured</span>
+    <!-- ── DIVIDER ── -->
+    <div class="divider"></div>
+
+    <!-- ── RIGHT: AUTHOR ── -->
+    <a class="panel panel-author" href="Maisam_Book.html">
+      <span class="panel-corner">W</span>
+      <div class="panel-body">
+        <span class="label">Author</span>
+        <h1 class="panel-name">Maisam<br>Najafizada</h1>
+        <p class="panel-role">Novelist &amp; Writer<br>Stories of Afghanistan &amp; Beyond</p>
+        <p class="panel-desc">Books, writings, and literary work exploring exile, memory, and the human experience.</p>
+        <span class="enter-btn">Enter <span class="arrow">→</span></span>
       </div>
-      <div class="stat-cell">
-        <strong class="stat-num c-gold" data-target="36">36</strong>
-        <span class="stat-label">Peer-reviewed publications</span>
-      </div>
-      <div class="stat-cell">
-        <strong class="stat-num c-violet" data-target="52" data-suffix="+">52+</strong>
-        <span class="stat-label">Graduate trainees mentored</span>
-      </div>
-      <div class="stat-cell">
-        <strong class="stat-num c-coral" data-target="23">23</strong>
-        <span class="stat-label">Research grants awarded</span>
-      </div>
-    </div>
-  </section>
+    </a>
 
-  <!-- ── ABOUT (light) ──────────────────────────────────────────── -->
-  <section class="section-light">
-    <div class="content-wrap">
-      <div class="sec-head reveal">
-        <span class="sec-kicker">Profile</span>
-        <h2>About Dr. Najafizada</h2>
-        <p class="sec-lead">Afghan-Canadian physician-researcher whose work connects community-level realities with system-level policy change.</p>
-      </div>
-
-      <div class="grid-2 reveal">
-        <div class="card">
-          <h3>Biography</h3>
-          <p>Dr. Maisam Najafizada is a physician-researcher and Associate Professor at Memorial University of Newfoundland's Faculty of Medicine. His work centres on primary health care, health systems strengthening, social accountability, and equity-oriented policy in Canada and globally.</p>
-          <p>He has served as Interim Assistant Dean for Social Accountability, Faculty Lead for Global Health and Health Equity, and MPH Program Coordinator — leading strategy, curriculum, and community partnerships that integrate equity into academic medicine. His doctoral research on Afghanistan's Community Health Worker program contributed directly to WHO global guidelines.</p>
-          <a class="see-all" href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:1rem;">
-          <div class="card list-card">
-            <h3>Core Information</h3>
-            <ul>
-              <li><strong>Role:</strong> Associate Professor (since Sep 2024)</li>
-              <li><strong>Institution:</strong> Faculty of Medicine, Memorial University</li>
-              <li><strong>Email:</strong> <a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a></li>
-              <li><strong>Phone:</strong> <a href="tel:+17098643376">+1 709 864 3376</a></li>
-              <li><strong>Languages:</strong> English · French · Persian/Dari · Hindi/Urdu</li>
-              <li><strong>Location:</strong> St. John's, Newfoundland and Labrador, Canada</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Education</h3>
-            <ul class="timeline">
-              <li><span class="timeline-year">2016</span> PhD Population Health, University of Ottawa</li>
-              <li><span class="timeline-year">2011</span> MA Health Communication, University of Ottawa</li>
-              <li><span class="timeline-year">2008</span> MD, Ibn Sina Medical Faculty, Balkh University</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Metric cards row -->
-      <div class="grid-4 reveal" style="margin-top:1.3rem;">
-        <div class="metric-card sky">
-          <p class="metric-label">Total Funding</p>
-          <p class="metric-num">$4.17M+</p>
-          <p class="metric-sub">Across 23 grants</p>
-        </div>
-        <div class="metric-card gold">
-          <p class="metric-label">Publications</p>
-          <p class="metric-num">36</p>
-          <p class="metric-sub">Peer-reviewed articles</p>
-        </div>
-        <div class="metric-card violet">
-          <p class="metric-label">Trainees</p>
-          <p class="metric-num">52+</p>
-          <p class="metric-sub">Graduate students mentored</p>
-        </div>
-        <div class="metric-card emerald">
-          <p class="metric-label">Years Active</p>
-          <p class="metric-num">8+</p>
-          <p class="metric-sub">At Memorial University</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── RESEARCH PREVIEW (dark) ────────────────────────────────── -->
-  <section class="section-dark">
-    <div class="content-wrap">
-      <div class="sec-head on-dark reveal">
-        <span class="sec-kicker on-dark">Program of Work</span>
-        <h2>Research Focus</h2>
-        <p class="sec-lead on-dark">Applying health systems and policy methods to improve access, quality, and equity in care across Canadian and global contexts.</p>
-      </div>
-
-      <div class="pillars reveal">
-        <article class="pillar" data-num="01" data-color="sky">
-          <div class="pillar-left"></div>
-          <div class="pillar-icon">🏥</div>
-          <h3>Primary Care Transformation</h3>
-          <p>Evaluation of team-based primary care and Family Care Team implementation in Newfoundland and Labrador — focusing on interprofessional collaboration and rural access.</p>
-        </article>
-
-        <article class="pillar" data-num="02" data-color="gold">
-          <div class="pillar-left"></div>
-          <div class="pillar-icon">🌍</div>
-          <h3>Health Equity &amp; Refugee Health</h3>
-          <p>System-level analysis of barriers to care and adaptive models for culturally safe service delivery for newcomers and equity-deserving populations.</p>
-        </article>
-
-        <article class="pillar" data-num="03" data-color="violet">
-          <div class="pillar-left"></div>
-          <div class="pillar-icon">🌐</div>
-          <h3>Global Health Systems</h3>
-          <p>Community health worker programs, SDG implementation, and equity-oriented health policy in Afghanistan, South Asia, and Central Asia.</p>
-        </article>
-
-        <article class="pillar" data-num="04" data-color="coral">
-          <div class="pillar-left"></div>
-          <div class="pillar-icon">📊</div>
-          <h3>Public Health Policy</h3>
-          <p>Cannabis policy, health literacy, and population-level decision environments for safer and more equitable health outcomes across Canada.</p>
-        </article>
-      </div>
-
-      <div class="see-all-row reveal">
-        <a class="see-all" href="research.html">View full research program →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── FEATURED PUBLICATIONS (light) ─────────────────────────── -->
-  <section class="section-light">
-    <div class="content-wrap">
-      <div class="sec-head reveal">
-        <span class="sec-kicker">Scholarship</span>
-        <h2>Selected Publications</h2>
-        <p class="sec-lead">A sample of recent peer-reviewed work across research themes.</p>
-      </div>
-
-      <div class="pub-list reveal" id="featured-pub-list"></div>
-
-      <div class="see-all-row reveal">
-        <a class="see-all" href="publications.html">View all 36 publications →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── IMPACT (dark) ─────────────────────────────────────────── -->
-  <section class="section-dark">
-    <div class="content-wrap">
-      <div class="sec-head on-dark reveal">
-        <span class="sec-kicker on-dark">Research Impact</span>
-        <h2>Funding Portfolio</h2>
-        <p class="sec-lead on-dark">A record of sustained external investment in population health research across CIHR, SSHRC, Health Canada, and provincial funders.</p>
-      </div>
-
-      <div class="grid-3 reveal">
-        <div class="metric-card sky">
-          <p class="metric-label">NPA / PA / Co-PA</p>
-          <p class="metric-num">$2.15M</p>
-          <p class="metric-sub">Program leadership grants</p>
-        </div>
-        <div class="metric-card gold">
-          <p class="metric-label">As Co-Applicant</p>
-          <p class="metric-num">$1.36M</p>
-          <p class="metric-sub">Multi-investigator collaborations</p>
-        </div>
-        <div class="metric-card violet">
-          <p class="metric-label">As Collaborator</p>
-          <p class="metric-num">$659K</p>
-          <p class="metric-sub">Broader network contributions</p>
-        </div>
-      </div>
-
-      <div class="see-all-row reveal" style="margin-top:1.5rem;">
-        <a class="see-all" href="funding.html">View full funding portfolio →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── MEDIA HIGHLIGHTS (light) ──────────────────────────────── -->
-  <section class="section-light">
-    <div class="content-wrap">
-      <div class="sec-head reveal">
-        <span class="sec-kicker">Public Scholarship</span>
-        <h2>Media &amp; Public Engagement</h2>
-        <p class="sec-lead">Research findings translated into expert commentary and institutional coverage across Canadian and international outlets.</p>
-      </div>
-
-      <div class="media-grid reveal" id="home-media-list"></div>
-
-      <div class="see-all-row reveal">
-        <a class="see-all" href="teaching.html#media">View all media appearances →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CTA BAND ───────────────────────────────────────────────── -->
-  <div class="cta-band">
-    <div class="cta-band-inner">
-      <div>
-        <h2>Interested in Collaborating?</h2>
-        <p>Open to research partnerships, graduate supervision, and knowledge-translation opportunities in health systems and policy.</p>
-      </div>
-      <div class="cta-band-actions">
-        <a class="btn btn-outline-light" href="teaching.html#contact">Get in Touch</a>
-        <a class="btn" style="background:#fff;color:#0c4a6e;" href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a>
-      </div>
-    </div>
   </div>
 
-  <!-- ── FOOTER ────────────────────────────────────────────────── -->
-  <footer class="site-footer">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <div class="footer-brand">
-          <div class="footer-badge">MN</div>
-          <span class="footer-name">Dr. Maisam Najafizada</span>
-        </div>
-        <p class="footer-bio">Associate Professor in Health Policy and Systems Research at Memorial University of Newfoundland. Physician-researcher advancing health equity in Canada and globally.</p>
-      </div>
+  <span class="scroll-hint">Hover to explore</span>
 
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul class="footer-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="research.html">Research</a></li>
-          <li><a href="funding.html">Funding</a></li>
-          <li><a href="publications.html">Publications</a></li>
-          <li><a href="teaching.html">Teaching</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Research Areas</h4>
-        <ul class="footer-areas">
-          <li>Primary Care Transformation</li>
-          <li>Health Equity &amp; Refugee Health</li>
-          <li>Global Health Systems</li>
-          <li>Cannabis Policy</li>
-          <li>Social Accountability</li>
-          <li>Community Health Workers</li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Contact</h4>
-        <div class="footer-contact">
-          <div class="contact-line">
-            <span class="contact-icon">✉</span>
-            <a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a>
-          </div>
-          <div class="contact-line">
-            <span class="contact-icon">📞</span>
-            <a href="tel:+17098643376">+1 709 864 3376</a>
-          </div>
-          <div class="contact-line">
-            <span class="contact-icon">📍</span>
-            <span>Faculty of Medicine<br>Memorial University of Newfoundland<br>St. John's, NL, Canada</span>
-          </div>
-          <div class="contact-line">
-            <span class="contact-icon">🔗</span>
-            <a href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Dr. Maisam Najafizada · Memorial University of Newfoundland</span>
-      <span class="footer-tag">Content baseline: May 2026</span>
-    </div>
-  </footer>
-
-  <button id="back-top" aria-label="Back to top">↑</button>
-
-  <script src="script.js"></script>
-  <script>
-    // Render featured publications (6 most recent)
-    const featured = allPublications.slice(0, 6);
-    const featList = document.getElementById("featured-pub-list");
-    if (featList) {
-      featured.forEach(pub => {
-        featList.appendChild(buildPublicationCard(pub));
-      });
-    }
-
-    // Render 4 media highlights
-    const homeMedia = document.getElementById("home-media-list");
-    if (homeMedia) {
-      mediaItems.slice(0, 4).forEach(item => {
-        homeMedia.appendChild(buildMediaCard(item));
-      });
-    }
-  </script>
 </body>
 </html>

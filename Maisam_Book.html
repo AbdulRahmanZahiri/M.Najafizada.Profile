@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maisam Najafizada — Author</title>
+<meta name="description" content="Maisam Najafizada — novelist. Stories of Afghanistan, exile, and return.">
+
+<!--
+  ============================================================
+  EDITING GUIDE — read this first
+  ============================================================
+  This is a single-file site. To change anything, open this
+  file in any text editor (VS Code, Notepad, TextEdit), search
+  for the section you want, edit the words, save. That's it.
+
+  Look for big comment blocks like this one — they mark the
+  spots most likely to need editing:
+
+      EDIT: AUTHOR BIO
+      EDIT: PARWIN DESCRIPTION
+      EDIT: SIKANDAR DESCRIPTION
+      EDIT: BUY LINKS
+      EDIT: NEWSLETTER FORM ACTION
+      EDIT: CONTACT FORM ACTION
+      EDIT: SOCIAL LINKS
+
+  To change colors site-wide, scroll down to the :root block
+  in the <style> section — every color is a single variable.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   COLOR PALETTE — change here to recolor the whole site
+   ============================================================ */
+:root {
+  --parchment:        #f1e7d0;
+  --parchment-warm:   #ecdfc1;
+  --parchment-deep:   #e1d2ad;
+  --parchment-shadow: #c9b78b;
+
+  --ink:        #1c140e;
+  --ink-soft:   #3d2f24;
+  --ink-faded:  #6b5a48;
+
+  --lapis:      #1f3a6b;   /* Afghan lapis lazuli */
+  --lapis-deep: #142751;
+  --lapis-dusk: #2a4a82;
+
+  --saffron:    #b8842a;
+  --saffron-lt: #d4a24c;
+
+  --pomegranate: #7a2723;
+  --clay:        #a26a3a;
+  --dust:        #b89878;
+
+  --serif-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --serif-body:    'Crimson Pro', 'EB Garamond', Georgia, serif;
+  --arabic:        'Amiri', 'Cormorant Garamond', serif;
+
+  --max: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--serif-body);
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--ink);
+  background: var(--parchment);
+  overflow-x: hidden;
+  /* subtle grain to mimic paper */
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(184, 132, 42, 0.06), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(122, 39, 35, 0.05), transparent 50%);
+  position: relative;
+}
+
+/* paper grain overlay using SVG noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+nav.site {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem var(--gutter);
+  background: rgba(241, 231, 208, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(28, 20, 14, 0.08);
+}
+
+.brand {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.brand .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--pomegranate);
+  border-radius: 50%;
+  margin: 0 0.5rem 0.18rem 0.5rem;
+  vertical-align: middle;
+  transform: rotate(45deg);
+  border-radius: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.25rem;
+  font-family: var(--serif-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+}
+
+.nav-links a {
+  position: relative;
+  color: var(--ink-soft);
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--pomegranate); }
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -6px;
+  width: 0; height: 1px;
+  background: var(--pomegranate);
+  transition: all 0.4s;
+}
+
+.nav-links a:hover::after { width: 100%; left: 0; }
+
+@media (max-width: 720px) {
+  .nav-links { gap: 1.25rem; font-size: 0.85rem; }
+  .brand { font-size: 1.15rem; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 7rem var(--gutter) 4rem;
+  overflow: hidden;
+}
+
+/* Persian eight-pointed star (khatam) tiled background, very faint */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120' width='120' height='120'><g fill='none' stroke='%231c140e' stroke-width='0.6'><path d='M60 10 L70 30 L90 20 L80 40 L100 50 L80 60 L90 80 L70 70 L60 90 L50 70 L30 80 L40 60 L20 50 L40 40 L30 20 L50 30 Z'/><circle cx='60' cy='50' r='4'/></g></svg>");
+  background-size: 180px 180px;
+}
+
+/* mihrab arch backdrop */
+.hero-arch {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -52%);
+  width: min(640px, 80vw);
+  height: min(820px, 95vh);
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.kicker {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--pomegranate);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.2s forwards;
+}
+
+.kicker::before, .kicker::after {
+  content: '';
+  display: inline-block;
+  width: 30px; height: 1px;
+  background: var(--pomegranate);
+  vertical-align: middle;
+  margin: 0 1rem;
+  opacity: 0.6;
+}
+
+h1.author-name {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2.75rem, 8.5vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.4s forwards;
+}
+
+.dari-script {
+  font-family: var(--arabic);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  color: var(--lapis);
+  margin: 0.75rem 0 1.75rem;
+  letter-spacing: 0.02em;
+  direction: rtl;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.7s forwards;
+}
+
+.tagline {
+  font-family: var(--serif-display);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.5;
+  opacity: 0;
+  animation: fadeUp 1.4s 1s forwards;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-faded);
+  opacity: 0;
+  animation: fadeIn 2s 1.5s forwards;
+  z-index: 2;
+}
+
+.scroll-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 32px;
+  background: var(--ink-faded);
+  margin: 0.75rem auto 0;
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); }
+}
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+section {
+  position: relative;
+  padding: 7rem var(--gutter);
+  z-index: 2;
+}
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--pomegranate);
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+h2.section-title {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  color: var(--ink);
+}
+
+/* Decorative divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4rem auto;
+  max-width: 360px;
+}
+.divider .line {
+  flex: 1;
+  height: 1px;
+  background: var(--ink-faded);
+  opacity: 0.4;
+}
+.divider svg {
+  width: 56px;
+  height: 56px;
+  margin: 0 1.5rem;
+  color: var(--pomegranate);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about {
+  background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-warm) 100%);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.portrait-frame {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: var(--parchment-deep);
+  border: 1px solid rgba(28, 20, 14, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* corner ornaments on portrait */
+.portrait-frame::before,
+.portrait-frame::after {
+  content: '';
+  position: absolute;
+  width: 32px; height: 32px;
+  border: 1px solid var(--pomegranate);
+  opacity: 0.6;
+}
+.portrait-frame::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.portrait-frame::after  { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+/* placeholder text inside frame — replace with <img> */
+.portrait-placeholder {
+  text-align: center;
+  font-family: var(--serif-display);
+  font-style: italic;
+  color: var(--ink-faded);
+  padding: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.portrait-placeholder strong {
+  display: block;
+  font-style: normal;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--pomegranate);
+}
+
+.bio p {
+  margin-bottom: 1.5rem;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+}
+
+.bio p:first-of-type::first-letter {
+  font-family: var(--serif-display);
+  font-size: 4.5rem;
+  font-style: italic;
+  font-weight: 500;
+  float: left;
+  line-height: 0.9;
+  margin: 0.25rem 0.75rem 0 0;
+  color: var(--pomegranate);
+}
+
+.bio-meta {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(28, 20, 14, 0.15);
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-faded);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+}
+.bio-meta span::before {
+  content: '◆';
+  color: var(--saffron);
+  margin-right: 0.6rem;
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
+
+/* ============================================================
+   BOOKS
+   ============================================================ */
+.books {
+  background: var(--parchment-warm);
+  position: relative;
+}
+
+.books::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60' width='60' height='60'><g fill='none' stroke='%231c140e' stroke-width='0.4'><polygon points='30,5 35,20 50,20 38,30 43,45 30,37 17,45 22,30 10,20 25,20'/></g></svg>");
+}
+
+.books-intro {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 5rem;
+}
+
+.book {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 5rem;
+  align-items: center;
+  margin-bottom: 7rem;
+  position: relative;
+}
+
+.book.reverse { grid-template-columns: 1.3fr 1fr; }
+.book.reverse .book-cover { order: 2; }
+
+@media (max-width: 820px) {
+  .book, .book.reverse {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .book.reverse .book-cover { order: 0; }
+}
+
+/* book cover — placeholder, swap for <img src="..."> */
+.book-cover {
+  position: relative;
+  aspect-ratio: 2/3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow:
+    0 30px 60px -20px rgba(28, 20, 14, 0.4),
+    0 12px 24px -10px rgba(28, 20, 14, 0.25);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.book-cover:hover { transform: translateY(-8px); }
+
+.book-cover.parwin {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.18)),
+    linear-gradient(180deg, #c0843a 0%, #8e5520 60%, #5e3712 100%);
+  color: var(--parchment);
+}
+
+.book-cover.sikandar {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.32)),
+    linear-gradient(180deg, #2a4a82 0%, #14264a 60%, #0a1730 100%);
+  color: var(--parchment);
+}
+
+.book-cover .cover-frame {
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(241, 231, 208, 0.35);
+}
+.book-cover .cover-frame::before,
+.book-cover .cover-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 24px;
+  border: 1px solid rgba(241, 231, 208, 0.5);
+}
+.book-cover .cover-frame::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.book-cover .cover-frame::after  { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+.cover-ornament {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.5rem;
+  opacity: 0.85;
+}
+
+.cover-title {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.cover-subtitle {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-top: 1rem;
+}
+
+.cover-rule {
+  width: 60px;
+  height: 1px;
+  background: currentColor;
+  margin: 1.25rem auto;
+  opacity: 0.5;
+}
+
+.cover-author {
+  font-family: var(--serif-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: auto;
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.85;
+}
+
+/* book details */
+.book-meta {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--pomegranate);
+  margin-bottom: 1rem;
+}
+
+.book-title {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.book-pull {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: var(--lapis);
+  padding: 1rem 0 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 2px solid var(--pomegranate);
+}
+
+.book-synopsis {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+.book-synopsis p { margin-bottom: 1rem; }
+
+.book-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--serif-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 0;
+}
+.btn:hover::before { transform: scaleX(1); }
+.btn:hover { color: var(--parchment); }
+.btn span { position: relative; z-index: 1; }
+
+.btn.primary {
+  background: var(--pomegranate);
+  border-color: var(--pomegranate);
+  color: var(--parchment);
+}
+.btn.primary::before { background: var(--lapis-deep); }
+.btn.primary:hover { color: var(--parchment); }
+
+/* ============================================================
+   NEWSLETTER
+   ============================================================ */
+.newsletter {
+  background:
+    linear-gradient(180deg, var(--lapis-deep) 0%, #0a1730 100%);
+  color: var(--parchment);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120' width='120' height='120'><g fill='none' stroke='%23f1e7d0' stroke-width='0.6'><path d='M60 10 L70 30 L90 20 L80 40 L100 50 L80 60 L90 80 L70 70 L60 90 L50 70 L30 80 L40 60 L20 50 L40 40 L30 20 L50 30 Z'/><circle cx='60' cy='50' r='3'/></g></svg>");
+  background-size: 200px 200px;
+}
+
+.newsletter .container { position: relative; z-index: 1; max-width: 640px; }
+
+.newsletter .eyebrow { color: var(--saffron-lt); }
+.newsletter h2.section-title { color: var(--parchment); }
+.newsletter p { color: rgba(241, 231, 208, 0.8); margin-bottom: 2.5rem; font-size: 1.15rem; }
+
+.newsletter-ornament {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  color: var(--saffron-lt);
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(241, 231, 208, 0.4);
+  transition: border-color 0.3s;
+}
+.newsletter-form:focus-within { border-color: var(--saffron-lt); }
+
+.newsletter-form input[type="email"] {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1rem 0.5rem 1rem 0;
+  font-family: var(--serif-body);
+  font-size: 1.1rem;
+  color: var(--parchment);
+  outline: none;
+}
+.newsletter-form input[type="email"]::placeholder {
+  color: rgba(241, 231, 208, 0.5);
+  font-style: italic;
+}
+
+.newsletter-form button {
+  background: transparent;
+  border: none;
+  color: var(--parchment);
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 1rem 1.25rem;
+  transition: color 0.3s;
+}
+.newsletter-form button:hover { color: var(--saffron-lt); }
+
+.newsletter-note {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: rgba(241, 231, 208, 0.5);
+  font-style: italic;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact {
+  background: var(--parchment);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+.contact-info p {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+
+.contact-channels {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(28, 20, 14, 0.15);
+}
+
+.contact-channels a {
+  display: block;
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--lapis);
+  padding: 0.5rem 0;
+  transition: color 0.3s, padding-left 0.3s;
+}
+.contact-channels a:hover {
+  color: var(--pomegranate);
+  padding-left: 0.5rem;
+}
+.contact-channels a::before {
+  content: '→';
+  color: var(--pomegranate);
+  margin-right: 0.75rem;
+  font-style: normal;
+}
+
+.contact-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pomegranate);
+  margin-bottom: 0.5rem;
+}
+
+.field input,
+.field textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(28, 20, 14, 0.3);
+  padding: 0.75rem 0;
+  font-family: var(--serif-body);
+  font-size: 1.1rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.3s;
+  resize: vertical;
+}
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--pomegranate);
+}
+
+.contact-form button {
+  justify-self: start;
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--ink);
+  color: var(--parchment);
+  padding: 3rem var(--gutter) 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+footer .footer-mark {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+footer .socials {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+footer .socials a {
+  font-family: var(--serif-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  color: rgba(241, 231, 208, 0.7);
+  transition: color 0.3s;
+}
+footer .socials a:hover { color: var(--saffron-lt); }
+
+footer .copyright {
+  font-size: 0.85rem;
+  color: rgba(241, 231, 208, 0.4);
+  margin-top: 1.5rem;
+  font-style: italic;
+}
+
+/* ============================================================
+   REVEAL ANIMATION on scroll
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     EDIT: change brand name and link labels here
+     ============================================================ -->
+<nav class="site">
+  <a href="#" class="brand">Maisam Najafizada<span class="dot"></span><em>writer</em></a>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#books">books</a>
+    <a href="#newsletter">newsletter</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     EDIT: author name, Dari script, tagline
+     ============================================================ -->
+<header class="hero">
+
+  <!-- Mihrab arch backdrop SVG -->
+  <svg class="hero-arch" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="archGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7a2723" stop-opacity="0.3"/>
+        <stop offset="1" stop-color="#1f3a6b" stop-opacity="0.15"/>
+      </linearGradient>
+    </defs>
+    <!-- arch outline -->
+    <path d="M 40 520 L 40 240 Q 40 40 200 40 Q 360 40 360 240 L 360 520"
+          fill="none" stroke="url(#archGrad)" stroke-width="1.5"/>
+    <!-- inner arch -->
+    <path d="M 70 520 L 70 250 Q 70 70 200 70 Q 330 70 330 250 L 330 520"
+          fill="none" stroke="url(#archGrad)" stroke-width="0.8" opacity="0.7"/>
+    <!-- decorative medallion at the apex -->
+    <g transform="translate(200, 50)" stroke="#7a2723" stroke-width="0.8" fill="none" opacity="0.4">
+      <circle r="14"/>
+      <circle r="8"/>
+      <path d="M 0 -14 L 0 14 M -14 0 L 14 0 M -10 -10 L 10 10 M -10 10 L 10 -10"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <div class="kicker">Novelist</div>
+    <h1 class="author-name">Maisam Najafizada</h1>
+    <div class="dari-script">پروین &nbsp;·&nbsp; سکندر</div>
+    <p class="tagline">Stories of Afghanistan and the long roads of leaving — coming and returning.</p>
+  </div>
+
+  <div class="scroll-cue">explore</div>
+</header>
+
+<!-- ============================================================
+     ABOUT
+     EDIT: bio paragraphs, portrait image
+     ============================================================ -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- PORTRAIT
+           To replace the placeholder with a real photo:
+           1) Save your photo as portrait.jpg in the same folder
+           2) Replace the contents of .portrait-frame with:
+              <img src="portrait.jpg" alt="Maisam Najafizada" style="width:100%;height:100%;object-fit:cover;">
+      -->
+      <div class="portrait-frame reveal">
+        <div class="portrait-placeholder">
+          <strong>Portrait</strong>
+          replace with<br>
+          <code>&lt;img src="portrait.jpg"&gt;</code>
+        </div>
+      </div>
+
+      <div class="bio reveal">
+        <span class="eyebrow">About</span>
+        <h2 class="section-title">A scholar between two languages.</h2>
+
+        <!-- EDIT: AUTHOR BIO -->
+        <p>
+          Maisam Najafizada is an Afghan-Canadian novelist and academic. His fiction works the seam between Afghanistan and its diasporas — the villages and the cities, the burials and the returns, the people who refuse to disappear.
+        </p>
+        <p>
+          Trained as a health systems researcher and an Associate Professor of Health Policy, he writes scholarship by day and prose by lamplight. His novels are shaped by lived presence — including a night at Kabul airport in August 2021 — and by a long apprenticeship to the literatures of both English and Dari. His prose is cinematic, bilingual in texture, attentive to moral complexity without authorial judgment.
+        </p>
+        <p>
+          He is currently at work on his second novel.
+        </p>
+
+        <div class="bio-meta">
+          <span>Toronto · Kabul</span>
+          <span>English &amp; Dari</span>
+          <span>Two novels in 2026</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BOOKS
+     EDIT: synopsis, pull quotes, buy buttons for each book
+     ============================================================ -->
+<section class="books" id="books">
+  <div class="container">
+
+    <div class="books-intro reveal">
+      <span class="eyebrow">The Novels</span>
+      <h2 class="section-title">Two books. One country. Two acts of return.</h2>
+    </div>
+
+    <!-- ====== PARWIN ====== -->
+    <article class="book reveal">
+      <div class="book-cover parwin">
+        <div class="cover-frame"></div>
+        <!-- Ornamental star -->
+        <svg class="cover-ornament" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" stroke-width="0.8">
+          <path d="M32 6 L37 22 L54 22 L40 32 L46 48 L32 38 L18 48 L24 32 L10 22 L27 22 Z"/>
+          <circle cx="32" cy="32" r="3"/>
+        </svg>
+        <div class="cover-title">Parwin</div>
+        <div class="cover-rule"></div>
+        <div class="cover-subtitle">A Novel</div>
+        <div class="cover-author">Maisam Najafizada</div>
+      </div>
+
+      <div class="book-content">
+        <div class="book-meta">Literary Fiction · Forthcoming</div>
+        <h3 class="book-title">Parwin</h3>
+
+        <!-- EDIT: PARWIN PULL QUOTE -->
+        <blockquote class="book-pull">
+          She walked back into the village that buried her — through the men&rsquo;s entrance of the mosque, carrying a newborn in her arms.
+        </blockquote>
+
+        <!-- EDIT: PARWIN DESCRIPTION -->
+        <div class="book-synopsis">
+          <p>
+            In a remote Afghan village, seventeen-year-old Parwin is condemned for a crime she did not commit — a wedding-night betrayal she does not yet understand. Exiled to the desert with two weeks&rsquo; provisions and no expectation of survival, she is taken in by a nomadic Jogi clan, and given the chance to become someone else: a midwife, a story, a returning ghost.
+          </p>
+          <p>
+            Years later she walks back into Habashi to deliver the baby of the woman who replaced her — and to face the village in full daylight, the Quran and her own life held open before them.
+          </p>
+          <p>
+            <em>Parwin</em> is a novel about survival, faith, and the women who refuse to disappear.
+          </p>
+        </div>
+
+        <!-- EDIT: PARWIN BUY LINKS — replace href="#" with real URLs once you have them -->
+        <div class="book-buttons">
+          <a href="#" class="btn primary"><span>Pre-order</span></a>
+          <a href="#" class="btn"><span>Read an Excerpt</span></a>
+          <a href="#" class="btn"><span>Add on Goodreads</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ornamental divider -->
+    <div class="divider">
+      <div class="line"></div>
+      <svg viewBox="0 0 56 56" stroke="currentColor" fill="none" stroke-width="0.8">
+        <circle cx="28" cy="28" r="22"/>
+        <circle cx="28" cy="28" r="14"/>
+        <path d="M28 6 L33 22 L50 22 L36 32 L42 48 L28 38 L14 48 L20 32 L6 22 L23 22 Z"/>
+        <circle cx="28" cy="28" r="2" fill="currentColor"/>
+      </svg>
+      <div class="line"></div>
+    </div>
+
+    <!-- ====== SIKANDAR ====== -->
+    <article class="book reverse reveal">
+      <div class="book-cover sikandar">
+        <div class="cover-frame"></div>
+        <svg class="cover-ornament" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" stroke-width="0.8">
+          <polygon points="32,6 38,18 52,20 42,30 45,46 32,38 19,46 22,30 12,20 26,18"/>
+          <circle cx="32" cy="32" r="3"/>
+        </svg>
+        <div class="cover-title">Sikandar</div>
+        <div class="cover-rule"></div>
+        <div class="cover-subtitle">The Afghan Fixer</div>
+        <div class="cover-author">Maisam Najafizada</div>
+      </div>
+
+      <div class="book-content">
+        <div class="book-meta">Literary Thriller · Forthcoming</div>
+        <h3 class="book-title">Sikandar: The Afghan Fixer</h3>
+
+        <!-- EDIT: SIKANDAR PULL QUOTE -->
+        <blockquote class="book-pull">
+          Every man in this country drives a borrowed car. The trick is knowing whose name is on the registration.
+        </blockquote>
+
+        <!-- EDIT: SIKANDAR DESCRIPTION -->
+        <div class="book-synopsis">
+          <p>
+            Sikandar moves the cracked seams of post-occupation Afghanistan — between diplomats and warlords, journalists and elders, the truth and the price of telling it. He is a fixer: the man who finds the source, the safe house, the story behind the story.
+          </p>
+          <p>
+            From the alleys of Mazar-e-Sharif to a black Mercedes that knows too much, <em>Sikandar</em> is a thriller of moral terrain — bilingual in texture, cinematic in detail, and unwilling to flatter either the foreigners who arrived or the country they left behind.
+          </p>
+        </div>
+
+        <!-- EDIT: SIKANDAR BUY LINKS -->
+        <div class="book-buttons">
+          <a href="#" class="btn primary"><span>Pre-order</span></a>
+          <a href="#" class="btn"><span>Read an Excerpt</span></a>
+          <a href="#" class="btn"><span>Add on Goodreads</span></a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     NEWSLETTER
+     EDIT: form action and copy
+     ============================================================ -->
+<section class="newsletter" id="newsletter">
+  <div class="container">
+    <svg class="newsletter-ornament" viewBox="0 0 48 48" stroke="currentColor" fill="none" stroke-width="1">
+      <path d="M24 4 L28 18 L42 20 L32 30 L34 44 L24 36 L14 44 L16 30 L6 20 L20 18 Z"/>
+      <circle cx="24" cy="24" r="2.5" fill="currentColor"/>
+    </svg>
+
+    <span class="eyebrow">Word from the desk</span>
+    <h2 class="section-title">Be the first to know.</h2>
+    <p>Notes from the writing life — pre-order announcements, excerpts before they appear elsewhere, occasional dispatches from the Afghan literary world. No more than once a month. Never anything else.</p>
+
+    <!--
+      EDIT: NEWSLETTER FORM ACTION
+      To collect emails, sign up for one of:
+        - Buttondown:  https://buttondown.email
+        - ConvertKit:  https://convertkit.com
+        - Mailchimp:   https://mailchimp.com
+        - Substack:    https://substack.com  (also handles posts)
+      Each gives you a form snippet — paste their action URL below
+      where it currently says "https://your-form-handler".
+    -->
+    <form class="newsletter-form" action="https://your-form-handler" method="POST">
+      <input type="email" name="email" placeholder="your email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+
+    <p class="newsletter-note">Your email lives only with me. Unsubscribe any time.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     EDIT: email, contact channels, form action
+     ============================================================ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="contact-info reveal">
+        <span class="eyebrow">Get in touch</span>
+        <h2 class="section-title">Letters welcome.</h2>
+        <p>
+          For interviews, festival invitations, foreign rights, translation queries, and reader notes. I read everything. I answer most.
+        </p>
+
+        <!-- EDIT: CONTACT CHANNELS — replace with real addresses/handles -->
+        <div class="contact-channels">
+          <a href="mailto:hello@example.com">hello@example.com</a>
+          <a href="#">Literary Agent — Agency Name</a>
+          <a href="#">Speaking — request brief</a>
+        </div>
+      </div>
+
+      <!--
+        EDIT: CONTACT FORM ACTION
+        Easiest path: sign up for Formspree (https://formspree.io)
+        — they give you a URL like https://formspree.io/f/abc123
+        — paste it below, and submissions arrive in your email.
+      -->
+      <form class="contact-form reveal" action="https://your-form-handler" method="POST">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="message">Your message</label>
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
+        <button type="submit" class="btn"><span>Send</span></button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     EDIT: socials, copyright
+     ============================================================ -->
+<footer>
+  <div class="footer-mark">Maisam Najafizada <em>·</em> writer</div>
+
+  <!-- EDIT: SOCIAL LINKS — replace href="#" with real handles -->
+  <div class="socials">
+    <a href="#">Instagram</a>
+    <a href="#">Substack</a>
+    <a href="#">Goodreads</a>
+    <a href="#">X / Twitter</a>
+  </div>
+
+  <div class="copyright">© <span id="year"></span> Maisam Najafizada. All rights reserved.</div>
+</footer>
+
+<script>
+  // year stamp
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
