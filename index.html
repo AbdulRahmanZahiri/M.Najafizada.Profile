@@ -129,23 +129,25 @@
     }
     .panel-academic:hover .photo-ring{transform:scale(1.06);box-shadow:0 12px 40px rgba(16,185,129,.35)}
 
-    /* ─── AUTHOR MONOGRAM ─── */
-    .author-mono{
-      width:110px;height:110px;border-radius:50%;
-      border:2px solid rgba(31,58,107,.25);
-      background:rgba(31,58,107,.06);
-      display:flex;align-items:center;justify-content:center;
-      font-family:"Cormorant Garamond",serif;font-size:3rem;font-weight:300;
-      color:var(--lapis);letter-spacing:.05em;margin-bottom:.3rem;
-      transition:transform var(--t),box-shadow var(--t),border-color var(--t);
-      position:relative;
+    /* ─── AUTHOR PHOTO RING ─── */
+    .author-photo-ring{
+      width:130px;height:130px;border-radius:50%;position:relative;
+      flex-shrink:0;margin-bottom:.3rem;
+      transition:transform var(--t),box-shadow var(--t);
     }
-    .author-mono::before{
-      content:'';position:absolute;inset:-8px;border-radius:50%;
-      border:1px dashed rgba(31,58,107,.2);
-      animation:spinRing 18s linear infinite reverse;
+    .author-photo-ring::before{
+      content:'';position:absolute;inset:-3px;border-radius:50%;
+      background:conic-gradient(var(--saffron) 0%,var(--pomegranate) 35%,var(--lapis) 65%,var(--saffron) 100%);
+      animation:spinRing 7s linear infinite reverse;z-index:0;
     }
-    .panel-author:hover .author-mono{transform:scale(1.05);border-color:rgba(31,58,107,.5);box-shadow:0 12px 40px rgba(31,58,107,.18)}
+    .author-photo-ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#ecdfc1;z-index:1}
+    .author-photo-ring img{
+      position:absolute;inset:5px;z-index:2;border-radius:50%;
+      width:calc(100% - 10px);height:calc(100% - 10px);
+      object-fit:cover;object-position:center top;display:block;
+      filter:sepia(20%) contrast(1.05);
+    }
+    .panel-author:hover .author-photo-ring{transform:scale(1.06);box-shadow:0 12px 40px rgba(184,132,42,.4)}
 
     /* ─── LABEL CHIP ─── */
     .label{
@@ -289,7 +291,7 @@
       .split{flex-direction:column;height:auto;min-height:100vh}
       .panel{flex:none!important;min-height:52vh;transition:none}
       .panel:hover{flex:none!important}
-      .photo-ring{width:100px;height:100px}
+      .photo-ring,.author-photo-ring{width:100px;height:100px}
       .stats-row{opacity:1!important;transform:none!important}
       .panel-desc{opacity:1!important;transform:none!important}
       .enter-btn{opacity:1!important;transform:none!important;pointer-events:auto!important}
@@ -348,7 +350,9 @@
       <span class="corner-ghost">W</span>
 
       <div class="panel-body" id="auth-body">
-        <div class="author-mono">M</div>
+        <div class="author-photo-ring">
+          <img src="Maisam.jpg" alt="Maisam Najafizada" />
+        </div>
         <span class="label">Author &amp; Writer</span>
         <h1 class="panel-name">Maisam<br>Najafizada</h1>
         <div class="name-rule"><span class="name-rule-dot"></span></div>
