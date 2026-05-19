@@ -1682,3 +1682,222 @@ img { max-width: 100%; }
   text-decoration: none;
   box-shadow: 0 0 18px rgba(16,185,129,.22);
 }
+
+/* ═══════════════════════════════════════════════════════
+   DESIGN ENHANCEMENTS v3 — color richness & advanced visuals
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Light sections: colorful gradient + animated orb ── */
+.section-light {
+  background: linear-gradient(155deg,
+    rgba(236,255,249,.75) 0%,
+    var(--surface) 44%,
+    rgba(246,243,255,.75) 100%);
+}
+.section-light::after {
+  background:
+    radial-gradient(ellipse 70% 75% at 97% 6%,  rgba(16,185,129,.11) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 60% at 3%  94%, rgba(139,92,246,.09) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 45% at 52% 52%, rgba(245,158,11,.03) 0%, transparent 60%);
+  animation: orbFloat 14s ease-in-out infinite;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(0, 0); }
+  40%     { transform: translate(-16px, -10px); }
+  70%     { transform: translate(10px, 8px); }
+}
+
+/* Tech cross-grid in light sections (replaces dot-only grid) */
+.section-light::before {
+  background-image:
+    linear-gradient(rgba(16,185,129,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,.028) 1px, transparent 1px),
+    radial-gradient(rgba(16,185,129,.02) 1.5px, transparent 0);
+  background-size: 80px 80px, 80px 80px, 28px 28px;
+}
+
+/* ── Page header h1: animated gradient ── */
+.page-header h1 {
+  background: linear-gradient(120deg, var(--tx1) 0%, #34d399 55%, var(--gold) 100%);
+  background-size: 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradShift 7s ease-in-out infinite;
+}
+
+/* ── Light section h2 headings: ink → emerald gradient ── */
+.section-light .sec-head h2 {
+  background: linear-gradient(118deg, var(--ink) 5%, var(--sky-d) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Section kicker: more vibrant in light sections ── */
+.section-light .sec-kicker {
+  color: var(--sky-d);
+  background: linear-gradient(135deg, rgba(16,185,129,.18), rgba(16,185,129,.06));
+  border-color: rgba(16,185,129,.3);
+  font-weight: 800;
+}
+
+/* ── Cards: tiny accent stub always visible ── */
+.card::before { transform: scaleX(.14); }
+
+/* ── Cards: light tint on hover ── */
+.card:hover {
+  background: linear-gradient(145deg, #ffffff 55%, rgba(236,255,249,.65) 100%);
+}
+
+/* ── Timeline: glowing gold dot before each year ── */
+.timeline-year {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+}
+.timeline-year::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold), var(--gold-d));
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(245,158,11,.55);
+}
+
+/* ── Publication year tags: richer gradient ── */
+.pub-year-tag {
+  background: linear-gradient(135deg, rgba(245,158,11,.2), rgba(245,158,11,.07));
+  border: 1px solid rgba(245,158,11,.3);
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+/* ── Pub badges: colorful by position ── */
+.badges .badge:nth-child(1) { background: rgba(16,185,129,.1);  color: #065f46; border-color: rgba(16,185,129,.24); }
+.badges .badge:nth-child(2) { background: rgba(139,92,246,.1);  color: #4c1d95; border-color: rgba(139,92,246,.24); }
+.badges .badge:nth-child(3) { background: rgba(249,115,22,.1);  color: #7c2d12; border-color: rgba(249,115,22,.24); }
+
+/* ── Count chip: gradient background ── */
+.count-chip {
+  background: linear-gradient(135deg, rgba(16,185,129,.2), rgba(16,185,129,.07));
+  border-color: rgba(16,185,129,.3);
+  color: var(--sky-d);
+  font-weight: 700;
+}
+
+/* ── Filter buttons: gradient active state ── */
+.filter-btn.active {
+  background: linear-gradient(135deg, rgba(16,185,129,.22), rgba(16,185,129,.07));
+  border-color: var(--sky);
+  font-weight: 700;
+  box-shadow: 0 2px 14px rgba(16,185,129,.22), inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+/* ── Pub items: tinted background on hover ── */
+.pub-item:hover {
+  border-left-color: var(--sky);
+  background: linear-gradient(90deg, rgba(16,185,129,.04) 0%, transparent 35%);
+}
+
+/* ── Entry items: tinted background on hover ── */
+.entry:hover {
+  background: linear-gradient(90deg, rgba(16,185,129,.04) 0%, transparent 30%);
+}
+
+/* ── Grant amounts: subtle text glow ── */
+.grant-amount { text-shadow: 0 0 18px rgba(16,185,129,.28); }
+
+/* ── Pill badges: gradient backgrounds ── */
+.pill-active  { background: linear-gradient(135deg, rgba(16,185,129,.18), rgba(16,185,129,.06)); }
+.pill-review  { background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(245,158,11,.06)); }
+.pill-planned { background: linear-gradient(135deg, rgba(16,185,129,.15), rgba(16,185,129,.05)); }
+
+/* ── Media type badges: green tint ── */
+.media-type {
+  background: linear-gradient(135deg, rgba(16,185,129,.13), rgba(16,185,129,.05));
+  color: #065f46;
+  border-color: rgba(16,185,129,.24);
+}
+
+/* ── Under-review mark: gradient ── */
+.under-review-mark {
+  background: linear-gradient(135deg, rgba(245,158,11,.2), rgba(245,158,11,.06));
+  border-color: rgba(245,158,11,.3);
+}
+
+/* ── Stat numbers: color glow on hover ── */
+.stat-cell:hover .stat-num.c-sky    { text-shadow: 0 0 24px rgba(16,185,129,.55); }
+.stat-cell:hover .stat-num.c-gold   { text-shadow: 0 0 24px rgba(245,158,11,.55); }
+.stat-cell:hover .stat-num.c-violet { text-shadow: 0 0 24px rgba(139,92,246,.55); }
+.stat-cell:hover .stat-num.c-coral  { text-shadow: 0 0 24px rgba(249,115,22,.55); }
+
+/* ── Year bar chart: animated gradient fill ── */
+.year-bar-fill {
+  background: linear-gradient(to right, var(--sky), var(--violet), var(--gold));
+  background-size: 300%;
+  animation: barShift 5s ease infinite alternate;
+}
+@keyframes barShift {
+  from { background-position: 0%; }
+  to   { background-position: 100%; }
+}
+
+/* ── Grant bar fills: per-color glow on load ── */
+.grant-bar-fill.c-sky    { box-shadow: 0 0 8px rgba(16,185,129,.3); }
+.grant-bar-fill.c-gold   { box-shadow: 0 0 8px rgba(245,158,11,.3); }
+.grant-bar-fill.c-violet { box-shadow: 0 0 8px rgba(139,92,246,.3); }
+.grant-bar-fill.c-coral  { box-shadow: 0 0 8px rgba(249,115,22,.3); }
+
+/* ── Glass cards: gradient top line ── */
+.glass-card {
+  background: linear-gradient(160deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.03) 100%);
+}
+
+/* ── Ghost section numbers (added via JS) ── */
+.section-ghost-num {
+  position: absolute;
+  bottom: -1rem; right: .5rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(6rem, 15vw, 12rem);
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(16,185,129,.042);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  letter-spacing: -.04em;
+  animation: ghostPulse 8s ease-in-out infinite;
+}
+@keyframes ghostPulse {
+  0%,100% { opacity: .85; transform: scale(1); }
+  50%     { opacity: 1;   transform: scale(1.015); }
+}
+
+/* ── Section entry stagger (pub-list & entry-list) ── */
+.pub-list  .pub-item:nth-child(even) { transition-delay: .05s; }
+.entry-list .entry:nth-child(even)   { transition-delay: .05s; }
+
+/* ── Hero gradient h1 ── */
+.grad-text {
+  background: linear-gradient(135deg, #34d399 0%, #fbbf24 38%, #f97316 65%, #34d399 100%);
+  background-size: 280%;
+  animation: gradShift 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 28px rgba(16,185,129,.18));
+}
+
+/* ── Hero orb: more vibrant pulse ── */
+@keyframes orbPulse {
+  0%,100% { box-shadow: 0 0 50px rgba(16,185,129,.22), inset 0 0 28px rgba(16,185,129,.08); }
+  50%     { box-shadow: 0 0 100px rgba(16,185,129,.42), inset 0 0 44px rgba(16,185,129,.16); }
+}
+
+/* ── Subsection head kicker ── */
+.subsec-head h3 {
+  background: linear-gradient(120deg, var(--ink) 20%, var(--sky-d) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}

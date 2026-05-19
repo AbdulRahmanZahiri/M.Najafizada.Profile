@@ -537,9 +537,22 @@ function setupCopyEmail() {
   });
 }
 
+// ── SECTION GHOST NUMBERS ────────────────────────────────────────────────────
+
+function addSectionDecorations() {
+  document.querySelectorAll('.section-light').forEach((section, i) => {
+    const ghost = document.createElement('span');
+    ghost.className = 'section-ghost-num';
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.textContent = String(i + 1).padStart(2, '0');
+    section.appendChild(ghost);
+  });
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 
 setupNav();
+addSectionDecorations();
 setupNavPill();
 setupReveal();
 setupBackTop();
