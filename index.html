@@ -12,144 +12,122 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
     :root {
-      --emerald:  #10b981;
-      --em-glow:  rgba(16,185,129,.22);
-      --em-soft:  rgba(16,185,129,.1);
-      --lapis:    #1f3a6b;
-      --saffron:  #b8842a;
-      --parch:    #f1e7d0;
-      --ink:      #1c140e;
-      --t:        .48s cubic-bezier(.4,0,.2,1);
+      --emerald: #10b981;
+      --lapis:   #1f3a6b;
+      --saffron: #b8842a;
+      --parch:   #f1e7d0;
+      --ink:     #1c140e;
+      --t:       .48s cubic-bezier(.4,0,.2,1);
     }
 
-    html,body{height:100%;overflow:hidden;font-family:"Public Sans","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;background:#060f1e}
+    html,body{height:100%;overflow:hidden;font-family:"Public Sans","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 
-    /* ─── PAGE TRANSITION OVERLAY ─── */
+    /* ─── PAGE TRANSITION ─── */
     #go-overlay{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0}
     #go-overlay.dark{background:#060f1e}
     #go-overlay.warm{background:#f1e7d0}
     #go-overlay.active{opacity:1;transition:opacity .32s ease}
 
-    /* ─── SPLIT ─── */
-    .split{display:flex;height:100vh;width:100vw;position:relative;opacity:0;transform:scale(1.015);transition:opacity .6s ease,transform .6s ease}
+    /* ─── SPLIT — photo is the shared background ─── */
+    .split{
+      display:flex;height:100vh;width:100vw;position:relative;
+      /* ONE portrait spanning both panels */
+      background:url('Maisam.jpg') center top / auto 100% no-repeat #060f1e;
+      opacity:0;transform:scale(1.015);transition:opacity .7s ease,transform .7s ease;
+    }
     .split.loaded{opacity:1;transform:scale(1)}
 
-    /* ─── PANELS ─── */
+    /* ─── PANELS — gradient washes that part to reveal photo in centre ─── */
     .panel{
-      position:relative;flex:1;display:flex;align-items:center;justify-content:center;
+      position:relative;flex:1;display:flex;align-items:center;
       overflow:hidden;cursor:pointer;transition:flex var(--t);text-decoration:none;
     }
     .panel:hover{flex:1.65}
     .panel:hover~.panel,
     .split:has(.panel:first-child:hover) .panel:last-child{flex:.45}
 
-    /* ─── SPOTLIGHT (mouse-follow glow) ─── */
-    .spotlight{
-      position:absolute;inset:0;pointer-events:none;z-index:1;
-      background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), var(--spot-color), transparent 65%);
-      opacity:0;transition:opacity .4s ease;
+    /* Academic: opaque dark on LEFT, fades to clear toward centre */
+    .panel-academic{
+      justify-content:flex-start;
+      background:linear-gradient(to right,
+        #060f1e 0%,
+        #060f1e 28%,
+        rgba(6,15,30,.82) 48%,
+        rgba(6,15,30,.32) 68%,
+        rgba(6,15,30,.05) 85%,
+        transparent 100%
+      );
     }
-    .panel:hover .spotlight{opacity:1}
 
-    /* ─── ACADEMIC PANEL ─── */
-    .panel-academic{background:#060f1e;--spot-color:rgba(16,185,129,.14)}
-
-    .panel-academic .bg-orb{
-      position:absolute;width:500px;height:500px;border-radius:50%;
-      background:radial-gradient(circle, rgba(16,185,129,.18) 0%, transparent 70%);
-      top:50%;left:30%;transform:translate(-50%,-50%);
-      animation:orbDrift 10s ease-in-out infinite;pointer-events:none;z-index:0;
+    /* Author: opaque warm on RIGHT, fades to clear toward centre */
+    .panel-author{
+      justify-content:flex-end;
+      background:linear-gradient(to left,
+        #f1e7d0 0%,
+        #f1e7d0 28%,
+        rgba(241,231,208,.82) 48%,
+        rgba(241,231,208,.32) 68%,
+        rgba(241,231,208,.05) 85%,
+        transparent 100%
+      );
     }
-    @keyframes orbDrift{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.15) translateY(-20px)}}
 
-    .panel-academic .grid-bg{
+    /* ─── GRID OVERLAY (academic hover) ─── */
+    .grid-bg{
       position:absolute;inset:0;pointer-events:none;z-index:0;
-      background-image:linear-gradient(rgba(16,185,129,.035) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(16,185,129,.035) 1px,transparent 1px);
+      background-image:linear-gradient(rgba(16,185,129,.04) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(16,185,129,.04) 1px,transparent 1px);
       background-size:52px 52px;opacity:0;transition:opacity .5s ease;
     }
     .panel-academic:hover .grid-bg{opacity:1}
 
-    /* particles */
-    .particle{
-      position:absolute;border-radius:50%;pointer-events:none;z-index:0;
-      background:var(--emerald);animation:rise linear infinite;
-    }
-    @keyframes rise{0%{transform:translateY(0) translateX(0) scale(1);opacity:var(--op)}
-                   50%{transform:translateY(-45vh) translateX(var(--drift)) scale(.6);opacity:calc(var(--op)*.4)}
-                  100%{transform:translateY(-90vh) translateX(calc(var(--drift)*1.5)) scale(.2);opacity:0}}
-
-    /* ─── AUTHOR PANEL ─── */
-    .panel-author{background:var(--parch);--spot-color:rgba(184,132,42,.2)}
-
-    /* Afghan geometric lattice */
+    /* ─── GEO LATTICE (author) ─── */
     .geo-bg{
       position:absolute;inset:0;pointer-events:none;z-index:0;
       background-image:
-        repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(31,58,107,.055) 20px, rgba(31,58,107,.055) 21px),
-        repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(31,58,107,.055) 20px, rgba(31,58,107,.055) 21px),
-        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(184,132,42,.04) 40px, rgba(184,132,42,.04) 41px),
-        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(184,132,42,.04) 40px, rgba(184,132,42,.04) 41px);
+        repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(31,58,107,.045) 20px,rgba(31,58,107,.045) 21px),
+        repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(31,58,107,.045) 20px,rgba(31,58,107,.045) 21px);
       opacity:.5;transition:opacity .5s ease;
     }
     .panel-author:hover .geo-bg{opacity:1}
 
-    .author-orb{
-      position:absolute;width:420px;height:420px;border-radius:50%;
-      background:radial-gradient(circle, rgba(184,132,42,.14) 0%, transparent 70%);
-      top:50%;right:30%;transform:translate(50%,-50%);
-      animation:orbDrift 12s ease-in-out infinite reverse;pointer-events:none;z-index:0;
+    /* ─── SPOTLIGHT ─── */
+    .spotlight{
+      position:absolute;inset:0;pointer-events:none;z-index:1;
+      background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), var(--spot), transparent 65%);
+      opacity:0;transition:opacity .4s ease;
+    }
+    .panel-academic{--spot:rgba(16,185,129,.12)}
+    .panel-author  {--spot:rgba(184,132,42,.14)}
+    .panel:hover .spotlight{opacity:1}
+
+    /* ─── PARTICLES ─── */
+    .particle{
+      position:absolute;border-radius:50%;pointer-events:none;z-index:0;
+      background:var(--emerald);animation:rise linear infinite;
+    }
+    @keyframes rise{
+      0%  {transform:translateY(0) translateX(0) scale(1);opacity:var(--op)}
+      50% {transform:translateY(-45vh) translateX(var(--drift)) scale(.5);opacity:calc(var(--op)*.3)}
+      100%{transform:translateY(-90vh) translateX(calc(var(--drift)*1.5)) scale(.15);opacity:0}
     }
 
-    /* ─── PANEL BODY (3D tilt target) ─── */
+    /* ─── PANEL BODY ─── */
     .panel-body{
-      position:relative;z-index:3;text-align:center;padding:2rem;
-      display:flex;flex-direction:column;align-items:center;gap:.9rem;
-      max-width:460px;will-change:transform;
-      transition:transform .1s ease;
+      position:relative;z-index:3;padding:2rem;
+      display:flex;flex-direction:column;gap:.85rem;
+      max-width:400px;will-change:transform;transition:transform .1s ease;
+    }
+    .panel-academic .panel-body{
+      padding-left:clamp(2.5rem,6vw,5rem);
+      text-align:left;align-items:flex-start;
+    }
+    .panel-author .panel-body{
+      padding-right:clamp(2.5rem,6vw,5rem);
+      text-align:right;align-items:flex-end;
     }
 
-    /* ─── PHOTO FRAME (academic) ─── */
-    .photo-ring{
-      width:130px;height:130px;border-radius:50%;position:relative;
-      flex-shrink:0;margin-bottom:.3rem;
-      transition:transform var(--t),box-shadow var(--t);
-    }
-    .photo-ring::before{
-      content:'';position:absolute;inset:-3px;border-radius:50%;
-      background:conic-gradient(#10b981 0%,#8b5cf6 40%,#f59e0b 70%,#10b981 100%);
-      animation:spinRing 6s linear infinite;z-index:0;
-    }
-    @keyframes spinRing{to{transform:rotate(360deg)}}
-    .photo-ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#060f1e;z-index:1}
-    .photo-ring img{
-      position:absolute;inset:5px;z-index:2;border-radius:50%;
-      width:calc(100% - 10px);height:calc(100% - 10px);
-      object-fit:cover;object-position:center top;display:block;
-    }
-    .panel-academic:hover .photo-ring{transform:scale(1.06);box-shadow:0 12px 40px rgba(16,185,129,.35)}
-
-    /* ─── AUTHOR PHOTO RING ─── */
-    .author-photo-ring{
-      width:130px;height:130px;border-radius:50%;position:relative;
-      flex-shrink:0;margin-bottom:.3rem;
-      transition:transform var(--t),box-shadow var(--t);
-    }
-    .author-photo-ring::before{
-      content:'';position:absolute;inset:-3px;border-radius:50%;
-      background:conic-gradient(var(--saffron) 0%,var(--pomegranate) 35%,var(--lapis) 65%,var(--saffron) 100%);
-      animation:spinRing 7s linear infinite reverse;z-index:0;
-    }
-    .author-photo-ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#ecdfc1;z-index:1}
-    .author-photo-ring img{
-      position:absolute;inset:5px;z-index:2;border-radius:50%;
-      width:calc(100% - 10px);height:calc(100% - 10px);
-      object-fit:cover;object-position:center top;display:block;
-      filter:sepia(20%) contrast(1.05);
-    }
-    .panel-author:hover .author-photo-ring{transform:scale(1.06);box-shadow:0 12px 40px rgba(184,132,42,.4)}
-
-    /* ─── LABEL CHIP ─── */
+    /* ─── LABEL ─── */
     .label{
       font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
       padding:.3rem .95rem;border-radius:999px;
@@ -157,12 +135,12 @@
     }
     .panel-academic .label{color:var(--emerald);border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.09)}
     .panel-author   .label{color:var(--lapis);border:1px solid rgba(31,58,107,.3);background:rgba(31,58,107,.07)}
-    .panel:hover .label{transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+    .panel:hover .label{transform:translateY(-3px)}
 
     /* ─── NAME ─── */
     .panel-name{
       font-family:"Cormorant Garamond",serif;
-      font-size:clamp(2.4rem,4.5vw,3.8rem);
+      font-size:clamp(2.4rem,4.2vw,3.8rem);
       font-weight:600;line-height:1.06;letter-spacing:-.01em;
       transition:transform var(--t);
     }
@@ -175,29 +153,26 @@
 
     /* ornamental rule under author name */
     .name-rule{
-      display:flex;align-items:center;gap:.6rem;width:100%;justify-content:center;
-      opacity:0;transform:scaleX(.6);
+      display:flex;align-items:center;gap:.6rem;width:100%;justify-content:flex-end;
+      opacity:0;transform:scaleX(.5);
       transition:opacity var(--t),transform var(--t);
     }
-    .name-rule::before,.name-rule::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(31,58,107,.4))}
-    .name-rule::before{background:linear-gradient(90deg,transparent,rgba(31,58,107,.4))}
-    .name-rule::after{background:linear-gradient(90deg,rgba(31,58,107,.4),transparent)}
-    .name-rule-dot{width:5px;height:5px;border-radius:50%;background:var(--saffron)}
+    .name-rule::before{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(31,58,107,.4))}
+    .name-rule-dot{width:5px;height:5px;border-radius:50%;background:var(--saffron);flex-shrink:0}
     .panel-author:hover .name-rule{opacity:1;transform:scaleX(1)}
 
     /* ─── ROLE ─── */
     .panel-role{
       font-size:clamp(.78rem,1.3vw,.9rem);font-weight:400;
-      letter-spacing:.02em;line-height:1.55;
-      transition:transform var(--t);
+      letter-spacing:.02em;line-height:1.55;transition:transform var(--t);
     }
-    .panel-academic .panel-role{color:rgba(255,255,255,.5)}
-    .panel-author   .panel-role{color:rgba(28,20,14,.55)}
+    .panel-academic .panel-role{color:rgba(255,255,255,.55)}
+    .panel-author   .panel-role{color:rgba(28,20,14,.6)}
     .panel:hover .panel-role{transform:translateY(-3px)}
 
-    /* ─── STATS ROW (academic) ─── */
+    /* ─── STATS (academic) ─── */
     .stats-row{
-      display:flex;gap:1rem;justify-content:center;
+      display:flex;gap:.75rem;
       opacity:0;transform:translateY(10px);
       transition:opacity var(--t),transform var(--t);
     }
@@ -205,11 +180,11 @@
     .stat-chip{
       display:flex;flex-direction:column;align-items:center;
       padding:.5rem .8rem;border-radius:12px;
-      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(8px);min-width:72px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+      backdrop-filter:blur(10px);min-width:68px;
     }
-    .stat-num{font-family:"Cormorant Garamond",serif;font-size:1.4rem;font-weight:700;color:var(--emerald);line-height:1}
-    .stat-lbl{font-size:.62rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.2rem}
+    .stat-num{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:700;color:var(--emerald);line-height:1}
+    .stat-lbl{font-size:.6rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.2rem}
 
     /* ─── DESC ─── */
     .panel-desc{
@@ -217,8 +192,8 @@
       opacity:0;transform:translateY(10px);
       transition:opacity var(--t),transform var(--t);max-width:300px;
     }
-    .panel-academic .panel-desc{color:rgba(255,255,255,.38)}
-    .panel-author   .panel-desc{color:rgba(28,20,14,.48)}
+    .panel-academic .panel-desc{color:rgba(255,255,255,.4)}
+    .panel-author   .panel-desc{color:rgba(28,20,14,.5)}
     .panel:hover .panel-desc{opacity:1;transform:translateY(0)}
 
     /* ─── ENTER BUTTON ─── */
@@ -227,7 +202,7 @@
       padding:.72rem 1.9rem;border-radius:999px;font-size:.82rem;
       font-weight:600;letter-spacing:.05em;border:none;cursor:pointer;
       opacity:0;transform:translateY(8px);
-      transition:opacity var(--t),transform var(--t),box-shadow .2s,filter .2s;
+      transition:opacity var(--t),transform var(--t),filter .2s;
       pointer-events:none;
     }
     .panel-academic .enter-btn{background:var(--emerald);color:#fff}
@@ -247,13 +222,13 @@
       align-items:center;transition:opacity var(--t);
     }
     .split:hover .divider-wrap{opacity:0}
-    .div-line{flex:1;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.18) 20%,rgba(255,255,255,.18) 80%,transparent)}
+    .div-line{flex:1;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.22) 20%,rgba(255,255,255,.22) 80%,transparent)}
     .mn-badge{
       width:64px;height:64px;border-radius:50%;flex-shrink:0;
-      background:linear-gradient(135deg,#0a1a32 0%,#0d2210 100%);
-      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(135deg,rgba(6,15,30,.9) 0%,rgba(13,34,16,.9) 100%);
+      border:1px solid rgba(255,255,255,.18);
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-      box-shadow:0 0 30px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
+      box-shadow:0 0 30px rgba(0,0,0,.5);backdrop-filter:blur(12px);
     }
     .mn-text{
       font-family:"Cormorant Garamond",serif;font-size:1.25rem;font-weight:700;
@@ -262,36 +237,51 @@
       animation:gradShift 4s ease-in-out infinite;background-size:200%;
     }
     @keyframes gradShift{0%,100%{background-position:0%}50%{background-position:100%}}
-    .mn-sub{font-size:.45rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+    .mn-sub{font-size:.45rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35)}
 
     /* ─── CORNER GHOST ─── */
     .corner-ghost{
       position:absolute;font-family:"Cormorant Garamond",serif;
       font-size:clamp(8rem,20vw,18rem);font-weight:700;line-height:1;
-      opacity:.025;pointer-events:none;user-select:none;
+      opacity:.03;pointer-events:none;user-select:none;
       transition:opacity var(--t),transform var(--t);
     }
-    .panel-academic .corner-ghost{color:#fff;bottom:-1rem;right:-1.5rem}
-    .panel-author   .corner-ghost{color:var(--lapis);bottom:-1rem;left:-1.5rem}
-    .panel:hover .corner-ghost{opacity:.045;transform:scale(1.05) translateY(-6px)}
+    .panel-academic .corner-ghost{color:#fff;bottom:-1rem;left:-1rem}
+    .panel-author   .corner-ghost{color:var(--lapis);bottom:-1rem;right:-1rem}
+    .panel:hover .corner-ghost{opacity:.055;transform:scale(1.04) translateY(-6px)}
 
     /* ─── HINT ─── */
     .hint{
       position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);
       font-size:.64rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-      color:rgba(255,255,255,.25);z-index:50;pointer-events:none;
-      animation:hintPulse 3s ease-in-out infinite;
+      color:rgba(255,255,255,.3);z-index:50;pointer-events:none;
+      animation:hintPulse 3s ease-in-out infinite;text-shadow:0 1px 4px rgba(0,0,0,.6);
     }
-    @keyframes hintPulse{0%,100%{opacity:.25}50%{opacity:.55}}
+    @keyframes hintPulse{0%,100%{opacity:.3}50%{opacity:.6}}
     .split:hover .hint{opacity:0!important;animation:none}
 
     /* ─── MOBILE ─── */
     @media(max-width:700px){
       html,body{overflow:auto}
-      .split{flex-direction:column;height:auto;min-height:100vh}
-      .panel{flex:none!important;min-height:52vh;transition:none}
+      .split{
+        flex-direction:column;height:auto;min-height:100vh;
+        background-size:cover;background-position:center top;
+      }
+      .panel{flex:none!important;min-height:50vh;transition:none}
       .panel:hover{flex:none!important}
-      .photo-ring,.author-photo-ring{width:100px;height:100px}
+      .panel-academic{
+        justify-content:center;
+        background:linear-gradient(to bottom,rgba(6,15,30,.92) 0%,rgba(6,15,30,.78) 100%);
+      }
+      .panel-author{
+        justify-content:center;
+        background:linear-gradient(to bottom,rgba(241,231,208,.92) 0%,rgba(241,231,208,.82) 100%);
+      }
+      .panel-academic .panel-body,.panel-author .panel-body{
+        padding:2rem 1.5rem;text-align:center;align-items:center;
+      }
+      .name-rule{justify-content:center}
+      .name-rule::before{background:linear-gradient(90deg,transparent,rgba(31,58,107,.4))}
       .stats-row{opacity:1!important;transform:none!important}
       .panel-desc{opacity:1!important;transform:none!important}
       .enter-btn{opacity:1!important;transform:none!important;pointer-events:auto!important}
@@ -303,22 +293,17 @@
 </head>
 <body>
 
-  <!-- page transition overlay -->
   <div id="go-overlay"></div>
 
   <div class="split" id="split">
 
     <!-- ── LEFT: ACADEMIC ── -->
     <a class="panel panel-academic" href="academic.html" id="acad-panel">
-      <div class="bg-orb"></div>
       <div class="grid-bg"></div>
       <div class="spotlight"></div>
       <span class="corner-ghost">A</span>
 
       <div class="panel-body" id="acad-body">
-        <div class="photo-ring">
-          <img src="Maisam.jpg" alt="Dr. Maisam Najafizada" />
-        </div>
         <span class="label">Academic</span>
         <h1 class="panel-name">Dr. Maisam<br>Najafizada</h1>
         <p class="panel-role">Associate Professor in Health Policy<br>&amp; Systems Research · Memorial University</p>
@@ -327,7 +312,7 @@
           <div class="stat-chip"><span class="stat-num">36</span><span class="stat-lbl">Papers</span></div>
           <div class="stat-chip"><span class="stat-num">52+</span><span class="stat-lbl">Trainees</span></div>
         </div>
-        <p class="panel-desc">Research, publications, funding portfolio, and teaching — Faculty of Medicine, Newfoundland.</p>
+        <p class="panel-desc">Research, publications, funding, and teaching — Faculty of Medicine, Memorial University of Newfoundland.</p>
         <span class="enter-btn">Explore Academic Profile <span class="arr">→</span></span>
       </div>
     </a>
@@ -345,14 +330,10 @@
     <!-- ── RIGHT: AUTHOR ── -->
     <a class="panel panel-author" href="Maisam_Book.html" id="auth-panel">
       <div class="geo-bg"></div>
-      <div class="author-orb"></div>
       <div class="spotlight"></div>
       <span class="corner-ghost">W</span>
 
       <div class="panel-body" id="auth-body">
-        <div class="author-photo-ring">
-          <img src="Maisam.jpg" alt="Maisam Najafizada" />
-        </div>
         <span class="label">Author &amp; Writer</span>
         <h1 class="panel-name">Maisam<br>Najafizada</h1>
         <div class="name-rule"><span class="name-rule-dot"></span></div>
@@ -372,28 +353,21 @@
       document.getElementById('split').classList.add('loaded');
     }));
 
-    // ── Particles on academic panel
+    // ── Particles (academic left side only)
     const acadPanel = document.getElementById('acad-panel');
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < 22; i++) {
       const p = document.createElement('span');
-      const size = Math.random() * 2.5 + .8;
-      const drift = (Math.random() - .5) * 80;
+      const size  = Math.random() * 2 + .8;
+      const drift = (Math.random() - .5) * 60;
       const dur   = Math.random() * 8 + 7;
       const delay = Math.random() * 10;
-      const op    = Math.random() * .35 + .08;
+      const op    = Math.random() * .25 + .07;
       p.className = 'particle';
-      p.style.cssText = `
-        left:${Math.random()*100}%;
-        top:${60 + Math.random()*40}%;
-        width:${size}px;height:${size}px;
-        --op:${op};--drift:${drift}px;
-        animation-duration:${dur}s;
-        animation-delay:-${delay}s;
-      `;
+      p.style.cssText = `left:${Math.random()*55}%;top:${55+Math.random()*45}%;width:${size}px;height:${size}px;--op:${op};--drift:${drift}px;animation-duration:${dur}s;animation-delay:-${delay}s;`;
       acadPanel.appendChild(p);
     }
 
-    // ── Mouse spotlight tracking
+    // ── Mouse spotlight
     document.querySelectorAll('.panel').forEach(panel => {
       panel.addEventListener('mousemove', e => {
         const r = panel.getBoundingClientRect();
@@ -402,17 +376,15 @@
       });
     });
 
-    // ── 3D tilt on panel bodies
+    // ── 3D tilt
     function addTilt(panel, body) {
       panel.addEventListener('mousemove', e => {
         const r = panel.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width  - .5;
         const y = (e.clientY - r.top)  / r.height - .5;
-        body.style.transform = `perspective(900px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateZ(12px)`;
+        body.style.transform = `perspective(900px) rotateY(${x*5}deg) rotateX(${-y*5}deg) translateZ(10px)`;
       });
-      panel.addEventListener('mouseleave', () => {
-        body.style.transform = '';
-      });
+      panel.addEventListener('mouseleave', () => { body.style.transform = ''; });
     }
     addTilt(document.getElementById('acad-panel'), document.getElementById('acad-body'));
     addTilt(document.getElementById('auth-panel'), document.getElementById('auth-body'));
@@ -422,11 +394,9 @@
     document.querySelectorAll('.panel').forEach(panel => {
       panel.addEventListener('click', e => {
         e.preventDefault();
-        const href = panel.getAttribute('href');
-        const isAcad = panel.classList.contains('panel-academic');
-        overlay.className = isAcad ? 'dark' : 'warm';
+        overlay.className = panel.classList.contains('panel-academic') ? 'dark' : 'warm';
         overlay.classList.add('active');
-        setTimeout(() => { window.location.href = href; }, 340);
+        setTimeout(() => { window.location.href = panel.getAttribute('href'); }, 340);
       });
     });
   </script>
