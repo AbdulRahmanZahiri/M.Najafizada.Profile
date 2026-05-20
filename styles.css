@@ -389,10 +389,10 @@ img { max-width: 100%; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 70% at 5%  50%, rgba(16,185,129,.22) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 80% at 92% 12%, rgba(245,158,11,.14) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 60% at 60% 92%, rgba(249,115,22,.09) 0%, transparent 50%),
-    radial-gradient(ellipse 45% 45% at 45% 30%, rgba(139,92,246,.07) 0%, transparent 50%);
+    radial-gradient(ellipse 55% 55% at 12% 48%, rgba(16,185,129,.14) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 60% at 88% 18%, rgba(245,158,11,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 38% 45% at 58% 88%, rgba(249,115,22,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 35% at 42% 28%, rgba(139,92,246,.05) 0%, transparent 60%);
   animation: meshDrift 14s ease-in-out infinite alternate;
 }
 .hero-mesh::after {
@@ -2013,6 +2013,9 @@ img { max-width: 100%; }
 .grad-text {
   background: linear-gradient(135deg, #34d399 0%, #fbbf24 38%, #f97316 65%, #34d399 100%);
   background-size: 280%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   animation: gradShift 6s ease-in-out infinite;
   filter: drop-shadow(0 0 28px rgba(16,185,129,.18));
 }
