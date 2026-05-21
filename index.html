@@ -12,7 +12,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
     :root {
-      --emerald: #3b82f6;
+      --emerald: #0d8a9e;
       --lapis:   #1f3a6b;
       --saffron: #b8842a;
       --parch:   #f1e7d0;
@@ -24,7 +24,7 @@
 
     /* ─── PAGE TRANSITION ─── */
     #go-overlay{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0}
-    #go-overlay.dark{background:#060f1e}
+    #go-overlay.dark{background:#050e11}
     #go-overlay.warm{background:#f1e7d0}
     #go-overlay.active{opacity:1;transition:opacity .32s ease}
 
@@ -32,7 +32,7 @@
     .split{
       display:flex;height:100vh;width:100vw;position:relative;
       /* ONE portrait spanning both panels */
-      background:url('Maisam.jpg') center top / auto 100% no-repeat #060f1e;
+      background:url('Maisam.jpg') center top / auto 100% no-repeat #050e11;
       opacity:0;transform:scale(1.015);transition:opacity .7s ease,transform .7s ease;
     }
     .split.loaded{opacity:1;transform:scale(1)}
@@ -50,8 +50,8 @@
     .panel-academic{
       justify-content:flex-start;
       background:linear-gradient(to right,
-        #060f1e 0%,
-        #060f1e 28%,
+        #050e11 0%,
+        #050e11 28%,
         rgba(6,15,30,.82) 48%,
         rgba(6,15,30,.32) 68%,
         rgba(6,15,30,.05) 85%,
@@ -75,8 +75,8 @@
     /* ─── GRID OVERLAY (academic hover) ─── */
     .grid-bg{
       position:absolute;inset:0;pointer-events:none;z-index:0;
-      background-image:linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);
+      background-image:linear-gradient(rgba(13,138,158,.04) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(13,138,158,.04) 1px,transparent 1px);
       background-size:52px 52px;opacity:0;transition:opacity .5s ease;
     }
     .panel-academic:hover .grid-bg{opacity:1}
@@ -97,7 +97,7 @@
       background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), var(--spot), transparent 65%);
       opacity:0;transition:opacity .4s ease;
     }
-    .panel-academic{--spot:rgba(59,130,246,.12)}
+    .panel-academic{--spot:rgba(13,138,158,.12)}
     .panel-author  {--spot:rgba(184,132,42,.14)}
     .panel:hover .spotlight{opacity:1}
 
@@ -133,7 +133,7 @@
       padding:.3rem .95rem;border-radius:999px;
       transition:transform var(--t),box-shadow var(--t);
     }
-    .panel-academic .label{color:var(--emerald);border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.09)}
+    .panel-academic .label{color:var(--emerald);border:1px solid rgba(13,138,158,.35);background:rgba(13,138,158,.09)}
     .panel-author   .label{color:var(--lapis);border:1px solid rgba(31,58,107,.3);background:rgba(31,58,107,.07)}
     .panel:hover .label{transform:translateY(-3px)}
 
@@ -145,7 +145,7 @@
       transition:transform var(--t);
     }
     .panel-academic .panel-name{
-      background:linear-gradient(135deg,#fff 30%,rgba(59,130,246,.9) 80%);
+      background:linear-gradient(135deg,#fff 30%,rgba(13,138,158,.9) 80%);
       -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     }
     .panel-author .panel-name{color:var(--ink)}
@@ -208,7 +208,7 @@
     .panel-academic .enter-btn{background:var(--emerald);color:#fff}
     .panel-author   .enter-btn{background:var(--lapis);color:var(--parch)}
     .panel:hover .enter-btn{opacity:1;transform:translateY(0);pointer-events:auto}
-    .panel-academic:hover .enter-btn{box-shadow:0 8px 32px rgba(59,130,246,.45)}
+    .panel-academic:hover .enter-btn{box-shadow:0 8px 32px rgba(13,138,158,.45)}
     .panel-author:hover   .enter-btn{box-shadow:0 8px 32px rgba(31,58,107,.35)}
     .enter-btn:hover{filter:brightness(1.1)}
     .enter-btn .arr{display:inline-block;transition:transform .2s}
@@ -274,8 +274,8 @@
     .panel-academic .panel-nav {
       left:clamp(2.5rem,6vw,5rem);
       color:var(--emerald);
-      background:rgba(59,130,246,.13);
-      border:1px solid rgba(59,130,246,.32);
+      background:rgba(13,138,158,.13);
+      border:1px solid rgba(13,138,158,.32);
     }
     .panel-author .panel-nav {
       right:clamp(2.5rem,6vw,5rem);
@@ -284,8 +284,8 @@
       border:1px solid rgba(31,58,107,.3);
     }
     .panel-academic .panel-nav:hover {
-      background:rgba(59,130,246,.24);
-      box-shadow:0 6px 24px rgba(59,130,246,.4);
+      background:rgba(13,138,158,.24);
+      box-shadow:0 6px 24px rgba(13,138,158,.4);
       transform:translateY(-3px);
       text-decoration:none;color:var(--emerald);
     }
