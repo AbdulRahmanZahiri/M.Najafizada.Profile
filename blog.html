@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Insights — Dr. Maisam Najafizada</title>
+  <meta name="description" content="Research insights and policy briefs by Dr. Maisam Najafizada — Afghanistan midwifery, maternal health, and global health systems." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Blog-specific styles ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+      gap: 1.8rem;
+      margin-top: 2.5rem;
+    }
+
+    .blog-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform .22s ease, box-shadow .22s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(13,138,158,.12);
+      border-color: rgba(13,138,158,.3);
+    }
+    .blog-card-img {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
+    .blog-card-body { padding: 1.4rem 1.5rem 1.6rem; }
+    .blog-card-tag {
+      display: inline-flex;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sky); background: rgba(13,138,158,.08);
+      border: 1px solid rgba(13,138,158,.2);
+      border-radius: 999px;
+      padding: .18rem .6rem;
+      margin-bottom: .75rem;
+    }
+    .blog-card-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--ink); line-height: 1.35;
+      margin-bottom: .5rem;
+    }
+    .blog-card-excerpt {
+      font-size: .88rem; color: var(--ink-400);
+      line-height: 1.7; margin-bottom: 1rem;
+    }
+    .blog-card-meta {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .72rem; color: var(--ink-300);
+    }
+    .blog-card-meta span { display: flex; align-items: center; gap: .25rem; }
+
+    /* ── Featured article ── */
+    .article-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+    }
+    .article-tag-row {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+      margin-bottom: 1.1rem;
+    }
+    .article-tag {
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .18rem .6rem; border-radius: 999px;
+    }
+    .article-tag.sky    { color: var(--sky);    background: rgba(13,138,158,.1);  border: 1px solid rgba(13,138,158,.25); }
+    .article-tag.gold   { color: var(--gold);   background: rgba(245,158,11,.1);  border: 1px solid rgba(245,158,11,.25); }
+    .article-tag.violet { color: var(--violet); background: rgba(139,92,246,.1);  border: 1px solid rgba(139,92,246,.25); }
+    .article-tag.coral  { color: var(--coral);  background: rgba(249,115,22,.1);  border: 1px solid rgba(249,115,22,.25); }
+
+    .article-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.18;
+      color: var(--tx1);
+      margin-bottom: .8rem;
+    }
+    .article-subtitle {
+      font-size: 1.05rem; color: var(--tx2);
+      line-height: 1.8; max-width: 68ch;
+      border-left: 3px solid rgba(13,138,158,.4);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .article-meta-bar {
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--dark-b2);
+      border-radius: 8px;
+      font-size: .78rem; color: var(--tx3);
+    }
+    .article-meta-bar span { display: flex; align-items: center; gap: .35rem; }
+
+    /* ── Chart gallery ── */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .chart-item {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: box-shadow .22s ease, transform .22s ease;
+    }
+    .chart-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(13,138,158,.1);
+    }
+    .chart-item img {
+      width: 100%; display: block;
+      background: var(--surface);
+    }
+    .chart-caption {
+      padding: .8rem 1rem .9rem;
+      border-top: 1px solid var(--line);
+    }
+    .chart-num {
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--sky); margin-bottom: .2rem;
+    }
+    .chart-title {
+      font-size: .9rem; font-weight: 600;
+      color: var(--ink); line-height: 1.4;
+    }
+    .chart-desc {
+      font-size: .78rem; color: var(--ink-400);
+      margin-top: .2rem; line-height: 1.5;
+    }
+
+    /* ── PDF download banner ── */
+    .pdf-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      padding: 1.8rem 2rem;
+      background: linear-gradient(135deg, rgba(13,138,158,.14), rgba(13,138,158,.06));
+      border: 1px solid rgba(13,138,158,.25);
+      border-radius: 12px;
+      margin-top: 3rem;
+    }
+    .pdf-banner-left { display: flex; align-items: center; gap: 1rem; }
+    .pdf-icon {
+      width: 48px; height: 48px;
+      background: rgba(13,138,158,.15);
+      border: 1px solid rgba(13,138,158,.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .pdf-info h4 { font-size: .95rem; font-weight: 700; color: var(--tx1); margin-bottom: .15rem; }
+    .pdf-info p  { font-size: .78rem; color: var(--tx3); }
+
+    /* ── Key findings ── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.8rem;
+    }
+    .finding-card {
+      padding: 1.2rem 1.3rem;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--dark-b2);
+      border-radius: 10px;
+      border-top: 3px solid transparent;
+    }
+    .finding-card:nth-child(1) { border-top-color: var(--sky); }
+    .finding-card:nth-child(2) { border-top-color: var(--gold); }
+    .finding-card:nth-child(3) { border-top-color: var(--coral); }
+    .finding-card:nth-child(4) { border-top-color: var(--violet); }
+    .finding-num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem; font-weight: 700;
+      line-height: 1; margin-bottom: .35rem;
+    }
+    .finding-card:nth-child(1) .finding-num { color: var(--sky); }
+    .finding-card:nth-child(2) .finding-num { color: var(--gold); }
+    .finding-card:nth-child(3) .finding-num { color: var(--coral); }
+    .finding-card:nth-child(4) .finding-num { color: var(--violet); }
+    .finding-label { font-size: .82rem; color: var(--tx2); line-height: 1.5; }
+
+    /* ── Lightbox ── */
+    .lightbox-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(5,14,17,.92);
+      backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw; max-height: 85vh;
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+    }
+    .lightbox-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; font-size: 1.2rem; width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.2); }
+  </style>
+</head>
+<body>
+  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#050e11;pointer-events:none;"></div>
+
+  <!-- NAV -->
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="academic.html">
+        <span class="nav-badge">MN</span>
+        <span class="nav-name">Dr. Maisam Najafizada<small>Memorial University · Health Policy &amp; Systems</small></span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false">Menu</button>
+      <nav class="nav-links" id="nav-links">
+        <a href="academic.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="funding.html">Funding</a>
+        <a href="publications.html">Publications</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="blog.html" class="active-page">Blog</a>
+        <a href="teaching.html#contact" class="nav-contact-link">Contact</a>
+      </nav>
+      <a class="nav-cta" href="teaching.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="kicker">Research Insights</span>
+      <h1>Blog</h1>
+      <p class="subtitle">Policy briefs, data stories, and research insights from the field — translating evidence into action for health equity.</p>
+    </div>
+  </div>
+
+  <!-- FEATURED ARTICLE (dark) -->
+  <section class="section-dark">
+    <div class="content-wrap">
+      <div class="sec-head on-dark reveal">
+        <span class="sec-kicker on-dark">Featured Article</span>
+        <h2>Afghanistan Midwifery Crisis</h2>
+        <p class="sec-lead on-dark">A data-driven analysis of maternal health, midwifery workforce, and the fragile pipeline sustaining care for millions of women.</p>
+      </div>
+
+      <div class="article-wrap reveal">
+        <div class="article-header">
+          <div class="article-tag-row">
+            <span class="article-tag sky">Global Health</span>
+            <span class="article-tag gold">Maternal Health</span>
+            <span class="article-tag violet">Afghanistan</span>
+            <span class="article-tag coral">Health Workforce</span>
+          </div>
+          <h2 class="article-title">Afghanistan's Midwifery Workforce:<br>Crisis, Collapse, and the Road to Recovery</h2>
+          <p class="article-subtitle">
+            Afghanistan has one of the world's highest maternal mortality rates. This report examines the state of the midwifery workforce — the primary safeguard for maternal survival — using national data to map gaps, inequities, and urgent policy priorities.
+          </p>
+          <div class="article-meta-bar">
+            <span>📍 Afghanistan · National Study</span>
+            <span>📊 6 Data Visualisations</span>
+            <span>🌐 Report in Dari</span>
+            <span>📄 Full PDF Available</span>
+          </div>
+        </div>
+
+        <!-- Key findings -->
+        <div class="findings-grid">
+          <div class="finding-card">
+            <div class="finding-num">638</div>
+            <div class="finding-label">Maternal deaths per 100,000 live births — among the world's highest MMR rates</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-num">77%</div>
+            <div class="finding-label">Of deliveries occur without a skilled birth attendant in rural provinces</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-num">3×</div>
+            <div class="finding-label">Urban–rural gap in access to trained midwives and maternal services</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-num">↓40%</div>
+            <div class="finding-label">Projected decline in midwifery workforce pipeline under current conditions</div>
+          </div>
+        </div>
+
+        <!-- PDF download -->
+        <div class="pdf-banner">
+          <div class="pdf-banner-left">
+            <div class="pdf-icon">📄</div>
+            <div class="pdf-info">
+              <h4>Full Report — Dari Language</h4>
+              <p>Afghanistan Midwives &amp; Maternal Health · Complete data report with methodology</p>
+            </div>
+          </div>
+          <a class="btn btn-sky" href="AfghanistanHealth-main/afghanistan_midwives_media_report_dari_final.pdf" target="_blank" rel="noreferrer">Download PDF →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART GALLERY (light) -->
+  <section class="section-light">
+    <div class="content-wrap">
+      <div class="sec-head reveal">
+        <span class="sec-kicker">Data Visualisations</span>
+        <h2>Key Charts &amp; Findings</h2>
+        <p class="sec-lead">Six visualisations drawn from national health data — click any chart to enlarge.</p>
+      </div>
+
+      <div class="chart-grid reveal">
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_01_mmr_trend_dari.png')">
+          <img src="AfghanistanHealth-main/chart_01_mmr_trend_dari.png" alt="Maternal Mortality Rate Trend in Afghanistan" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 01</div>
+            <div class="chart-title">Maternal Mortality Rate — Historical Trend</div>
+            <div class="chart-desc">Long-term trend in Afghanistan's maternal mortality rate showing progress and setbacks over two decades.</div>
+          </div>
+        </div>
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_02_service_cascade_dari.png')">
+          <img src="AfghanistanHealth-main/chart_02_service_cascade_dari.png" alt="Maternal Health Service Cascade" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 02</div>
+            <div class="chart-title">Maternal Health Service Cascade</div>
+            <div class="chart-desc">Step-by-step breakdown of women's access to antenatal, delivery, and postnatal care services.</div>
+          </div>
+        </div>
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_03_urban_rural_gap_dari.png')">
+          <img src="AfghanistanHealth-main/chart_03_urban_rural_gap_dari.png" alt="Urban vs Rural Access Gap" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 03</div>
+            <div class="chart-title">Urban–Rural Access Gap</div>
+            <div class="chart-desc">Stark inequity in midwifery access and skilled birth attendance between urban centres and rural communities.</div>
+          </div>
+        </div>
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_04_midwives_by_sector_dari.png')">
+          <img src="AfghanistanHealth-main/chart_04_midwives_by_sector_dari.png" alt="Midwives Distribution by Sector" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 04</div>
+            <div class="chart-title">Midwives Distribution by Sector</div>
+            <div class="chart-desc">Breakdown of the midwifery workforce across public, NGO, and private health sectors.</div>
+          </div>
+        </div>
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_05_province_sba_dari.png')">
+          <img src="AfghanistanHealth-main/chart_05_province_sba_dari.png" alt="Skilled Birth Attendants by Province" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 05</div>
+            <div class="chart-title">Skilled Birth Attendants by Province</div>
+            <div class="chart-desc">Provincial-level variation in skilled birth attendant coverage revealing geographic disparities across Afghanistan.</div>
+          </div>
+        </div>
+
+        <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_06_pipeline_risk_dari.png')">
+          <img src="AfghanistanHealth-main/chart_06_pipeline_risk_dari.png" alt="Midwifery Pipeline Risk Assessment" loading="lazy" />
+          <div class="chart-caption">
+            <div class="chart-num">Chart 06</div>
+            <div class="chart-title">Midwifery Pipeline Risk Assessment</div>
+            <div class="chart-desc">Projected workforce pipeline under current training, attrition, and policy conditions — a critical warning indicator.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MORE COMING (dark) -->
+  <section class="section-dark">
+    <div class="content-wrap">
+      <div class="sec-head on-dark reveal" style="text-align:center; max-width: 600px; margin: 0 auto;">
+        <span class="sec-kicker on-dark">Coming Soon</span>
+        <h2>More Insights on the Way</h2>
+        <p class="sec-lead on-dark">Future posts will cover primary care transformation in Newfoundland, cannabis policy reform, refugee health, and health equity research from across Canada and globally.</p>
+        <div style="margin-top:2rem;">
+          <a class="btn btn-sky" href="research.html">Explore Research →</a>
+          <a class="btn btn-outline-light" href="teaching.html#contact" style="margin-left:.75rem;">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-col footer-brand-col">
+          <span class="footer-badge">MN</span>
+          <p class="footer-bio">Associate Professor in Health Policy and Systems Research at Memorial University of Newfoundland. Physician-researcher advancing health equity in Canada and globally.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="academic.html">Home</a></li>
+            <li><a href="research.html">Research</a></li>
+            <li><a href="funding.html">Funding</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="teaching.html">Teaching</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="contact-line"><span class="contact-icon">✉️</span><a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a></div>
+          <div class="contact-line"><span class="contact-icon">📍</span><span>Faculty of Medicine<br>Memorial University of Newfoundland<br>St. John's, NL, Canada</span></div>
+          <div class="contact-line"><span class="contact-icon">🔗</span><a href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a></div>
+          <div class="footer-social-row">
+            <a class="footer-social-link fsocial-linkedin" href="https://www.linkedin.com/in/maisam-najafizada-a73459a/" aria-label="LinkedIn" target="_blank" rel="noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a class="footer-social-link fsocial-twitter" href="https://x.com/Mayysam" aria-label="Twitter / X" target="_blank" rel="noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a class="footer-social-link fsocial-facebook" href="https://www.facebook.com/maisam.najafizada/" aria-label="Facebook" target="_blank" rel="noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Dr. Maisam Najafizada · Memorial University of Newfoundland</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to portal -->
+  <a id="back-portal" href="index.html">← Menu</a>
+  <button id="back-top" aria-label="Back to top">↑</button>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="Chart enlarged" />
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+</body>
+</html>
