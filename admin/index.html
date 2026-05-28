@@ -1,11 +1,633 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog Admin — Dr. Maisam Najafizada</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0d8a9e;
+      --teal-d: #0a6a7a;
+      --teal-l: #5bc3d8;
+      --dark: #050e11;
+      --dark-2: #091618;
+      --dark-3: #0e1c20;
+      --dark-4: #142224;
+      --text: #e2eef0;
+      --muted: #7aa5ad;
+      --border: rgba(13,138,158,0.25);
+      --radius: 10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--dark-2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .header-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .header-brand svg { color: var(--teal-l); flex-shrink: 0; }
+    .header-brand h1 { font-size: 1rem; font-weight: 600; color: var(--teal-l); }
+    .header-brand p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    #status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--muted); flex-shrink: 0;
+    }
+    #status-dot.connected { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+    #status-label { font-size: 0.75rem; color: var(--muted); }
+    #btn-logout {
+      font-size: 0.75rem; color: var(--muted); background: none;
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.35rem 0.75rem; cursor: pointer; transition: all 0.2s;
+      display: none;
+    }
+    #btn-logout:hover { border-color: var(--teal); color: var(--teal-l); }
+
+    /* ── Main layout ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+
+    /* ── Token screen ── */
+    #token-screen {
+      width: 100%; max-width: 460px;
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+    #token-screen h2 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--teal-l); }
+    #token-screen p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    .steps {
+      background: var(--dark-3);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 2;
+    }
+    .steps a { color: var(--teal-l); text-decoration: none; }
+    .steps a:hover { text-decoration: underline; }
+    .steps code {
+      background: var(--dark-4);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: var(--text);
+    }
+
+    /* ── Post form ── */
+    #post-screen { width: 100%; max-width: 860px; }
+    #post-screen h2 { font-size: 1.25rem; color: var(--teal-l); margin-bottom: 0.25rem; }
+    #post-screen .subtitle { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+
+    .form-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 0.45rem; }
+    label { font-size: 0.8rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+    label span { font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; color: var(--border); }
+
+    input[type="text"], input[type="password"], input[type="date"], textarea, select {
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.925rem;
+      padding: 0.7rem 0.9rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(13,138,158,0.15);
+    }
+    textarea { resize: vertical; min-height: 320px; line-height: 1.6; }
+
+    /* Tags */
+    .tags-grid {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .tag-option {
+      position: relative;
+    }
+    .tag-option input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .tag-option label {
+      display: block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--dark-3);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .tag-option input:checked + label {
+      background: rgba(13,138,158,0.2);
+      border-color: var(--teal);
+      color: var(--teal-l);
+    }
+
+    /* Markdown toolbar */
+    .editor-wrap { display: flex; flex-direction: column; gap: 0; }
+    .md-toolbar {
+      display: flex; gap: 0.25rem; flex-wrap: wrap;
+      background: var(--dark-4);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 0.5rem;
+    }
+    .md-toolbar button {
+      background: none; border: none;
+      color: var(--muted); cursor: pointer;
+      font-size: 0.8rem; font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: all 0.15s;
+      font-family: monospace;
+    }
+    .md-toolbar button:hover { background: var(--dark-3); color: var(--teal-l); }
+    .md-toolbar .sep { width: 1px; background: var(--border); margin: 2px 4px; align-self: stretch; }
+    .editor-wrap textarea {
+      border-radius: 0 0 8px 8px;
+    }
+
+    /* Preview toggle */
+    .preview-toggle {
+      display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;
+    }
+    .preview-toggle button {
+      font-size: 0.75rem; color: var(--muted);
+      background: var(--dark-3); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.3rem 0.75rem; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preview-toggle button.active, .preview-toggle button:hover {
+      border-color: var(--teal); color: var(--teal-l);
+    }
+    #preview-pane {
+      display: none;
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      min-height: 200px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    #preview-pane.visible { display: block; }
+    #preview-pane h1, #preview-pane h2, #preview-pane h3 { color: var(--teal-l); margin: 1rem 0 0.5rem; }
+    #preview-pane p { margin-bottom: 0.75rem; }
+    #preview-pane strong { color: var(--text); }
+    #preview-pane ul, #preview-pane ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    #preview-pane li { margin-bottom: 0.25rem; }
+    #preview-pane code { background: var(--dark-4); padding: 2px 6px; border-radius: 4px; font-size: 0.875em; }
+    #preview-pane blockquote { border-left: 3px solid var(--teal); padding-left: 1rem; color: var(--muted); margin: 0.75rem 0; }
+
+    /* Submit area */
+    .submit-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding-top: 0.5rem;
+    }
+    #btn-publish {
+      background: linear-gradient(135deg, var(--teal), var(--teal-d));
+      border: none; border-radius: 8px; color: #fff;
+      font-size: 0.95rem; font-weight: 600;
+      padding: 0.75rem 2rem; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    #btn-publish:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    #btn-publish:disabled { opacity: 0.5; cursor: not-allowed; }
+    #publish-msg { font-size: 0.875rem; }
+    #publish-msg.ok { color: #4ade80; }
+    #publish-msg.err { color: #f87171; }
+
+    /* Token save button (reuse same style) */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--teal), var(--teal-d));
+      border: none; border-radius: 8px; color: #fff;
+      font-size: 0.95rem; font-weight: 600;
+      padding: 0.75rem 2rem; cursor: pointer;
+      transition: opacity 0.2s; width: 100%; margin-top: 0.5rem;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+
+    /* Post list */
+    #post-list-section { margin-top: 3rem; }
+    #post-list-section h3 { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+    .post-item {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .post-item-meta { flex: 1; }
+    .post-item-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+    .post-item-date { font-size: 0.75rem; color: var(--muted); }
+    .post-item-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .post-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: rgba(13,138,158,0.15); color: var(--teal-l); border: 1px solid var(--border); }
+    .btn-delete {
+      background: none; border: 1px solid rgba(248,113,113,0.25); border-radius: 6px;
+      color: #f87171; font-size: 0.75rem; padding: 0.3rem 0.65rem;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-delete:hover { background: rgba(248,113,113,0.1); border-color: #f87171; }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<header>
+  <div class="header-brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    </svg>
+    <div>
+      <h1>Blog Admin</h1>
+      <p>Dr. Maisam Najafizada · maisamnajafizada.com</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div id="status-dot"></div>
+    <span id="status-label">Not connected</span>
+    <button id="btn-logout" onclick="logout()">Sign out</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Token setup screen -->
+  <div id="token-screen">
+    <h2>Connect to GitHub</h2>
+    <p>Enter your GitHub Personal Access Token to start publishing blog posts. It's stored only in your browser — never sent anywhere except GitHub.</p>
+
+    <div class="steps">
+      <strong style="color:var(--text)">One-time setup (2 minutes):</strong><br>
+      1. Go to <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a><br>
+      2. Name it: <code>Blog Admin</code><br>
+      3. Expiration: <code>No expiration</code> (or 1 year)<br>
+      4. Under <strong>Scopes</strong> check: <code>repo</code><br>
+      5. Click <strong>Generate token</strong> → copy and paste below
+    </div>
+
+    <div class="field">
+      <label>GitHub Personal Access Token</label>
+      <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+    </div>
+    <button class="btn-primary" onclick="saveToken()">Connect &amp; Continue</button>
+    <p id="token-error" style="color:#f87171;font-size:0.8rem;margin-top:0.75rem;display:none;"></p>
+  </div>
+
+  <!-- Post editor screen -->
+  <div id="post-screen" class="hidden">
+    <h2>New Blog Post</h2>
+    <p class="subtitle">Fill in the details below and click Publish. Your post will appear on the blog within about 60 seconds.</p>
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="f-title" placeholder="e.g. Primary Care Access in Newfoundland: A New Analysis" />
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Date <span>(leave blank for today)</span></label>
+          <input type="date" id="f-date" />
+        </div>
+        <div class="field">
+          <label>Tags</label>
+          <div class="tags-grid" id="tags-grid"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Short Summary <span>(1–2 sentences shown on blog list)</span></label>
+        <input type="text" id="f-summary" placeholder="Brief description of the post..." />
+      </div>
+
+      <div class="field">
+        <label>Content <span>(Markdown supported)</span></label>
+        <div class="editor-wrap">
+          <div class="md-toolbar">
+            <button onclick="wrap('**','**')" title="Bold">B</button>
+            <button onclick="wrap('*','*')" title="Italic" style="font-style:italic">I</button>
+            <div class="sep"></div>
+            <button onclick="insertLine('## ')" title="Heading">H2</button>
+            <button onclick="insertLine('### ')" title="Sub-heading">H3</button>
+            <div class="sep"></div>
+            <button onclick="insertLine('- ')" title="Bullet list">• List</button>
+            <button onclick="insertLine('1. ')" title="Numbered list">1. List</button>
+            <div class="sep"></div>
+            <button onclick="insertLine('> ')" title="Blockquote">❝</button>
+            <button onclick="wrap('`','`')" title="Inline code">` `</button>
+          </div>
+          <textarea id="f-body" placeholder="Write the full post content here. You can use **bold**, *italic*, ## headings, - bullet lists, and more.&#10;&#10;Example:&#10;&#10;## Key Findings&#10;&#10;- Finding one&#10;- Finding two&#10;&#10;This analysis shows..."></textarea>
+        </div>
+        <div class="preview-toggle">
+          <button id="btn-write" class="active" onclick="showWrite()">Write</button>
+          <button id="btn-preview" onclick="showPreview()">Preview</button>
+        </div>
+        <div id="preview-pane"></div>
+      </div>
+
+      <div class="submit-row">
+        <button id="btn-publish" onclick="publishPost()">Publish Post</button>
+        <span id="publish-msg"></span>
+      </div>
+
+    </div>
+
+    <div id="post-list-section">
+      <h3>Published Posts</h3>
+      <div id="post-list"></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  const REPO  = 'AbdulRahmanZahiri/M.Najafizada.Profile';
+  const BRANCH = 'main';
+  const FILE  = 'posts.json';
+  const API   = 'https://api.github.com';
+
+  const TAGS = [
+    'Global Health','Primary Care','Health Equity',
+    'Cannabis Policy','Afghanistan','Medical Education','Research','Policy'
+  ];
+
+  // ── Build tag checkboxes ──
+  const tagsGrid = document.getElementById('tags-grid');
+  TAGS.forEach(tag => {
+    const wrap = document.createElement('label');
+    wrap.className = 'tag-option';
+    const id = 'tag-' + tag.replace(/\s+/g,'-');
+    wrap.innerHTML = `<input type="checkbox" id="${id}" value="${tag}" /><label for="${id}">${tag}</label>`;
+    tagsGrid.appendChild(wrap);
+  });
+
+  // Set today's date as default
+  document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+
+  // ── Token management ──
+  function getToken() { return localStorage.getItem('gh_pat'); }
+
+  function saveToken() {
+    const t = document.getElementById('token-input').value.trim();
+    if (!t) return showTokenError('Please paste your token.');
+    localStorage.setItem('gh_pat', t);
+    verifyAndShow();
+  }
+
+  function logout() {
+    localStorage.removeItem('gh_pat');
+    document.getElementById('btn-logout').style.display = 'none';
+    document.getElementById('status-dot').className = '';
+    document.getElementById('status-label').textContent = 'Not connected';
+    document.getElementById('token-input').value = '';
+    document.getElementById('token-screen').classList.remove('hidden');
+    document.getElementById('post-screen').classList.add('hidden');
+  }
+
+  function showTokenError(msg) {
+    const el = document.getElementById('token-error');
+    el.textContent = msg; el.style.display = 'block';
+  }
+
+  async function verifyAndShow() {
+    const token = getToken();
+    if (!token) return;
+    setStatus('Connecting…', false);
+    try {
+      const r = await ghFetch(`/repos/${REPO}`);
+      if (!r.ok) throw new Error('Token invalid or no repo access');
+      setStatus('Connected', true);
+      document.getElementById('btn-logout').style.display = 'inline-block';
+      document.getElementById('token-screen').classList.add('hidden');
+      document.getElementById('post-screen').classList.remove('hidden');
+      loadPostList();
+    } catch(e) {
+      localStorage.removeItem('gh_pat');
+      showTokenError('Could not connect: ' + e.message + '. Check your token and try again.');
+      setStatus('Not connected', false);
+    }
+  }
+
+  function setStatus(label, connected) {
+    document.getElementById('status-label').textContent = label;
+    document.getElementById('status-dot').className = connected ? 'connected' : '';
+  }
+
+  // ── GitHub API helpers ──
+  async function ghFetch(path, opts={}) {
+    return fetch(API + path, {
+      ...opts,
+      headers: {
+        'Authorization': 'Bearer ' + getToken(),
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+        ...(opts.headers || {})
+      }
+    });
+  }
+
+  async function getFile() {
+    const r = await ghFetch(`/repos/${REPO}/contents/${FILE}?ref=${BRANCH}`);
+    if (!r.ok) throw new Error('Could not read posts.json');
+    const data = await r.json();
+    const content = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    return { content, sha: data.sha };
+  }
+
+  async function putFile(content, sha, message) {
+    const r = await ghFetch(`/repos/${REPO}/contents/${FILE}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message,
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+        sha,
+        branch: BRANCH
+      })
+    });
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.message || 'GitHub write failed');
+    }
+  }
+
+  // ── Publish ──
+  async function publishPost() {
+    const title   = document.getElementById('f-title').value.trim();
+    const summary = document.getElementById('f-summary').value.trim();
+    const body    = document.getElementById('f-body').value.trim();
+    const date    = document.getElementById('f-date').value || new Date().toISOString().slice(0,10);
+    const tags    = [...document.querySelectorAll('#tags-grid input:checked')].map(i => i.value);
+
+    if (!title)   return setMsg('Please enter a title.', 'err');
+    if (!summary) return setMsg('Please enter a short summary.', 'err');
+    if (!body)    return setMsg('Please write some content.', 'err');
+
+    const btn = document.getElementById('btn-publish');
+    btn.disabled = true;
+    setMsg('Publishing…', '');
+
+    try {
+      const { content, sha } = await getFile();
+      const newPost = { title, date, summary, body, tags };
+      content.posts.unshift(newPost);
+      await putFile(content, sha, `Blog: add post "${title}"`);
+      setMsg('Published! Your post will appear on the blog in about 60 seconds.', 'ok');
+      clearForm();
+      loadPostList();
+    } catch(e) {
+      setMsg('Error: ' + e.message, 'err');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function setMsg(msg, type) {
+    const el = document.getElementById('publish-msg');
+    el.textContent = msg;
+    el.className = type;
+  }
+
+  function clearForm() {
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-summary').value = '';
+    document.getElementById('f-body').value = '';
+    document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
+    document.querySelectorAll('#tags-grid input').forEach(i => i.checked = false);
+    document.getElementById('preview-pane').classList.remove('visible');
+    document.getElementById('btn-write').classList.add('active');
+    document.getElementById('btn-preview').classList.remove('active');
+  }
+
+  // ── Post list ──
+  async function loadPostList() {
+    const el = document.getElementById('post-list');
+    el.innerHTML = '<p style="color:var(--muted);font-size:0.85rem">Loading…</p>';
+    try {
+      const { content } = await getFile();
+      if (!content.posts.length) {
+        el.innerHTML = '<p style="color:var(--muted);font-size:0.85rem">No posts yet.</p>';
+        return;
+      }
+      el.innerHTML = content.posts.map((p, i) => `
+        <div class="post-item">
+          <div class="post-item-meta">
+            <div class="post-item-title">${escHtml(p.title)}</div>
+            <div class="post-item-date">${formatDate(p.date)}</div>
+            <div class="post-item-tags">${(p.tags||[]).map(t=>`<span class="post-tag">${escHtml(t)}</span>`).join('')}</div>
+          </div>
+          <button class="btn-delete" onclick="deletePost(${i})">Delete</button>
+        </div>
+      `).join('');
+    } catch(e) {
+      el.innerHTML = `<p style="color:#f87171;font-size:0.85rem">Could not load posts: ${e.message}</p>`;
+    }
+  }
+
+  async function deletePost(index) {
+    if (!confirm('Delete this post? This cannot be undone.')) return;
+    try {
+      const { content, sha } = await getFile();
+      const title = content.posts[index]?.title || 'post';
+      content.posts.splice(index, 1);
+      await putFile(content, sha, `Blog: delete post "${title}"`);
+      loadPostList();
+    } catch(e) {
+      alert('Error deleting post: ' + e.message);
+    }
+  }
+
+  // ── Markdown editor helpers ──
+  function wrap(before, after) {
+    const ta = document.getElementById('f-body');
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const sel = ta.value.slice(start, end) || 'text';
+    const replacement = before + sel + after;
+    ta.setRangeText(replacement, start, end, 'select');
+    ta.focus();
+  }
+
+  function insertLine(prefix) {
+    const ta = document.getElementById('f-body');
+    const start = ta.selectionStart;
+    const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
+    ta.setRangeText(prefix, lineStart, lineStart, 'end');
+    ta.focus();
+  }
+
+  function showWrite() {
+    document.getElementById('f-body').style.display = '';
+    document.querySelector('.md-toolbar').style.display = '';
+    document.getElementById('preview-pane').classList.remove('visible');
+    document.getElementById('btn-write').classList.add('active');
+    document.getElementById('btn-preview').classList.remove('active');
+  }
+
+  function showPreview() {
+    const md = document.getElementById('f-body').value;
+    document.getElementById('preview-pane').innerHTML = marked.parse(md || '*Nothing to preview yet.*');
+    document.getElementById('f-body').style.display = 'none';
+    document.querySelector('.md-toolbar').style.display = 'none';
+    document.getElementById('preview-pane').classList.add('visible');
+    document.getElementById('btn-preview').classList.add('active');
+    document.getElementById('btn-write').classList.remove('active');
+  }
+
+  // ── Utilities ──
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function formatDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' });
+  }
+
+  // ── Init ──
+  if (getToken()) {
+    verifyAndShow();
+  }
+</script>
 </body>
 </html>
