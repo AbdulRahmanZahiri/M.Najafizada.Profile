@@ -1,3 +1,33 @@
+# Mac system files
 .DS_Store
-*.docx
+.AppleDouble
+.LSOverride
+
+# Windows system files
 Thumbs.db
+desktop.ini
+
+# Word / Office documents
+*.docx
+*.xlsx
+*.pptx
+
+# Secrets — never commit these
+.env
+.env.*
+*.env
+secrets.txt
+passwords.txt
+credentials.*
+
+# Node (if ever added later)
+node_modules/
+npm-debug.log*
+
+# Editor folders
+.vscode/
+.idea/
+
+# Claude Code internal
+.sixth/
+.github/
