@@ -4,7 +4,9 @@ const projects = [
   { title: "Evaluating team-based primary care intervention in Newfoundland and Labrador", details: "CIHR implementation science work to improve interdisciplinary collaboration and service delivery in rural and remote settings.", status: "Active", horizon: "2024–2027" },
   { title: "Refugee health care access through FRAM analysis", details: "System-level mapping of barriers and adaptive pathways for culturally safe care in NL.", status: "Active", horizon: "2024–2025" },
   { title: "Patient-centeredness of Family Care Teams (Picker Principles lens)", details: "Evaluation of patient-centered care implementation in Family Care Teams in Newfoundland and Labrador.", status: "Active", horizon: "2026–2027" },
-  { title: "Family physician workforce stock-and-flow analysis in NL", details: "Workforce dynamics and access planning for primary care in Newfoundland and Labrador, 2014–2024.", status: "Under review", horizon: "2014–2024 analysis" }
+  { title: "IYS Choices for Youth Project", details: "Enhancing Integrated Youth Services in Newfoundland and Labrador through a mixed-methods, wholistic approach toward improving youth mental health outcomes.", status: "Active", horizon: "2025–2029" },
+  { title: "The perception of the public on primary care through social media", details: "Examining how the public discusses and perceives primary care access, quality, and reform through large-scale social media data analysis.", status: "Active", horizon: "2024–2026" },
+  { title: "Social accountability in medical education project", details: "Investigating how medical schools can embed social accountability principles to better align education with the needs of underserved communities.", status: "Active", horizon: "2024–2026" }
 ];
 
 const allGrants = [
