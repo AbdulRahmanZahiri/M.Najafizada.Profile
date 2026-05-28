@@ -1,0 +1,39 @@
+backend:
+  name: github
+  repo: AbdulRahmanZahiri/M.Najafizada.Profile
+  branch: main
+  base_url: REPLACE_WITH_VERCEL_URL
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    files:
+      - name: "all_posts"
+        label: "All Blog Posts"
+        file: "posts.json"
+        fields:
+          - name: "posts"
+            label: "Posts"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "MMMM DD, YYYY", time_format: false}
+              - {label: "Short Summary", name: "summary", widget: "text", hint: "1-2 sentences shown on the blog list"}
+              - {label: "Content", name: "body", widget: "markdown", hint: "Full post content — use the toolbar to format text"}
+              - label: "Tags"
+                name: "tags"
+                widget: "select"
+                multiple: true
+                options:
+                  - "Global Health"
+                  - "Primary Care"
+                  - "Health Equity"
+                  - "Cannabis Policy"
+                  - "Afghanistan"
+                  - "Medical Education"
+                  - "Research"
+                  - "Policy"
