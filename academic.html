@@ -3,16 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+    // Desktop Safari/Chrome: this makes pages less likely to be restored from BFCache.
+    window.addEventListener("unload", function () {});
+  </script>
   <title>Dr. Maisam Najafizada — Health Policy and Systems Research</title>
   <meta name="description" content="Dr. Maisam Najafizada, Associate Professor at Memorial University of Newfoundland. Research on primary care, health equity, and global health policy." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20260530d" />
 </head>
 <body>
-  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#050e11;pointer-events:none;"></div>
-
   <!-- ── FIXED NAV ──────────────────────────────────────────── -->
   <header class="site-nav" id="site-nav">
     <div class="nav-inner">
@@ -61,7 +71,7 @@
           and cannabis policy reform in Canada and beyond.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-sky" href="teaching.html#contact">Collaborate →</a>
+          <button class="btn btn-sky" onclick="openModal()">Collaborate →</button>
           <a class="btn btn-outline-light" href="research.html">Explore Research</a>
         </div>
         <div class="hero-social">
@@ -302,7 +312,7 @@
         <p>Open to research partnerships, graduate supervision, and knowledge-translation opportunities in health systems and policy.</p>
       </div>
       <div class="cta-band-actions">
-        <a class="btn btn-outline-light" href="teaching.html#contact">Get in Touch</a>
+        <button class="btn btn-outline-light" onclick="openModal()">Get in Touch</button>
         <a class="btn" style="background:#fff;color:#0c4a6e;" href="https://tinyurl.com/bdfztnxa" target="_blank" rel="noreferrer">Faculty Profile →</a>
       </div>
     </div>
@@ -382,10 +392,197 @@
     </div>
   </footer>
 
+  <!-- ── CONTACT MODAL ── -->
+  <div id="contact-modal" class="cmodal-backdrop" role="dialog" aria-modal="true" aria-label="Contact form" style="display:none">
+    <div class="cmodal-box">
+      <button class="cmodal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+      <div class="cmodal-header">
+        <h3>Get in Touch</h3>
+        <p>Send a message directly to Dr. Najafizada. He'll get back to you by email.</p>
+      </div>
+      <form id="modal-contact-form" novalidate>
+        <div class="mcf-row">
+          <div class="mcf-field">
+            <label for="mc-name">Your Name</label>
+            <input type="text" id="mc-name" name="name" placeholder="Dr. Jane Smith" required />
+          </div>
+          <div class="mcf-field">
+            <label for="mc-email">Your Email</label>
+            <input type="email" id="mc-email" name="email" placeholder="jane@university.ca" required />
+          </div>
+        </div>
+        <div class="mcf-field">
+          <label for="mc-subject">Subject</label>
+          <select id="mc-subject" name="subject" required>
+            <option value="" disabled selected>Select a topic…</option>
+            <option value="Research Collaboration">Research Collaboration</option>
+            <option value="Graduate Supervision">Graduate Supervision</option>
+            <option value="Media Inquiry">Media Inquiry</option>
+            <option value="Speaking Invitation">Speaking Invitation</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="mcf-field">
+          <label for="mc-message">Message</label>
+          <textarea id="mc-message" name="message" rows="4" placeholder="Tell Dr. Najafizada about your inquiry…" required></textarea>
+        </div>
+        <div class="mcf-actions">
+          <button type="submit" class="btn btn-sky mcf-submit" id="mc-btn">
+            <span class="mcf-label">Send Message</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          </button>
+        </div>
+        <div id="mc-success" class="mcf-feedback mcf-ok" style="display:none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Message sent! Dr. Najafizada will be in touch soon.
+        </div>
+        <div id="mc-error" class="mcf-feedback mcf-err" style="display:none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Something went wrong. Email <a href="mailto:mnajafizada@mun.ca">mnajafizada@mun.ca</a> directly.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .cmodal-backdrop {
+      position: fixed; inset: 0; z-index: 5000;
+      background: rgba(3,10,13,0.82);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      animation: fadeIn .18s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .cmodal-box {
+      background: #0b1c21;
+      border: 1px solid rgba(13,138,158,0.3);
+      border-radius: 16px;
+      padding: 2.25rem;
+      width: 100%; max-width: 560px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      animation: slideUp .2s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .cmodal-close {
+      position: absolute; top: 1rem; right: 1.1rem;
+      background: none; border: none; color: #6a9aa5;
+      font-size: 1.5rem; line-height: 1; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .cmodal-close:hover { color: #ddeef2; }
+
+    .cmodal-header { margin-bottom: 1.5rem; }
+    .cmodal-header h3 { font-size: 1.25rem; color: #ddeef2; margin-bottom: 0.3rem; }
+    .cmodal-header p  { font-size: 0.85rem; color: #6a9aa5; }
+
+    .mcf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .mcf-row { grid-template-columns: 1fr; } }
+
+    .mcf-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1rem; }
+    .mcf-field label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #7aa5ad; }
+    .mcf-field input,
+    .mcf-field select,
+    .mcf-field textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; color: #ddeef2;
+      font-size: 0.9rem; font-family: inherit;
+      padding: 0.6rem 0.85rem; outline: none; width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .mcf-field input::placeholder,
+    .mcf-field textarea::placeholder { color: rgba(255,255,255,0.22); }
+    .mcf-field select option { background: #0b1c21; }
+    .mcf-field input:focus,
+    .mcf-field select:focus,
+    .mcf-field textarea:focus {
+      border-color: rgba(13,138,158,0.6);
+      background: rgba(13,138,158,0.07);
+      box-shadow: 0 0 0 3px rgba(13,138,158,0.12);
+    }
+    .mcf-field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    .mcf-actions { margin-top: 0.25rem; }
+    .mcf-submit {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .mcf-submit:hover { transform: translateY(-1px); }
+    .mcf-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .mcf-feedback {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 1rem; padding: 0.75rem 1rem;
+      border-radius: 8px; font-size: 0.85rem;
+    }
+    .mcf-ok  { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: #6ee7b7; }
+    .mcf-ok svg { color: #34d399; flex-shrink: 0; }
+    .mcf-err { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: #fca5a5; }
+    .mcf-err svg { color: #f87171; flex-shrink: 0; }
+    .mcf-err a { color: #5bc3d8; }
+  </style>
+
+  <script>
+    const CONTACT_ENDPOINT = 'https://formspree.io/f/xpqnvzaj';
+
+    function openModal() {
+      const m = document.getElementById('contact-modal');
+      m.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => m.querySelector('input').focus(), 100);
+    }
+    function closeModal() {
+      document.getElementById('contact-modal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    document.getElementById('contact-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    (function() {
+      const form = document.getElementById('modal-contact-form');
+      if (!form) return;
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('mc-btn');
+        const success = document.getElementById('mc-success');
+        const error = document.getElementById('mc-error');
+        btn.disabled = true;
+        btn.querySelector('.mcf-label').textContent = 'Sending…';
+        success.style.display = 'none';
+        error.style.display = 'none';
+        try {
+          const res = await fetch(CONTACT_ENDPOINT, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            form.reset();
+            success.style.display = 'flex';
+          } else { throw new Error(); }
+        } catch {
+          error.style.display = 'flex';
+        } finally {
+          btn.disabled = false;
+          btn.querySelector('.mcf-label').textContent = 'Send Message';
+        }
+      });
+    })();
+  </script>
+
   <a id="back-portal" href="index.html">← Menu</a>
   <button id="back-top" aria-label="Back to top">↑</button>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260530d"></script>
   <script>
     // Render featured publications (6 most recent)
     const featured = allPublications.slice(0, 6);
