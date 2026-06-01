@@ -1143,7 +1143,14 @@ footer .copyright {
       Each gives you a form snippet — paste their action URL below
       where it currently says "https://your-form-handler".
     -->
-    <p class="newsletter-note">Reach out directly at <a href="mailto:mnajafizada@mun.ca" style="color:var(--saffron-lt);text-decoration:underline;text-underline-offset:.2em;">mnajafizada@mun.ca</a></p>
+    <div class="newsletter-note" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;">
+      <span>Or reach out directly:</span>
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <a href="mailto:mnajafizada@mun.ca" style="color:var(--saffron-lt);text-decoration:underline;text-underline-offset:.2em;">mnajafizada@mun.ca</a>
+        <button onclick="(function(){navigator.clipboard.writeText('mnajafizada@mun.ca');var b=document.getElementById('nl-copy-btn');b.textContent='Copied!';setTimeout(function(){b.textContent='Copy'},2000)})()" id="nl-copy-btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:4px;color:rgba(241,231,208,0.7);font-size:0.72rem;padding:3px 10px;cursor:pointer;font-family:inherit;transition:all 0.2s;">Copy</button>
+      </div>
+      <a href="#contact" style="color:var(--saffron-lt);text-decoration:underline;text-underline-offset:.2em;white-space:nowrap;">Use contact form →</a>
+    </div>
   </div>
 </section>
 
