@@ -1174,7 +1174,7 @@ footer .copyright {
         — they give you a URL like https://formspree.io/f/abc123
         — paste it below, and submissions arrive in your email.
       -->
-      <form class="contact-form reveal" action="mailto:mnajafizada@mun.ca" method="GET" enctype="text/plain">
+      <form class="contact-form reveal" id="book-contact-form" novalidate>
         <div class="field">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required>
@@ -1187,8 +1187,46 @@ footer .copyright {
           <label for="message">Your message</label>
           <textarea id="message" name="message" rows="6" required></textarea>
         </div>
-        <button type="submit" class="btn"><span>Send</span></button>
+        <button type="submit" class="btn" id="book-submit-btn"><span id="book-btn-label">Send</span></button>
+        <div id="book-success" style="display:none;margin-top:1rem;padding:.75rem 1rem;background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.3);border-radius:6px;color:#6ee7b7;font-size:.875rem;">
+          Message sent — thank you. Maisam will be in touch.
+        </div>
+        <div id="book-error" style="display:none;margin-top:1rem;padding:.75rem 1rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:6px;color:#fca5a5;font-size:.875rem;">
+          Something went wrong. Email <a href="mailto:mnajafizada@mun.ca" style="color:inherit;text-decoration:underline">mnajafizada@mun.ca</a> directly.
+        </div>
       </form>
+      <script>
+        (function() {
+          const ENDPOINT = 'https://formspree.io/f/xpqnvzaj';
+          const form = document.getElementById('book-contact-form');
+          if (!form) return;
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('book-submit-btn');
+            const label = document.getElementById('book-btn-label');
+            const success = document.getElementById('book-success');
+            const error = document.getElementById('book-error');
+            btn.disabled = true;
+            label.textContent = 'Sending…';
+            success.style.display = 'none';
+            error.style.display = 'none';
+            try {
+              const res = await fetch(ENDPOINT, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+              });
+              if (res.ok) { form.reset(); success.style.display = 'block'; }
+              else { throw new Error(); }
+            } catch {
+              error.style.display = 'block';
+            } finally {
+              btn.disabled = false;
+              label.textContent = 'Send';
+            }
+          });
+        })();
+      </script>
 
     </div>
   </div>
