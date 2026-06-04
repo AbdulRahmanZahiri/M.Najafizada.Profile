@@ -3,12 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+    // Desktop Safari/Chrome: this makes pages less likely to be restored from BFCache.
+    window.addEventListener("unload", function () {});
+  </script>
   <title>Insights — Dr. Maisam Najafizada</title>
   <meta name="description" content="Research insights and policy briefs by Dr. Maisam Najafizada — Afghanistan midwifery, maternal health, and global health systems." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css?v=20260530d" />
   <style>
     /* ── Blog-specific styles ── */
     .blog-grid {
@@ -234,26 +246,24 @@
   </style>
 </head>
 <body>
-  <div id="pg-overlay" style="position:fixed;inset:0;z-index:9999;background:#050e11;pointer-events:none;"></div>
-
   <!-- NAV -->
   <header class="site-nav" id="site-nav">
     <div class="nav-inner">
-      <a class="nav-brand" href="academic.html">
+      <a class="nav-brand" href="/academic/">
         <span class="nav-badge">MN</span>
         <span class="nav-name">Dr. Maisam Najafizada<small>Memorial University · Health Policy &amp; Systems</small></span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false">Menu</button>
       <nav class="nav-links" id="nav-links">
-        <a href="academic.html">Home</a>
-        <a href="research.html">Research</a>
-        <a href="funding.html">Funding</a>
-        <a href="publications.html">Publications</a>
-        <a href="teaching.html">Teaching</a>
-        <a href="blog.html" class="active-page">Blog</a>
-        <a href="teaching.html#contact" class="nav-contact-link">Contact</a>
+        <a href="/academic/">Home</a>
+        <a href="/research/">Research</a>
+        <a href="/funding/">Funding</a>
+        <a href="/publications/">Publications</a>
+        <a href="/teaching/">Teaching</a>
+        <a href="/blog/" class="active-page">Blog</a>
+        <a href="/teaching/#contact" class="nav-contact-link">Contact</a>
       </nav>
-      <a class="nav-cta" href="teaching.html#contact">Contact</a>
+      <a class="nav-cta" href="/teaching/#contact">Contact</a>
     </div>
   </header>
 
@@ -324,7 +334,7 @@
               <p>Afghanistan Midwives &amp; Maternal Health · Complete data report with methodology</p>
             </div>
           </div>
-          <a class="btn btn-sky" href="AfghanistanHealth-main/afghanistan_midwives_media_report_dari_final.pdf" target="_blank" rel="noreferrer">Download PDF →</a>
+          <a class="btn btn-sky" href="/AfghanistanHealth-main/afghanistan_midwives_media_report_dari_final.pdf" target="_blank" rel="noreferrer">Download PDF →</a>
         </div>
       </div>
     </div>
@@ -342,7 +352,7 @@
       <div class="chart-grid reveal">
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_01_mmr_trend_dari.png')">
-          <img src="AfghanistanHealth-main/chart_01_mmr_trend_dari.png" alt="Maternal Mortality Rate Trend in Afghanistan" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_01_mmr_trend_dari.png" alt="Maternal Mortality Rate Trend in Afghanistan" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 01</div>
             <div class="chart-title">Maternal Mortality Rate — Historical Trend</div>
@@ -351,7 +361,7 @@
         </div>
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_02_service_cascade_dari.png')">
-          <img src="AfghanistanHealth-main/chart_02_service_cascade_dari.png" alt="Maternal Health Service Cascade" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_02_service_cascade_dari.png" alt="Maternal Health Service Cascade" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 02</div>
             <div class="chart-title">Maternal Health Service Cascade</div>
@@ -360,7 +370,7 @@
         </div>
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_03_urban_rural_gap_dari.png')">
-          <img src="AfghanistanHealth-main/chart_03_urban_rural_gap_dari.png" alt="Urban vs Rural Access Gap" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_03_urban_rural_gap_dari.png" alt="Urban vs Rural Access Gap" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 03</div>
             <div class="chart-title">Urban–Rural Access Gap</div>
@@ -369,7 +379,7 @@
         </div>
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_04_midwives_by_sector_dari.png')">
-          <img src="AfghanistanHealth-main/chart_04_midwives_by_sector_dari.png" alt="Midwives Distribution by Sector" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_04_midwives_by_sector_dari.png" alt="Midwives Distribution by Sector" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 04</div>
             <div class="chart-title">Midwives Distribution by Sector</div>
@@ -378,7 +388,7 @@
         </div>
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_05_province_sba_dari.png')">
-          <img src="AfghanistanHealth-main/chart_05_province_sba_dari.png" alt="Skilled Birth Attendants by Province" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_05_province_sba_dari.png" alt="Skilled Birth Attendants by Province" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 05</div>
             <div class="chart-title">Skilled Birth Attendants by Province</div>
@@ -387,7 +397,7 @@
         </div>
 
         <div class="chart-item" onclick="openLightbox('AfghanistanHealth-main/chart_06_pipeline_risk_dari.png')">
-          <img src="AfghanistanHealth-main/chart_06_pipeline_risk_dari.png" alt="Midwifery Pipeline Risk Assessment" loading="lazy" />
+          <img src="/AfghanistanHealth-main/chart_06_pipeline_risk_dari.png" alt="Midwifery Pipeline Risk Assessment" loading="lazy" />
           <div class="chart-caption">
             <div class="chart-num">Chart 06</div>
             <div class="chart-title">Midwifery Pipeline Risk Assessment</div>
@@ -419,8 +429,8 @@
         <h2>More Insights on the Way</h2>
         <p class="sec-lead on-dark">Future posts will cover primary care transformation in Newfoundland, cannabis policy reform, refugee health, and health equity research from across Canada and globally.</p>
         <div style="margin-top:2rem;">
-          <a class="btn btn-sky" href="research.html">Explore Research →</a>
-          <a class="btn btn-outline-light" href="teaching.html#contact" style="margin-left:.75rem;">Get in Touch</a>
+          <a class="btn btn-sky" href="/research/">Explore Research →</a>
+          <a class="btn btn-outline-light" href="/teaching/#contact" style="margin-left:.75rem;">Get in Touch</a>
         </div>
       </div>
     </div>
@@ -440,12 +450,12 @@
       <div class="footer-col">
         <h4>Navigation</h4>
         <ul class="footer-links">
-          <li><a href="academic.html">Home</a></li>
-          <li><a href="research.html">Research</a></li>
-          <li><a href="funding.html">Funding</a></li>
-          <li><a href="publications.html">Publications</a></li>
-          <li><a href="teaching.html">Teaching</a></li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="/academic/">Home</a></li>
+          <li><a href="/research/">Research</a></li>
+          <li><a href="/funding/">Funding</a></li>
+          <li><a href="/publications/">Publications</a></li>
+          <li><a href="/teaching/">Teaching</a></li>
+          <li><a href="/blog/">Blog</a></li>
         </ul>
       </div>
 
@@ -502,7 +512,7 @@
   </footer>
 
   <!-- Back to portal -->
-  <a id="back-portal" href="index.html">← Menu</a>
+  <a id="back-portal" href="/">← Menu</a>
   <button id="back-top" aria-label="Back to top">↑</button>
 
   <!-- Lightbox -->
@@ -512,10 +522,10 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="script.js"></script>
+  <script src="/script.js?v=20260530d"></script>
   <script>
     // Load dynamic blog posts from posts.json
-    fetch('posts.json')
+    fetch('/posts.json')
       .then(r => r.json())
       .then(data => {
         const posts = data.posts || [];

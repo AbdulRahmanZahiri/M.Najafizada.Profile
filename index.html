@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+    // Desktop Safari/Chrome: this makes pages less likely to be restored from BFCache.
+    window.addEventListener("unload", function () {});
+  </script>
   <title>Maisam Najafizada</title>
   <meta name="description" content="Maisam Najafizada — Academic & Author. Choose your path." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -341,7 +353,7 @@
   <div class="split" id="split">
 
     <!-- ── LEFT: ACADEMIC ── -->
-    <a class="panel panel-academic" href="academic.html" id="acad-panel">
+    <a class="panel panel-academic" href="/academic/" id="acad-panel">
       <div class="grid-bg"></div>
       <div class="spotlight"></div>
       <span class="corner-ghost">A</span>
@@ -372,7 +384,7 @@
     </div>
 
     <!-- ── RIGHT: AUTHOR ── -->
-    <a class="panel panel-author" href="Maisam_Book.html" id="auth-panel">
+    <a class="panel panel-author" href="/book/" id="auth-panel">
       <div class="geo-bg"></div>
       <div class="spotlight"></div>
       <span class="corner-ghost">W</span>

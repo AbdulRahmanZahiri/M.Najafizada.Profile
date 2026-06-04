@@ -1,3 +1,12 @@
+// Force-hide transition overlay immediately in case a stale bfcache snapshot restores it.
+(() => {
+  const overlay = document.getElementById("pg-overlay");
+  if (overlay) {
+    overlay.classList.add("off");
+    overlay.style.opacity = "0";
+  }
+})();
+
 // ── DATA ─────────────────────────────────────────────────────────────────────
 
 const projects = [
@@ -428,36 +437,17 @@ function createRipple(el, e) {
 
 function setupTransitions() {
   const overlay = document.getElementById("pg-overlay");
+  const hideOverlay = () => {
+    if (!overlay) return;
+    overlay.classList.add("off");
+    overlay.style.opacity = "0";
+    overlay.style.display = "none";
+  };
 
-  // Reveal this page — fade the overlay out
-  if (overlay) {
-    // Double rAF ensures the browser has painted at least one frame first
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      overlay.classList.add("off");
-    }));
-  }
-
-  document.querySelectorAll("a").forEach(link => {
-    const href = link.getAttribute("href") || "";
-    if (href.endsWith(".html") && !href.startsWith("http") && !href.startsWith("//")) {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-
-        // Ripple on nav links
-        if (link.closest(".nav-links") || link.closest(".nav-brand")) {
-          createRipple(link, e);
-        }
-
-        // Cover the page with the overlay, then navigate
-        if (overlay) {
-          overlay.classList.remove("off");
-          setTimeout(() => { window.location.href = href; }, 280);
-        } else {
-          window.location.href = href;
-        }
-      });
-    }
-  });
+  // Keep overlay fully disabled to avoid black-screen state on back/forward restore.
+  hideOverlay();
+  window.addEventListener("pageshow", hideOverlay);
+  window.addEventListener("pagehide", hideOverlay);
 }
 
 // ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
