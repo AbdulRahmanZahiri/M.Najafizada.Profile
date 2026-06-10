@@ -476,6 +476,59 @@
     }
     .loading .spinner { display: block; }
     .loading .btn-label { display: none; }
+
+    /* ══════════════════════════════════
+       TOOL MODAL — Image / Link / Embed
+    ══════════════════════════════════ */
+    .tm-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(5,14,17,0.7);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+    }
+    .tm-backdrop.hidden { display: none; }
+    .tm-box {
+      width: 100%; max-width: 460px;
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .tm-head {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tm-head h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .tm-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem;
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .tm-close:hover { background: var(--s3); color: var(--text); }
+    .tm-body { padding: 1.5rem; }
+    .tm-body .field + .field { margin-top: 1rem; }
+    .tm-body textarea { min-height: 110px; resize: vertical; font-family: 'Menlo','Consolas',monospace; font-size: 0.82rem; }
+    .tm-body p.tm-hint { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .tm-foot {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .tm-msg { font-size: 0.78rem; color: var(--muted); flex: 1; }
+    .tm-msg.err { color: var(--red); }
+    input[type="file"] {
+      width: 100%;
+      background: var(--s2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text-2);
+      font-size: 0.82rem; font-family: inherit;
+      padding: 0.55rem 0.7rem;
+    }
   </style>
 </head>
 <body>
@@ -595,6 +648,10 @@
                   <button class="md-btn" onclick="wrapSel('`','`')" title="Inline code">code</button>
                   <div class="toolbar-sep"></div>
                   <button class="md-btn" onclick="insertHR()" title="Divider">—</button>
+                  <div class="toolbar-sep"></div>
+                  <button class="md-btn" onclick="openToolModal('image')" title="Insert image">🖼 Image</button>
+                  <button class="md-btn" onclick="openToolModal('link')" title="Insert link">🔗 Link</button>
+                  <button class="md-btn" onclick="openToolModal('embed')" title="Insert embed or HTML">{ } Embed</button>
                 </div>
                 <textarea id="f-body" placeholder="Write your post here…&#10;&#10;## Heading&#10;&#10;Regular paragraph text. Use **bold** and *italic*.&#10;&#10;- Bullet point one&#10;- Bullet point two"></textarea>
                 <div id="preview-pane"></div>
@@ -645,6 +702,24 @@
   </div>
 
 </main>
+
+<!-- ═══════════════ TOOL MODAL (Image / Link / Embed) ═══════════════ -->
+<div id="tm-backdrop" class="tm-backdrop hidden" onclick="if(event.target===this) closeToolModal()">
+  <div class="tm-box">
+    <div class="tm-head">
+      <h3 id="tm-title">Insert</h3>
+      <button class="tm-close" onclick="closeToolModal()">✕</button>
+    </div>
+    <div class="tm-body" id="tm-body"></div>
+    <div class="tm-foot">
+      <span class="tm-msg" id="tm-msg"></span>
+      <button class="btn-publish" id="tm-insert-btn" onclick="toolModalInsert()">
+        <div class="spinner" id="tm-spinner"></div>
+        <span class="btn-label" id="tm-insert-label">Insert</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
@@ -869,6 +944,147 @@
     ta.setRangeText('\n\n---\n\n', s, s, 'end');
     ta.focus();
   }
+
+  /* ── Tool modal: Image / Link / Embed ── */
+  let toolModalMode = null;
+
+  function openToolModal(mode) {
+    toolModalMode = mode;
+    const body = document.getElementById('tm-body');
+    const title = document.getElementById('tm-title');
+    const label = document.getElementById('tm-insert-label');
+    setTmMsg('');
+
+    if (mode === 'image') {
+      title.textContent = 'Insert Image';
+      label.textContent = 'Upload & Insert';
+      body.innerHTML = `
+        <p class="tm-hint">Choose a photo from your computer. It will be uploaded to the website and added into your post.</p>
+        <div class="field">
+          <div class="field-label">Image file</div>
+          <input type="file" id="tm-image-file" accept="image/*" />
+        </div>
+        <div class="field">
+          <div class="field-label">Description <em>(optional, for accessibility)</em></div>
+          <input type="text" id="tm-image-alt" placeholder="e.g. Chart showing maternal mortality trend" />
+        </div>`;
+    } else if (mode === 'link') {
+      title.textContent = 'Insert Link';
+      label.textContent = 'Insert';
+      body.innerHTML = `
+        <p class="tm-hint">Add a clickable link to your post — for example a link to a paper, website, or download.</p>
+        <div class="field">
+          <div class="field-label">Link text</div>
+          <input type="text" id="tm-link-text" placeholder="e.g. Read the full report" />
+        </div>
+        <div class="field">
+          <div class="field-label">URL</div>
+          <input type="text" id="tm-link-url" placeholder="https://example.com" />
+        </div>`;
+    } else if (mode === 'embed') {
+      title.textContent = 'Insert Embed / HTML';
+      label.textContent = 'Insert';
+      body.innerHTML = `
+        <p class="tm-hint">Paste a YouTube, Twitter/X, Google Maps "embed" code, or any HTML snippet. It will appear in your post exactly as pasted.</p>
+        <div class="field">
+          <div class="field-label">Embed code or HTML</div>
+          <textarea id="tm-embed-code" placeholder="&lt;iframe ...&gt;&lt;/iframe&gt;"></textarea>
+        </div>`;
+    }
+
+    document.getElementById('tm-backdrop').classList.remove('hidden');
+    setTimeout(() => {
+      const first = body.querySelector('input, textarea');
+      if (first) first.focus();
+    }, 0);
+  }
+
+  function closeToolModal() {
+    document.getElementById('tm-backdrop').classList.add('hidden');
+    toolModalMode = null;
+  }
+
+  function setTmMsg(msg, cls) {
+    const el = document.getElementById('tm-msg');
+    el.textContent = msg;
+    el.className = 'tm-msg' + (cls ? ' ' + cls : '');
+  }
+
+  async function toolModalInsert() {
+    const ta = document.getElementById('f-body');
+
+    if (toolModalMode === 'link') {
+      const text = v('tm-link-text');
+      const url  = v('tm-link-url');
+      if (!url) return setTmMsg('Please enter a URL.', 'err');
+      const s = ta.selectionStart, e = ta.selectionEnd;
+      ta.setRangeText(`[${text || url}](${url})`, s, e, 'end');
+      closeToolModal(); ta.focus();
+      return;
+    }
+
+    if (toolModalMode === 'embed') {
+      const code = v('tm-embed-code');
+      if (!code) return setTmMsg('Please paste an embed code or HTML.', 'err');
+      const s = ta.selectionStart, e = ta.selectionEnd;
+      ta.setRangeText(`\n\n${code}\n\n`, s, e, 'end');
+      closeToolModal(); ta.focus();
+      return;
+    }
+
+    if (toolModalMode === 'image') {
+      const fileInput = document.getElementById('tm-image-file');
+      const alt = v('tm-image-alt');
+      const file = fileInput.files[0];
+      if (!file) return setTmMsg('Please choose an image file.', 'err');
+      if (file.size > 3 * 1024 * 1024) return setTmMsg('Image is too large — please use a file under 3MB.', 'err');
+
+      const btn = document.getElementById('tm-insert-btn');
+      btn.disabled = true; btn.classList.add('loading');
+      setTmMsg('Uploading image…');
+      try {
+        const url = await uploadImage(file);
+        const s = ta.selectionStart, e = ta.selectionEnd;
+        ta.setRangeText(`\n\n![${alt}](${url})\n\n`, s, e, 'end');
+        closeToolModal(); ta.focus();
+      } catch (err) {
+        setTmMsg('Upload failed: ' + err.message, 'err');
+      } finally {
+        btn.disabled = false; btn.classList.remove('loading');
+      }
+    }
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadImage(file) {
+    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '-');
+    const path = `uploads/${Date.now()}-${safeName}`;
+    const content = await fileToBase64(file);
+    const r = await api(`/repos/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: `Blog: upload image ${safeName}`,
+        content, branch: BRANCH
+      })
+    });
+    if (!r.ok) {
+      const e = await r.json();
+      throw new Error(e.message || 'Image upload failed.');
+    }
+    return `/${path}`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeToolModal();
+  });
 
   /* ── Helpers ── */
   function v(id) { return document.getElementById(id).value.trim(); }

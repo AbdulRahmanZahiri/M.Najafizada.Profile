@@ -243,6 +243,28 @@
       transition: background .2s;
     }
     .lightbox-close:hover { background: rgba(255,255,255,.2); }
+
+    /* ── Post body media (images, embeds, links) ── */
+    #post-modal-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 1.2rem auto;
+    }
+    #post-modal-content iframe,
+    #post-modal-content video,
+    #post-modal-content embed,
+    #post-modal-content object {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1.2rem 0;
+    }
+    #post-modal-content a {
+      color: var(--sky);
+      text-decoration: underline;
+      text-underline-offset: .15em;
+    }
   </style>
 </head>
 <body>
