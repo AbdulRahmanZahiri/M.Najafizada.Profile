@@ -14,7 +14,7 @@ const projects = [
   { title: "Refugee health care access through FRAM analysis", details: "System-level mapping of barriers and adaptive pathways for culturally safe care in NL.", status: "Active", horizon: "2024–2025" },
   { title: "Patient-centeredness of Family Care Teams (Picker Principles lens)", details: "Evaluation of patient-centered care implementation in Family Care Teams in Newfoundland and Labrador.", status: "Active", horizon: "2026–2027" },
   { title: "IYS Choices for Youth Project", details: "Enhancing Integrated Youth Services in Newfoundland and Labrador through a mixed-methods, wholistic approach toward improving youth mental health outcomes.", status: "Active", horizon: "2025–2029" },
-  { title: "The perception of the public on primary care through social media", details: "Examining how the public discusses and perceives primary care access, quality, and reform through large-scale social media data analysis.", status: "Active", horizon: "2024–2026" },
+  { title: "The perception of the public on primary care through social media", details: "Examining how the public discusses and perceives primary care access, quality, and reform through large-scale social media data analysis.", status: "Active", horizon: "2024–2026", link: "https://abdulrahmanzahiri.github.io/Resreach_Reddit/", linkLabel: "View Interactive Dashboard" },
   { title: "Social accountability in medical education project", details: "Investigating how medical schools can embed social accountability principles to better align education with the needs of underserved communities.", status: "Active", horizon: "2024–2026" }
 ];
 
@@ -166,7 +166,8 @@ function buildProjectCard(p) {
       <span class="pill ${cls}">${p.status}</span>
     </div>
     <p class="meta">${p.horizon}</p>
-    <p>${p.details}</p>`;
+    <p>${p.details}</p>
+    ${p.link ? `<a class="entry-link" href="${p.link}" target="_blank" rel="noreferrer">${p.linkLabel || "View Project"} →</a>` : ""}`;
   return el;
 }
 

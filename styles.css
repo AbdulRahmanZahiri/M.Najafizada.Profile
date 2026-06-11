@@ -1139,6 +1139,17 @@ img { max-width: 100%; }
 .entry-head h4 { flex: 1; margin: 0; font-size: .96rem; color: var(--ink); line-height: 1.42; }
 .entry .meta { font-size: .82rem; color: var(--ink-400); margin-bottom: .22rem; }
 
+.entry-link {
+  display: inline-block;
+  margin-top: .5rem;
+  font-size: .82rem; font-weight: 600;
+  color: var(--sky);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--t);
+}
+.entry-link:hover { border-bottom-color: var(--sky); }
+
 .grant-amount {
   font-family: "Cormorant Garamond",serif;
   font-size: 1.15rem; font-weight: 700;
