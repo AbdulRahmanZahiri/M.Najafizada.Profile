@@ -374,6 +374,16 @@
     #preview-pane li { margin-bottom: 4px; }
     #preview-pane code { background: var(--s3); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font-size: 0.82em; }
     #preview-pane blockquote { border-left: 3px solid var(--teal); padding-left: 1rem; color: var(--muted); margin: 0.75rem 0; font-style: italic; }
+    #preview-pane a { color: var(--teal-l); }
+    #preview-pane img {
+      max-width: 100%; height: auto;
+      border-radius: 8px; display: block;
+      margin: 0.75rem 0;
+      background: var(--s3);
+    }
+    #preview-pane iframe, #preview-pane video, #preview-pane embed, #preview-pane object {
+      max-width: 100%; border-radius: 8px; margin: 0.75rem 0;
+    }
 
     /* Publish row */
     .publish-row {
