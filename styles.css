@@ -1315,9 +1315,9 @@ img { max-width: 100%; }
   width: 220px; height: 220px;
   border-radius: 50%;
   background: conic-gradient(
-    var(--sky)     0%    51.7%,
-    var(--gold)   51.7%  84.2%,
-    var(--coral)  84.2%  100%
+    var(--sky)     0%    54.3%,
+    var(--gold)   54.3%  94.8%,
+    var(--coral)  94.8%  100%
   );
   -webkit-mask: radial-gradient(transparent 42%, black 43%);
   mask: radial-gradient(transparent 42%, black 43%);

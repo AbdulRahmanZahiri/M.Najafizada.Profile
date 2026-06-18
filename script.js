@@ -19,6 +19,7 @@ const projects = [
 ];
 
 const allGrants = [
+  { period: "2026–2029", title: "AI-Enabled Stroke Prevention for Indigenous Community Health Workers in Rural/Remote Manitoba and Saskatchewan", role: "Co-Applicant", funder: "Team Grants: Strengthening Resilient and Equitable Public Health Systems (STEPS)", amount: "$746,333", amountNum: 746333 },
   { period: "2026–2027", title: "Principles into Practice: Evaluating the Patient-Centeredness of Family Care Teams in NL Through the Picker Principles", role: "NPA", funder: "MRF Cox Award and Research Grant", amount: "$20,000", amountNum: 20000 },
   { period: "2026–2027", title: "Where Are the Gaps? Mapping Health and Social Services for Pregnant and Parenting People with Substance-Use Disorder in NL", role: "Co-PA", funder: "NLHRF Innovation Grant", amount: "$100,000", amountNum: 100000 },
   { period: "2025–2029", title: "Enhancing Integrated Youth Services in Newfoundland and Labrador: A Mixed-Methods, Wholistic Approach Toward Improving Youth Mental Health", role: "PI", funder: "IYS-Net Phase 2", amount: "$1,607,524", amountNum: 1607524 },
