@@ -373,18 +373,18 @@
       <span class="panel-nav">Academic Profile <span class="arr">→</span></span>
     </a>
 
-    <!-- ── CENTRE ── -->
-    <div class="divider-wrap">
+    <!-- ── CENTRE (hidden while author section is under construction) ── -->
+    <!-- <div class="divider-wrap">
       <div class="div-line"></div>
       <div class="mn-badge">
         <span class="mn-text">MN</span>
         <span class="mn-sub">or</span>
       </div>
       <div class="div-line"></div>
-    </div>
+    </div> -->
 
-    <!-- ── RIGHT: AUTHOR ── -->
-    <a class="panel panel-author" href="/book/" id="auth-panel">
+    <!-- ── RIGHT: AUTHOR (hidden while professor is working on it) ── -->
+    <!-- <a class="panel panel-author" href="/book/" id="auth-panel">
       <div class="geo-bg"></div>
       <div class="spotlight"></div>
       <span class="corner-ghost">W</span>
@@ -398,11 +398,11 @@
         <span class="enter-btn">Explore Books &amp; Writings <span class="arr">→</span></span>
       </div>
       <span class="panel-nav">Books &amp; Writings <span class="arr">→</span></span>
-    </a>
+    </a> -->
 
   </div>
 
-  <span class="hint">Hover to explore · Click to enter</span>
+  <!-- <span class="hint">Hover to explore · Click to enter</span> -->
 
   <script>
     // ── Load animation
@@ -444,7 +444,7 @@
       panel.addEventListener('mouseleave', () => { body.style.transform = ''; });
     }
     addTilt(document.getElementById('acad-panel'), document.getElementById('acad-body'));
-    addTilt(document.getElementById('auth-panel'), document.getElementById('auth-body'));
+    // addTilt(document.getElementById('auth-panel'), document.getElementById('auth-body')); // hidden while author section is under construction
 
     // ── Page transition
     const overlay = document.getElementById('go-overlay');
