@@ -348,34 +348,39 @@
     /* ── AUTHOR PANEL HIDDEN: single-panel hero redesign ──
        Remove this block when the author panel is uncommented. ── */
 
-    /* Portrait photo (1024×1280). At 50% auto on a 1440×900 screen it renders
-       at exactly 720×900 — fills the right half perfectly, no crop, no gap. */
+    /* 65% auto: photo starts at ~35% of viewport, eliminating the dark gap
+       that appeared when photo started at 50% but gradient faded at 58%.
+       Face sits at ~44% within photo → lands at ~64% of viewport, clear. */
     #split{
-      background-size:50% auto;
+      background-size:65% auto;
       background-position:right top;
     }
 
-    /* Disable hover flex-grow: only one panel so the 1→1.65 animation
-       produces no visible layout change but causes background jitter. */
+    /* Disable hover flex-grow animation (single panel, just causes jitter). */
     .split .panel-academic:hover{ flex:1; }
 
-    /* Dark left half for content, clean transparent reveal on the right. */
+    /* Kill spotlight & grid hover effects — they create the "black shade"
+       artefact as the cursor crosses the gradient/photo boundary. */
+    .panel-academic .spotlight,
+    .panel-academic .grid-bg{ display:none; }
+
+    /* Gradient transitions OVER the photo edge (not over bare dark background)
+       so there is no dead-zone gap between content and the photo. */
     .panel-academic{
-      align-items:center;
       background:linear-gradient(to right,
         #050e11 0%,
-        #050e11 36%,
-        rgba(6,15,30,.78) 44%,
-        rgba(6,15,30,.14) 51%,
-        transparent 58%,
+        #050e11 32%,
+        rgba(6,15,30,.72) 39%,
+        rgba(6,15,30,.10) 46%,
+        transparent 52%,
         transparent 100%
       );
     }
 
-    /* Widen content column to fill the left half properly. */
+    /* Content column sits inside the solid dark zone. */
     .panel-academic .panel-body{
       padding-left:clamp(3rem,8vw,6.5rem);
-      max-width:460px;
+      max-width:440px;
     }
 
     /* Stats, description, and CTA were reveal-on-hover in the two-panel split.
