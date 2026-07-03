@@ -345,20 +345,26 @@
       .panel-academic .panel-nav,.panel-author .panel-nav{left:auto;right:auto;}
     }
 
-    /* ── AUTHOR PANEL HIDDEN: full-width hero ── */
+    /* ── AUTHOR PANEL HIDDEN: photo is 1024×1280 portrait; auto 100% makes it
+          ~720px wide on 1440px screens, leaving dark gaps on both sides.
+          Gradient covers left (content) AND right (gap) so only the face
+          shows through in the centre. ── */
     #split{
-      background-size:cover;
-      background-position:62% top;
+      background-size:auto 100%;
+      background-position:center top;
     }
     .panel-academic{
       background:linear-gradient(to right,
         #050e11 0%,
-        #050e11 18%,
-        rgba(6,15,30,.88) 34%,
-        rgba(6,15,30,.42) 50%,
-        rgba(6,15,30,.12) 68%,
-        transparent 82%,
-        transparent 100%
+        #050e11 20%,
+        rgba(6,15,30,.82) 29%,
+        rgba(6,15,30,.18) 40%,
+        rgba(6,15,30,.03) 47%,
+        rgba(6,15,30,.03) 53%,
+        rgba(6,15,30,.28) 61%,
+        rgba(6,15,30,.72) 68%,
+        #050e11 76%,
+        #050e11 100%
       );
     }
   </style>
