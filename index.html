@@ -345,27 +345,47 @@
       .panel-academic .panel-nav,.panel-author .panel-nav{left:auto;right:auto;}
     }
 
-    /* ── AUTHOR PANEL HIDDEN: photo is 1024×1280 portrait; auto 100% makes it
-          ~720px wide on 1440px screens, leaving dark gaps on both sides.
-          Gradient covers left (content) AND right (gap) so only the face
-          shows through in the centre. ── */
+    /* ── AUTHOR PANEL HIDDEN: single-panel hero redesign ──
+       Remove this block when the author panel is uncommented. ── */
+
+    /* Portrait photo (1024×1280). At 50% auto on a 1440×900 screen it renders
+       at exactly 720×900 — fills the right half perfectly, no crop, no gap. */
     #split{
-      background-size:auto 100%;
-      background-position:center top;
+      background-size:50% auto;
+      background-position:right top;
     }
+
+    /* Disable hover flex-grow: only one panel so the 1→1.65 animation
+       produces no visible layout change but causes background jitter. */
+    .split .panel-academic:hover{ flex:1; }
+
+    /* Dark left half for content, clean transparent reveal on the right. */
     .panel-academic{
+      align-items:center;
       background:linear-gradient(to right,
         #050e11 0%,
-        #050e11 20%,
-        rgba(6,15,30,.82) 29%,
-        rgba(6,15,30,.18) 40%,
-        rgba(6,15,30,.03) 47%,
-        rgba(6,15,30,.03) 53%,
-        rgba(6,15,30,.28) 61%,
-        rgba(6,15,30,.72) 68%,
-        #050e11 76%,
-        #050e11 100%
+        #050e11 36%,
+        rgba(6,15,30,.78) 44%,
+        rgba(6,15,30,.14) 51%,
+        transparent 58%,
+        transparent 100%
       );
+    }
+
+    /* Widen content column to fill the left half properly. */
+    .panel-academic .panel-body{
+      padding-left:clamp(3rem,8vw,6.5rem);
+      max-width:460px;
+    }
+
+    /* Stats, description, and CTA were reveal-on-hover in the two-panel split.
+       In single-panel mode they must always be visible. */
+    .panel-academic .stats-row,
+    .panel-academic .panel-desc,
+    .panel-academic .enter-btn{
+      opacity:1 !important;
+      transform:none !important;
+      pointer-events:auto !important;
     }
   </style>
 </head>
