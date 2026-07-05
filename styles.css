@@ -1641,6 +1641,20 @@ img { max-width: 100%; }
   .nav-links, .nav-cta { display: none; }
   .nav-toggle { display: inline-block; }
 
+  /* Give brand a hard max-width so it never crowds the Menu button.
+     min-width:0 + flex-shrink:1 lets it compress; the subtitle wraps
+     naturally inside the constrained column. */
+  .nav-inner { justify-content: space-between; }
+  .nav-toggle { margin-left: 0; flex-shrink: 0; }
+  .nav-brand  { flex-shrink: 1; min-width: 0; max-width: calc(100% - 88px); }
+  .nav-name   { min-width: 0; }
+  .nav-name small {
+    white-space: normal;
+    font-size: .56rem;
+    line-height: 1.35;
+    opacity: .85;
+  }
+
   .nav-links.open {
     display: flex;
     flex-direction: column;
