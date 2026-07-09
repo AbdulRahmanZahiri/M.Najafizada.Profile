@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Golden Thread — Margaret and the End of Continuity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
+  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#122F2C;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
+
+/* 3D THREAD HERO — graphite & gold */
+.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%, #1B2027 0%, #0E1116 48%, #05060A 100%)}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#stage{position:absolute;inset:0;touch-action:pan-y;cursor:grab}#stage:active{cursor:grabbing}#stage canvas{display:block}
+.h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(5,6,10,.92),rgba(5,6,10,.5) 50%,transparent);pointer-events:none}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#C9CFD8}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:600;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FFF3D6,#E0B45C);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F5F3EE;font-weight:500;font-size:25px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#CDC4AE;margin:12px auto 0;max-width:480px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#C9CFD8;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#CDC4AE;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+
+/* PERSONA HERO */
+.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--coral);border-bottom:3px solid var(--coral);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(216,90,48,.18),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.heroIso{width:100%;height:auto;display:block;max-width:520px}
+.herocap{font-family:var(--font-mono);font-size:12.5px;line-height:1.6;color:var(--hero-mut);max-width:520px;margin-top:14px}
+.herocap b{color:#F2A07C;font-weight:600}
+
+.who{max-width:760px;margin:46px auto 6px;padding:0 26px}
+.whocard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.whocard .lbl{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:10px}
+.whocard p{font-size:17px;line-height:1.62;margin:0}
+.whocard p b{font-weight:500}
+
+/* TIMELINE */
+.tlwrap{padding:40px 0 30px}
+.stage{display:flex;gap:20px;padding-bottom:26px;position:relative}
+.rail{position:relative;width:50px;flex:none;display:flex;justify-content:center}
+.rail .line{position:absolute;top:6px;bottom:-26px;width:2px;background:var(--line)}
+.stage:last-child .rail .line,.stage.fork .rail .line{display:none}
+.med{position:relative;z-index:2;width:50px;height:50px;border-radius:50%;background:#fff;border:2px solid var(--coral);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(216,90,48,.16)}
+.med svg{width:24px;height:24px;stroke:var(--coral);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.scard{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px 20px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.time{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--coral);padding:4px 11px;border-radius:999px;margin-bottom:11px}
+.elapsed{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-left:10px;letter-spacing:.02em}
+.scard h3{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:0 0 9px;line-height:1.18}
+.scard p{font-size:16.5px;line-height:1.62;margin:0 0 14px;color:#23302D}
+.dchip{display:flex;gap:9px;align-items:flex-start;font-family:var(--font-mono);font-size:12px;line-height:1.5;color:var(--coral-deep);background:#FBEDE6;border:1px solid #F3D8CC;border-radius:9px;padding:9px 12px}
+.dchip svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:2;flex:none;margin-top:1px}
+.dchip b{color:#8A331A;font-weight:600}
+
+.forkhead{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:14px 0 18px;text-align:center}
+.fork2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ocard{border-radius:14px;padding:20px 22px;border:1px solid var(--line);background:#fff}
+.ocard.win{border-color:#BFE0CF;background:linear-gradient(180deg,#F2FAF5,#fff)}
+.ocard.real{border-color:#E3D9D2;background:linear-gradient(180deg,#FAF6F2,#fff)}
+.ocard .otag{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.ocard.win .otag{color:#2E7D5B}.ocard.real .otag{color:#9A6A4A}
+.ocard h4{font-family:var(--font-display);font-weight:600;font-size:18px;margin:0 0 9px}
+.ocard p{font-size:15.5px;line-height:1.58;margin:0 0 12px;color:#28332F}
+.ocard .mini{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+
+.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--coral)}
+.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+
+.reveal{opacity:0;transform:translateY(14px)}
+body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+@media (max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}.who{padding:0 18px}.close{padding-left:18px;padding-right:18px}
+  .cap .big{font-size:44px}.cap h2{font-size:19px}.cap p{font-size:11.5px}
+  .hero h1{font-size:36px}.hero .dek{font-size:17px}
+  .rail{width:42px}.med{width:42px;height:42px}.med svg{width:20px;height:20px}.stage{gap:14px}
+  .fork2{grid-template-columns:1fr}
+}
+
+/* corpus graphs */
+.corpus{margin:10px 0 4px}
+.chead .ck{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-deep)}
+.chead h2{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:6px 0 16px}
+.gbar{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.gterm{flex:0 0 200px;font-family:var(--font-mono);font-size:12.5px;font-weight:500;line-height:1.3}
+.gtrack{flex:1;height:9px;background:var(--track);overflow:hidden;min-width:50px}
+.gfill{display:block;height:100%;background:var(--coral)}
+.gval{flex:0 0 122px;text-align:right;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.gcap{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.65}
+.gsplit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.gcard{border:1px solid var(--line);background:#fff;border-radius:12px;padding:15px 18px}
+.gcard .gt{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:8px}
+.gcard .gl{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:#23302D}
+@media (max-width:680px){.gterm{flex-basis:118px;font-size:11.5px}.gval{flex-basis:92px;font-size:11px}.gsplit{grid-template-columns:1fr}}
+
+/* 3d explainer & polish */
+.scenetag{position:absolute;top:52px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);padding:0 30px}
+.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.6)}
+@media (max-width:680px){.beatdots{right:10px}.scenetag{font-size:9.5px}}
+</style>
+</head>
+<body>
+
+<!-- ============ 3D HERO: THE GOLDEN THREAD ============ -->
+<section class="hero3d">
+  <div class="sticky">
+    <div id="stage"></div>
+    <div class="h3ov">
+      <div class="brand">Starfield's 4C Series · Pillar 4 · Continuity · n = 723</div>
+      <div class="scenetag">The scene · twenty-five years as one golden thread — until it snaps</div>
+      <div class="cap" data-lo="0" data-hi="0.20"><div class="big">0.8%</div><h2>Continuity is the smallest pillar — 723 posts, and not one of them started a thread</h2><p>All 723 are replies. Nobody asks the internet for someone who knows them. It only comes up at the moment it breaks.</p></div>
+      <div class="cap" data-lo="0.23" data-hi="0.47"><h2>For twenty-five years, care was a single golden thread</h2><p>One doctor. One memory of you. Posts cite relationships of 10, 13, 15, and 25 years.</p></div>
+      <div class="cap" data-lo="0.50" data-hi="0.73"><h2>Then it snaps</h2><p>A retirement letter · a $125–$200 bill for your own records · and after the gap, fragments — a different stranger every visit, none of them connected.</p></div>
+      <div class="cap" data-lo="0.76" data-hi="1.02"><h2>Meet Margaret.</h2><p>A quarter century, one doctor. This is what came after. Scroll on.</p></div>
+      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9CFD8" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">Loading the 3D scene… if it doesn't appear, the story is just below — scroll down.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARGARET HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">A research composite · pillar 4 of 4 · continuity</div>
+    <h1>The golden thread</h1>
+    <p class="dek">Margaret is built from the 723 posts about the relationship itself — the doctor who knows you, kept for decades, lost in a single letter. Hers is the pillar people only mention once it's gone.</p>
+    <svg id="heroIso" class="heroIso" viewBox="0 0 480 132" role="img" aria-label="A crowd of 100 figures with one, Margaret, highlighted in coral"></svg>
+    <div class="herocap">Find <b>Margaret</b> in the crowd. Every year, fee, and rupture in her story is drawn from the real posts — nothing is invented.</div>
+  </div>
+</header>
+
+<div class="who">
+  <div class="whocard reveal">
+    <div class="lbl">Who is Margaret?</div>
+    <p>Margaret is a <b>composite</b> — one person assembled from the hundreds who wrote about <b>keeping</b> a doctor: the decades-long relationships, the retirement letters that end them, the fees charged for the file left behind. Her quarter-century is a braid of theirs. She is fiction in name only. The numbers are the data's.</p>
+  </div>
+</div>
+
+<main class="tlwrap">
+<div class="wrap">
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div></div>
+    <div class="scard">
+      <span class="time">25 years ago</span><span class="elapsed">the thread begins</span>
+      <h3>Her first appointment</h3>
+      <p>Margaret's doctor takes her on when taking a new patient is still an ordinary thing. Over the years he learns her the slow way — the pregnancies, the blood pressure, the winter she didn't sleep. By the end he doesn't read her chart. He wrote it.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · posters cite relationships of <b>10 years (6×)</b>, <b>25 years (4×)</b>, <b>15 years (4×)</b>, <b>13 years</b> — decades with one doctor, described in passing, like weather.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 9l8 5 8-5"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Day 0</span><span class="elapsed">the snap</span>
+      <h3>The retirement letter</h3>
+      <p>It arrives without warning: her doctor is retiring. The posts describe this exact moment again and again — some retiring doctors leave instructions on where to go next and how to transfer the file; many, the posts note with an edge, retire with <em>no replacement set up</em> at all. Twenty-five years of being known ends in one page.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · a doctor <b>retiring or leaving</b> is this pillar's largest specific theme — <b>42 posts (5.8%)</b> — and the rupture that starts most continuity stories.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Week 2</span><span class="elapsed">the invoice</span>
+      <h3>A bill for her own memory</h3>
+      <p>To take her history anywhere, Margaret must buy it. The posts put hard numbers on this: <em>$125 per person</em> for one household's records after their doctor retired; a parent asked for <em>$200+</em> for her own and her son's files — and unable to afford it, wondering for years if not paying was a mistake. One commenter explains the other side: retiring doctors must pay to store charts for a decade, and the fee covers it. Reasonable, maybe. It still means the record of your life has a price.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg><div>From the data · record-transfer fees cited: <b>$30</b>, <b>$125 per person</b>, <b>$200+</b> — set against a <b>10-year</b> storage obligation the fee helps cover.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 3</span><span class="elapsed">strangers with her chart</span>
+      <h3>Twenty-five years in ten minutes</h3>
+      <p>Her care now happens at walk-ins — a different clinician each visit, none of whom will see her twice. Each time, she compresses a quarter century into the first ten minutes: the allergies, the surgeries, the medication that didn't work in 2011. The PDF she paid for sits in her bag. The knowing is gone; what's left is the retelling.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · walk-in care threads through <b>5.8%</b> of this pillar — care without memory, the structural opposite of continuity.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1zM7 6h10v14H7zM10 11h5M10 15h5"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Year 1</span><span class="elapsed">back at pillar one</span>
+      <h3>The registry</h3>
+      <p>Margaret joins the provincial wait list for a new family doctor — and lands in the world of the first pillar, alongside the tens of thousands searching. The posts are blunt about her odds: have you ever had to find a new doctor? <em>It could be years.</em> Continuity, once lost, waits at the back of the longest queue in the system.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div>From the data · paraphrasing a real reply: finding a new doctor "<b>could be years</b>." Switching or finding anew appears in <b>3.0%</b> of this pillar's posts.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M8 3c0 4 8 5 8 9s-8 5-8 9M16 3c0 4-8 5-8 9"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Year 3</span><span class="elapsed">the void</span>
+      <h3>The years without</h3>
+      <p>Time passes the way the posts say it does. One commenter — who worked for a health authority, no less — describes not seeing a doctor in ten years: not happy about it, nothing to be done about it, <em>bleak</em>. Margaret's thread doesn't reconnect. It just gets older, along with her, and the chart no one is keeping anymore.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg><div>From the data · paraphrased from a real post: "<b>haven't seen a doctor in 10 years</b>… I worked for the health authority and it's just bleak."</div></div>
+    </div>
+  </div>
+
+  <div class="stage fork reveal">
+    <div class="rail"><div class="med" style="border-color:#9A6A4A"><svg viewBox="0 0 24 24" style="stroke:#9A6A4A"><path d="M3 12h18M3 12l4-4M3 12l4 4"/></svg></div></div>
+    <div class="scard" style="border:none;background:none;box-shadow:none;padding:6px 0 0">
+      <div class="forkhead">And then her story splits — the way the data does</div>
+      <div class="fork2">
+        <div class="ocard win">
+          <div class="otag">The rare win</div>
+          <h4>A new thread, from page one</h4>
+          <p>Years later, a clinic finally says yes — a new family doctor or nurse practitioner takes her on, removes her from the old roster, and starts a fresh chart. The knowing begins again from zero: slower, later, but real. Some posters got here. It took years.</p>
+          <div class="mini">From the data: getting accepted removes you from the previous roster — the rebuild is possible, just slow.</div>
+        </div>
+        <div class="ocard real">
+          <div class="otag">The common reality</div>
+          <h4>She becomes her own archive</h4>
+          <p>For most, the thread stays cut. Margaret keeps the folder herself — the paid-for PDF, the medication list, the retellings — because the only person who still holds her whole history is her. Continuity survives as a document, carried by its subject.</p>
+          <div class="mini">From the data: the void is real — a decade without a doctor, described first-hand; the file outlives the relationship.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<section class="corpus"><div class="wrap">
+  <div class="chead reveal"><div class="ck">Pillar 4 · the corpus in numbers</div><h2>What the 723 continuity posts are about</h2></div>
+  <div class="reveal">
+      <div class="gbar"><span class="gterm">General care talk</span><span class="gtrack"><span class="gfill" style="width:100%"></span></span><span class="gval">377 · 52.1%</span></div>
+      <div class="gbar"><span class="gterm">Doctor retired / left</span><span class="gtrack"><span class="gfill" style="width:11%"></span></span><span class="gval">42 · 5.8%</span></div>
+      <div class="gbar"><span class="gterm">Walk-in discontinuity</span><span class="gtrack"><span class="gfill" style="width:10%"></span></span><span class="gval">36 · 5.0%</span></div>
+      <div class="gbar"><span class="gterm">Long-term relationship</span><span class="gtrack"><span class="gfill" style="width:7%"></span></span><span class="gval">25 · 3.5%</span></div>
+      <div class="gbar"><span class="gterm">Switching doctors</span><span class="gtrack"><span class="gfill" style="width:5%"></span></span><span class="gval">17 · 2.4%</span></div>
+      <div class="gbar"><span class="gterm">Records &amp; transfer</span><span class="gtrack"><span class="gfill" style="width:4%"></span></span><span class="gval">16 · 2.2%</span></div>
+      <div class="gbar"><span class="gterm">Follow-up over time</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">13 · 1.8%</span></div>
+      <div class="gbar"><span class="gterm">Knows me / my history</span><span class="gtrack"><span class="gfill" style="width:1%"></span></span><span class="gval">3 · 0.4%</span></div>
+      <div class="gbar"><span class="gterm">Other</span><span class="gtrack"><span class="gfill" style="width:51%"></span></span><span class="gval">194 · 26.8%</span></div>
+      <div class="gcap">100% comments — zero original posts in 89,398. The diffuseness is the finding: continuity appears only incidentally, usually at the moment it breaks.</div>
+      <div class="gsplit">
+        <div class="gcard"><div class="gt">Years with one doctor (cited)</div><div class="gl">10 y ×6 · 5 y ×5 · 25 y ×4 · 15 y ×4 · 13–14 y</div></div>
+        <div class="gcard"><div class="gt">Record fees after retirement</div><div class="gl">$30 · $125 per person · $200+ (against a 10-year chart-storage obligation)</div></div>
+      </div>
+  </div>
+</div></section>
+
+<div class="close">
+  <h2>In 89,398 posts, no one ever started a thread about continuity.</h2>
+  <p>That is this pillar's strangest, saddest finding. All 723 continuity posts are replies — <span class="big">zero are original posts</span>. Nobody asks the internet for someone who knows them, because that isn't something you can search for, wait-list, or walk into. It only becomes visible at the moment it ends: a retirement letter, a records invoice, a stranger asking you to start from the beginning.</p>
+  <p>Continuity was never in the building. It was in one person's memory of you — and in this system, memory retires too.</p>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="fl"><b>Method.</b> "Margaret" is a composite persona. Her story is assembled from the 723 posts classified as Continuity under Starfield's 4C framework — 0.8% of the 89,398-post corpus, and notably <b>100% comments (zero original posts)</b>. Specific themes are small and diffuse: doctor retiring/leaving 5.8%, walk-in discontinuity 5.8%, long-term relationships 3.5%, records &amp; transfer 3.0%; the remainder is general care discussion in which continuity surfaces incidentally. Years, fees ($30, $125, $200+), and situations are paraphrased from real posts. No detail is invented and no individual is identified.</p>
+    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit, Canadian primary-care discourse, January 2021 – August 2025 · n = 89,398 (Continuity = 723) · Memorial University, Faculty of Medicine.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce) document.body.classList.add('go');
+  var NS='http://www.w3.org/2000/svg';
+
+  // hero isotype: 100 figures, Margaret highlighted
+  var svg=document.getElementById('heroIso');
+  if(svg){
+    var cols=20,total=100,vb=svg.viewBox.baseVal,cw=vb.width/cols,rows=5,ch=vb.height/rows;
+    var pw=cw*0.56,ph=ch*0.74,ox=(cw-pw)/2,oy=(ch-ph)/2, mgIdx=55;
+    for(var i=0;i<total;i++){
+      var r=Math.floor(i/cols),c=i%cols, isM=(i===mgIdx);
+      var gx=c*cw+ox, gy=r*ch+oy, w=pw, h=ph;
+      if(isM){w=pw*1.5;h=ph*1.5;gx-=(w-pw)/2;gy-=(h-ph)/2;}
+      var u=document.createElementNS(NS,'use');
+      u.setAttribute('href','#mini');u.setAttributeNS('http://www.w3.org/1999/xlink','href','#mini');
+      u.setAttribute('x',gx.toFixed(2));u.setAttribute('y',gy.toFixed(2));
+      u.setAttribute('width',w.toFixed(2));u.setAttribute('height',h.toFixed(2));
+      u.setAttribute('fill', isM?'#E0714A':'#3F5A56');
+      if(!reduce){u.style.opacity='0';u.style.transition='opacity .4s ease';u.style.transitionDelay=(i*7)+'ms';}
+      svg.appendChild(u);
+    }
+    var sr=Math.floor(mgIdx/cols), sc=mgIdx%cols, lx=(sc*cw+cw/2), ly=(sr*ch+oy)-4;
+    var t=document.createElementNS(NS,'text');t.setAttribute('x',lx);t.setAttribute('y',ly-6);
+    t.setAttribute('text-anchor','middle');t.setAttribute('style','font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;fill:#F2A07C');
+    t.textContent='Margaret';svg.appendChild(t);
+    if(!reduce){requestAnimationFrame(function(){requestAnimationFrame(function(){var us=svg.querySelectorAll('use');for(var k=0;k<us.length;k++)us[k].style.opacity='1';});});}
+  }
+
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
+  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  /* ============ 3D: THE GOLDEN THREAD ============ */
+  var fb=document.getElementById('fallback');
+  if(!window.THREE){ if(fb) fb.style.display='block'; return; }
+  var hero=document.querySelector('.hero3d'), stage=document.getElementById('stage');
+  var W=stage.clientWidth,H=stage.clientHeight;
+
+  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x07080C,0.012);
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,600);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+
+  var world=new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x3a3f4a,0.9));
+  var key=new THREE.DirectionalLight(0xd8d2c2,0.3); key.position.set(8,24,14); scene.add(key);
+
+  var floor=new THREE.Mesh(new THREE.PlaneGeometry(260,260),new THREE.MeshStandardMaterial({color:0x0A0C11,roughness:0.32,metalness:0.72,transparent:true,opacity:0.95}));
+  floor.rotation.x=-Math.PI/2; floor.position.y=-0.02; world.add(floor);
+
+  // ---- the thread: 25 years, x -32 → 0 ----
+  var cpts=[]; for(var i=0;i<=16;i++){var x=-32+i*2; cpts.push(new THREE.Vector3(x, 2.6+Math.sin(i*0.7)*0.5, Math.sin(i*0.45)*1.3));}
+  var curve=new THREE.CatmullRomCurve3(cpts);
+  var GOLD=0xE8C46A;
+  var thread=new THREE.Mesh(new THREE.TubeGeometry(curve,240,0.085,10,false),new THREE.MeshStandardMaterial({color:GOLD,emissive:GOLD,emissiveIntensity:0.85,roughness:0.3,metalness:0.5}));
+  world.add(thread);
+  var threadGlow=new THREE.Mesh(new THREE.TubeGeometry(curve,120,0.24,8,false),new THREE.MeshBasicMaterial({color:0xF6DE9E,transparent:true,opacity:0.10,depthWrite:false,blending:THREE.AdditiveBlending}));
+  world.add(threadGlow);
+
+  // year beads + labels
+  function labSprite(txt,hex,wd){var cv=document.createElement('canvas');cv.width=620;cv.height=104;var x=cv.getContext('2d');
+    if(hex){x.fillStyle=hex;x.fillRect(0,0,620,104);x.strokeStyle='rgba(255,255,255,.32)';x.lineWidth=5;x.strokeRect(7,7,606,90);}
+    x.textAlign='center';x.textBaseline='middle';x.fillStyle=hex?'#fff':'#F1E7CE';x.font='600 40px "IBM Plex Mono", monospace';x.fillText(txt,310,54);
+    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(wd,wd*104/620,1);return sp;}
+  [[0.03,'YEAR 1'],[0.22,'YEAR 5'],[0.42,'YEAR 10'],[0.62,'YEAR 15'],[0.81,'YEAR 20'],[0.985,'YEAR 25']].forEach(function(b){
+    var pt=curve.getPointAt(b[0]);
+    var bead=new THREE.Mesh(new THREE.SphereGeometry(0.17,12,10),new THREE.MeshStandardMaterial({color:0xFFF0C4,emissive:GOLD,emissiveIntensity:1.0}));
+    bead.position.copy(pt); world.add(bead);
+    var l=labSprite(b[1],null,1.9); l.position.set(pt.x,pt.y+0.85,pt.z); world.add(l);
+  });
+  var docLab=labSprite('ONE DOCTOR · 25 YEARS','#2E7D72',3.9); var mp=curve.getPointAt(0.42); docLab.position.set(mp.x,mp.y+2.1,mp.z); world.add(docLab);
+
+  // fray at the break (end of curve, x≈0)
+  var E=curve.getPointAt(1.0);
+  var frays=[];
+  for(var i=0;i<7;i++){
+    var len=0.9+Math.random()*0.9;
+    var f=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.02,len,6),new THREE.MeshStandardMaterial({color:GOLD,emissive:GOLD,emissiveIntensity:0.9}));
+    var dir=new THREE.Vector3(0.75+Math.random()*0.5,(Math.random()-0.5)*0.9,(Math.random()-0.5)*0.9).normalize();
+    f.position.copy(E).addScaledVector(dir,len/2);
+    f.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);
+    world.add(f); frays.push(f);
+  }
+  var snapL=new THREE.PointLight(0xFF7A50,1.6,14); snapL.position.set(E.x+0.4,E.y,E.z); world.add(snapL);
+  // sparks
+  var SPN=90, spArr=new Float32Array(SPN*3), spSeed=[];
+  for(var i=0;i<SPN;i++){spSeed.push({a:Math.random()*6.28,b:Math.random()*6.28,r:0.2+Math.random()*1.6,s:0.6+Math.random()*1.6});}
+  var spGeo=new THREE.BufferGeometry(); spGeo.setAttribute('position',new THREE.BufferAttribute(spArr,3));
+  var sparks=new THREE.Points(spGeo,new THREE.PointsMaterial({color:0xFF8A5C,size:0.09,transparent:true,opacity:0.85,depthWrite:false,blending:THREE.AdditiveBlending}));
+  world.add(sparks);
+  var snapLab=labSprite('THE RETIREMENT · THE SNAP','#D85A30',4.2); snapLab.position.set(E.x+0.4,E.y+2.0,E.z); snapLab.material.opacity=0; world.add(snapLab);
+
+  // Margaret at the break
+  var mgMat=new THREE.MeshStandardMaterial({color:0xFFFFFF,emissive:0x554433,emissiveIntensity:0.28,roughness:0.45,metalness:0.2});
+  var mgB=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.26,0.62,10),mgMat); mgB.position.set(E.x+1.1,0.34,E.z+0.4); world.add(mgB);
+  var mgH=new THREE.Mesh(new THREE.SphereGeometry(0.19,12,10),mgMat); mgH.position.set(E.x+1.1,0.82,E.z+0.4); world.add(mgH);
+  var mgRing=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.05,10,32),new THREE.MeshBasicMaterial({color:0xFFFFFF})); mgRing.rotation.x=-Math.PI/2; mgRing.position.set(E.x+1.1,0.05,E.z+0.4); world.add(mgRing);
+  var mgLab=labSprite('Margaret \u25BC',null,2.5); mgLab.position.set(E.x+1.1,1.9,E.z+0.4); world.add(mgLab);
+  var mgLight=new THREE.PointLight(0xFFF0D8,0.9,7); mgLight.position.set(E.x+1.1,1.7,E.z+0.4); world.add(mgLight);
+
+  // fragments after the gap (x 7 → 26)
+  var STEEL=0x7C8AA0, TEAL=0x35C4B5;
+  var FR=[], frLabels=[];
+  var frDefs=[
+    {x:8.5,y:2.4,z:-2.2,len:1.6,c:STEEL,t:'WALK-IN'},
+    {x:11,y:3.6,z:2.6,len:1.3,c:STEEL,t:null},
+    {x:13.5,y:1.9,z:-0.8,len:2.1,c:STEEL,t:'A DIFFERENT DOCTOR'},
+    {x:15.5,y:4.2,z:-3.2,len:1.2,c:STEEL,t:null},
+    {x:17,y:2.8,z:3.4,len:1.7,c:STEEL,t:'TELEHEALTH'},
+    {x:19,y:1.6,z:0.6,len:1.4,c:STEEL,t:null},
+    {x:20.5,y:4.6,z:-1.6,len:1.2,c:STEEL,t:'THE ER'},
+    {x:22,y:2.2,z:2.2,len:1.5,c:STEEL,t:null},
+    {x:12.5,y:5.2,z:0.9,len:1.1,c:STEEL,t:null},
+    {x:18.2,y:5.4,z:2.0,len:1.0,c:STEEL,t:null},
+    {x:25.5,y:2.8,z:-0.6,len:2.6,c:TEAL,t:'A NEW DOCTOR · YEARS LATER'}
+  ];
+  frDefs.forEach(function(d){
+    var m=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,d.len,8),new THREE.MeshStandardMaterial({color:d.c,emissive:d.c,emissiveIntensity:d.c===TEAL?0.8:0.35,roughness:0.4,metalness:0.4}));
+    m.position.set(d.x,d.y,d.z);
+    m.rotation.set(Math.random()*0.9-0.45,Math.random()*3.14,1.2+Math.random()*0.8);
+    m.material.transparent=true; m.material.opacity=0;
+    world.add(m); FR.push({m:m,ph:Math.random()*6.28});
+    if(d.t){var l=labSprite(d.t,d.c===TEAL?'#1E6E62':'#4A5568',d.t.length>12?4.4:2.9); l.position.set(d.x,d.y+1.1,d.z); l.material.opacity=0; world.add(l); frLabels.push(l);}
+  });
+
+  // motes
+  var MC=260, mpArr=new Float32Array(MC*3), ms=new Float32Array(MC);
+  for(var i=0;i<MC;i++){mpArr[i*3]=-34+Math.random()*64;mpArr[i*3+1]=Math.random()*14;mpArr[i*3+2]=(Math.random()-0.5)*24;ms[i]=0.003+Math.random()*0.008;}
+  var mgeo=new THREE.BufferGeometry(); mgeo.setAttribute('position',new THREE.BufferAttribute(mpArr,3));
+  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0xEFE3C2,size:0.07,transparent:true,opacity:0.4,depthWrite:false,blending:THREE.AdditiveBlending})));
+
+  // traveling pulse (her years passing)
+  var pulse=new THREE.Mesh(new THREE.SphereGeometry(0.2,12,10),new THREE.MeshBasicMaterial({color:0xFFF6D8}));
+  var pulseL=new THREE.PointLight(0xFFE9B0,1.5,9); world.add(pulse); world.add(pulseL);
+
+  var prog=0; function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
+  window.addEventListener('scroll',calc,{passive:true}); calc();
+  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+  function lp(a,b,t){return a+(b-a)*t;}
+
+  var KF=[
+    {p:0.00,pos:[-30,3.6,8.5],look:[-24,2.6,0]},
+    {p:0.25,pos:[-15,3.4,8],look:[-9,2.6,0]},
+    {p:0.50,pos:[0.5,3.2,8],look:[0.8,2.3,0]},
+    {p:0.75,pos:[14,4.6,10.5],look:[15,2.6,0]},
+    {p:1.00,pos:[9,15,27],look:[-1,2.2,0]}
+  ];
+  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);
+    camera.position.set(lp(A.pos[0],B.pos[0],t),lp(A.pos[1],B.pos[1],t),lp(A.pos[2],B.pos[2],t));
+    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));}
+
+  var dragRot=0,dragging=false,lastX=0;
+  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
+  window.addEventListener('pointerup',function(){dragging=false;});
+  var capsEls=[].slice.call(document.querySelectorAll('.cap')), cue=document.getElementById('cue');
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var p=prog, time=Date.now()*0.001;
+    camAt(p); world.rotation.y=dragRot;
+
+    // pulse travels the 25 years during first half
+    var pt=curve.getPointAt(Math.min(0.999,sm(p,0.02,0.5)));
+    pulse.position.copy(pt); pulseL.position.copy(pt);
+    pulse.scale.setScalar(1+Math.sin(time*3)*0.15);
+
+    // snap intensity grows near/after the break
+    var sv=sm(p,0.42,0.6);
+    snapL.intensity=0.4+sv*(1.3+Math.sin(time*7)*0.5);
+    snapLab.material.opacity=sv;
+    for(var i=0;i<SPN;i++){var s2=spSeed[i];
+      var rr=s2.r*(0.6+0.4*Math.sin(time*s2.s+s2.a));
+      spArr[i*3]=E.x+0.4+Math.cos(s2.a+time*s2.s)*rr*0.7;
+      spArr[i*3+1]=E.y+Math.sin(s2.b+time*s2.s*1.3)*rr*0.6;
+      spArr[i*3+2]=E.z+Math.sin(s2.a+time*s2.s)*rr*0.7;}
+    spGeo.attributes.position.needsUpdate=true;
+    sparks.material.opacity=0.25+sv*0.6;
+
+    // fragments drift in (beat 3)
+    var fv=sm(p,0.5,0.7);
+    for(var i=0;i<FR.length;i++){var f=FR[i];
+      f.m.material.opacity=fv;
+      f.m.position.y+=Math.sin(time*0.8+f.ph)*0.0022;
+      f.m.rotation.y+=0.0015;}
+    for(var i=0;i<frLabels.length;i++){frLabels[i].material.opacity=fv;}
+
+    // motes drift
+    var ma=mgeo.attributes.position.array;
+    for(var i=0;i<MC;i++){ma[i*3+1]+=ms[i]; if(ma[i*3+1]>15)ma[i*3+1]=0;}
+    mgeo.attributes.position.needsUpdate=true;
+
+    // Margaret breath
+    var bob=Math.sin(time*1.6)*0.03;
+    mgB.position.y=0.34+bob; mgH.position.y=0.82+bob; mgLab.position.y=1.9+bob;
+    mgRing.scale.setScalar(1+Math.sin(time*2.2)*0.06);
+
+    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o2=Math.min(sm(p,lo,lo+0.05),1-sm(p,hi-0.05,hi));capsEls[i].style.opacity=Math.max(0,o2);}
+    if(cue) cue.style.opacity=(p>0.05?0:1);
+    var bd=document.getElementById('beatdots');if(bd){var bi=p<0.215?0:p<0.485?1:p<0.745?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    
+    renderer.render(scene,camera);
+  }
+  animate(); if(fb) fb.style.display='none';
+  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+})();
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mini" viewBox="0 0 20 24"><circle cx="10" cy="5.4" r="4.1"/><path d="M2.4 23.5C2.4 15 5 11.8 10 11.8C15 11.8 17.6 15 17.6 23.5Z"/></symbol>
+</defs></svg>
+</body>
+</html>

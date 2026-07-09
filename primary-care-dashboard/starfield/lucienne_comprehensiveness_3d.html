@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything, Except — Lucienne and the Limits of "Comprehensive"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
+  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#122F2C;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;--ice:#9ADCF0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
+
+/* 3D HOLOGRAM HERO — indigo space */
+.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%, #17234E 0%, #0A1230 46%, #04060F 100%)}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#stage{position:absolute;inset:0;touch-action:pan-y;cursor:grab}#stage:active{cursor:grabbing}#stage canvas{display:block}
+.h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(4,6,15,.92),rgba(4,6,15,.5) 50%,transparent);pointer-events:none}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#8FB0D6}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:600;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#D9F6FF,#57C7E8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F0F6FA;font-weight:500;font-size:25px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#A9C7DE;margin:12px auto 0;max-width:480px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#8FB0D6;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#A9C7DE;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+
+/* PERSONA HERO */
+.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--coral);border-bottom:3px solid var(--coral);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(216,90,48,.18),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.heroIso{width:100%;height:auto;display:block;max-width:520px}
+.herocap{font-family:var(--font-mono);font-size:12.5px;line-height:1.6;color:var(--hero-mut);max-width:520px;margin-top:14px}
+.herocap b{color:#F2A07C;font-weight:600}
+
+.who{max-width:760px;margin:46px auto 6px;padding:0 26px}
+.whocard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.whocard .lbl{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:10px}
+.whocard p{font-size:17px;line-height:1.62;margin:0}
+.whocard p b{font-weight:500}
+
+/* TIMELINE */
+.tlwrap{padding:40px 0 30px}
+.stage{display:flex;gap:20px;padding-bottom:26px;position:relative}
+.rail{position:relative;width:50px;flex:none;display:flex;justify-content:center}
+.rail .line{position:absolute;top:6px;bottom:-26px;width:2px;background:var(--line)}
+.stage:last-child .rail .line,.stage.fork .rail .line{display:none}
+.med{position:relative;z-index:2;width:50px;height:50px;border-radius:50%;background:#fff;border:2px solid var(--coral);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(216,90,48,.16)}
+.med svg{width:24px;height:24px;stroke:var(--coral);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.scard{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px 20px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.time{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--coral);padding:4px 11px;border-radius:999px;margin-bottom:11px}
+.elapsed{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-left:10px;letter-spacing:.02em}
+.scard h3{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:0 0 9px;line-height:1.18}
+.scard p{font-size:16.5px;line-height:1.62;margin:0 0 14px;color:#23302D}
+.scene{margin:2px 0 14px}.scene svg{width:100%;height:auto;display:block;max-width:430px}
+.dchip{display:flex;gap:9px;align-items:flex-start;font-family:var(--font-mono);font-size:12px;line-height:1.5;color:var(--coral-deep);background:#FBEDE6;border:1px solid #F3D8CC;border-radius:9px;padding:9px 12px}
+.dchip svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:2;flex:none;margin-top:1px}
+.dchip b{color:#8A331A;font-weight:600}
+
+.forkhead{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:14px 0 18px;text-align:center}
+.fork2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ocard{border-radius:14px;padding:20px 22px;border:1px solid var(--line);background:#fff}
+.ocard.win{border-color:#BFE0CF;background:linear-gradient(180deg,#F2FAF5,#fff)}
+.ocard.real{border-color:#E3D9D2;background:linear-gradient(180deg,#FAF6F2,#fff)}
+.ocard .otag{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.ocard.win .otag{color:#2E7D5B}.ocard.real .otag{color:#9A6A4A}
+.ocard h4{font-family:var(--font-display);font-weight:600;font-size:18px;margin:0 0 9px}
+.ocard p{font-size:15.5px;line-height:1.58;margin:0 0 12px;color:#28332F}
+.ocard .mini{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+
+.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--coral)}
+.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+
+.reveal{opacity:0;transform:translateY(14px)}
+body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+@media (max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}.who{padding:0 18px}.close{padding-left:18px;padding-right:18px}
+  .cap .big{font-size:44px}.cap h2{font-size:19px}.cap p{font-size:11.5px}
+  .hero h1{font-size:36px}.hero .dek{font-size:17px}
+  .rail{width:42px}.med{width:42px;height:42px}.med svg{width:20px;height:20px}.stage{gap:14px}
+  .fork2{grid-template-columns:1fr}
+}
+
+/* corpus graphs */
+.corpus{margin:10px 0 4px}
+.chead .ck{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-deep)}
+.chead h2{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:6px 0 16px}
+.gbar{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.gterm{flex:0 0 200px;font-family:var(--font-mono);font-size:12.5px;font-weight:500;line-height:1.3}
+.gtrack{flex:1;height:9px;background:var(--track);overflow:hidden;min-width:50px}
+.gfill{display:block;height:100%;background:var(--coral)}
+.gval{flex:0 0 122px;text-align:right;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.gcap{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.65}
+.gsplit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.gcard{border:1px solid var(--line);background:#fff;border-radius:12px;padding:15px 18px}
+.gcard .gt{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:8px}
+.gcard .gl{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:#23302D}
+@media (max-width:680px){.gterm{flex-basis:118px;font-size:11.5px}.gval{flex-basis:92px;font-size:11px}.gsplit{grid-template-columns:1fr}}
+
+/* 3d explainer & polish */
+.scenetag{position:absolute;top:52px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);padding:0 30px}
+.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.6)}
+@media (max-width:680px){.beatdots{right:10px}.scenetag{font-size:9.5px}}
+</style>
+</head>
+<body>
+
+<!-- ============ 3D HERO: THE HOLOGRAM ============ -->
+<section class="hero3d">
+  <div class="sticky">
+    <div id="stage"></div>
+    <div class="h3ov">
+      <div class="brand">Starfield's 4C Series · Pillar 2 · Comprehensiveness · n = 7,161</div>
+      <div class="scenetag">The scene · one patient as a hologram — her care orbiting in pieces</div>
+      <div class="cap" data-lo="0" data-hi="0.20"><div class="big">7,161</div><h2>posts ask a different question — not how to reach care, but what care covers</h2></div>
+      <div class="cap" data-lo="0.23" data-hi="0.47"><h2>Every need in her life orbits one body</h2><p>The mind · prescriptions · screening · chronic conditions · children · teeth and eyes — each tethered to the person "comprehensive" is supposed to mean.</p></div>
+      <div class="cap" data-lo="0.50" data-hi="0.73"><h2>Covered, stopgapped, or simply outside</h2><p>Teal — the family doctor's. Gold — the pharmacist's rescue. Coral — the mind, the mouth, the eyes: behind a referral wall, or never insured at all.</p></div>
+      <div class="cap" data-lo="0.76" data-hi="1.02"><h2>Meet Lucienne.</h2><p>She has a family doctor — the lucky half. This is the year she learns what that actually covers. Scroll on.</p></div>
+      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8FB0D6" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">Loading the 3D scene… if it doesn't appear, the story is just below — scroll down.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LUCIENNE HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">A research composite · pillar 2 of 4 · comprehensiveness</div>
+    <h1>Everything, except</h1>
+    <p class="dek">Lucienne is built from the 7,161 posts about what primary care covers. She has a family doctor — she is the lucky half. Her year is about discovering the edges of the word "comprehensive."</p>
+    <svg id="heroIso" class="heroIso" viewBox="0 0 480 132" role="img" aria-label="A crowd of 100 figures with one, Lucienne, highlighted in coral"></svg>
+    <div class="herocap">Find <b>Lucienne</b> in the crowd. Every cost, wait, and closed door in her story is drawn from the real posts — nothing is invented.</div>
+  </div>
+</header>
+
+<div class="who">
+  <div class="whocard reveal">
+    <div class="lbl">Who is Lucienne?</div>
+    <p>Lucienne is a <b>composite</b> — one person assembled from the thousands who wrote about the <b>range</b> of care: what a family doctor handles, what a pharmacist rescues, what needs a referral, and what was never insured at all. Her year is a braid of their years. She is fiction in name only. The numbers are the data's.</p>
+  </div>
+</div>
+
+<main class="tlwrap">
+<div class="wrap">
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9M16 3h5v5M21 3l-7 7"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Day 0</span><span class="elapsed">the lucky half</span>
+      <h3>The annual physical</h3>
+      <p>Lucienne has what half the country is searching for: a family doctor. The annual check-up is the system at its best — blood work, blood pressure, the screening questions. For everything this visit covers, primary care works exactly as promised.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · preventive care &amp; screening is the headline of <b>9.2%</b> of this pillar's posts and touches <b>14.4%</b> — the part of "comprehensive" that mostly delivers.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M12 3a7 7 0 017 7c0 3-2 4.5-2 7h-10c0-2.5-2-4-2-7a7 7 0 017-7zM9 21h6"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Week 3</span><span class="elapsed">the first edge</span>
+      <h3>She asks about her anxiety</h3>
+      <p>At the end of the visit, Lucienne mentions the anxiety. Her doctor listens, and can prescribe — that much is covered. But therapy? People in the posts spell out what Lucienne learns now: seeing a psychologist or therapist in private practice isn't covered by the provincial plan. A psychiatrist is covered, but the referral is, as one commenter puts it, generally for prescriptions.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · mental health is this pillar's <b>largest theme — 34.4%</b> of all 7,161 posts. Therapy sessions are cited around <b>$100–$200</b>, some <b>$400+</b>, and described as <b>not covered</b> by provincial plans.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 2</span><span class="elapsed">the price of a diagnosis</span>
+      <h3>The ADHD question</h3>
+      <p>Lucienne has wondered about ADHD for years. Her doctor won't prescribe a controlled medication without a proper diagnosis from a psychiatrist — a rule the posts repeat often. The public route is a long referral queue. The private route is an assessment with a four-figure price tag. Lucienne puts it off. The posts are full of people putting it off.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><div>From the data · private assessments are cited at <b>$2,000–$5,000</b>. The most-cited waits in mental-health and referral contexts: <b>6 months (172×)</b> and <b>3 months (125×)</b>.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M12 21C7 17 3 13.5 3 9.5A4.5 4.5 0 017.5 5c1.8 0 3.4 1 4.5 2.5C13.1 6 14.7 5 16.5 5A4.5 4.5 0 0121 9.5c0 4-4 7.5-9 11.5z"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 4</span><span class="elapsed">a condition for life</span>
+      <h3>The diagnosis: type 2 diabetes</h3>
+      <p>The blood work comes back. Now Lucienne is a chronic patient — the kind of patient, the posts note bitterly, some doctors quietly avoid taking on because complex care is unpaid work. Her own doctor manages the basics. For the rest, she's pointed somewhere unexpected: the pharmacy, where some chains keep a diabetes educator on staff.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · chronic conditions run through <b>11.6%</b> of this pillar. Posts describe patients with diabetes being <b>declined</b> by physicians, and pharmacies staffing <b>diabetes teaching</b> to fill the gap.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M10 3h4l1 5h-6zM8 8h8l1.5 13h-11zM10 13h4"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 6</span><span class="elapsed">the quiet rescue</span>
+      <h3>The pharmacist steps in</h3>
+      <p>Lucienne's prescription runs out while her doctor's office is booked solid. The fix comes from across the counter: the pharmacist issues an emergency refill to bridge her to her appointment — a power the posts describe pharmacists using constantly, along with vaccinations and, in some provinces, prescribing for minor conditions. Nobody planned the pharmacist as a pillar of primary care. The data says they've become one.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div>From the data · pharmacist-delivered care is the <b>second-largest theme</b>: <b>12.1%</b> of posts as the main subject, touched by <b>19.6%</b> — emergency refills, renewals, vaccines, minor ailments.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8" transform="rotate(45 12 12)"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 8</span><span class="elapsed">outside the circle</span>
+      <h3>The tooth, and the eyes</h3>
+      <p>A cracked molar, and a prescription for glasses. Lucienne discovers the oldest edge of all: dental and vision were never inside Medicare to begin with. No referral, no waitlist — just a bill. The posts say the quiet part out loud: make mental health, dental, vision, and hearing part of the provincial plans. Until then, the body Canada covers ends at the mouth and the eyes.</p>
+      <div class="scene"><svg viewBox="0 0 430 100" aria-hidden="true">
+        <circle cx="120" cy="50" r="42" fill="none" stroke="#2E7D72" stroke-width="2.2"/>
+        <text x="120" y="43" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#2E7D72;font-weight:600">MEDICARE</text>
+        <text x="120" y="60" text-anchor="middle" style="font-family:'Space Grotesk',sans-serif;font-size:12px;fill:#16211F">the body</text>
+        <g style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600">
+          <circle cx="255" cy="26" r="15" fill="#FBEDE6" stroke="#D85A30" stroke-width="1.6"/><text x="279" y="30" fill="#8A331A">the mind</text>
+          <circle cx="255" cy="62" r="15" fill="#FBEDE6" stroke="#D85A30" stroke-width="1.6"/><text x="279" y="66" fill="#8A331A">the mouth</text>
+          <circle cx="255" cy="90" r="15" fill="#FBEDE6" stroke="#D85A30" stroke-width="1.6"/><text x="279" y="94" fill="#8A331A">the eyes</text>
+        </g>
+      </svg></div>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg><div>From the data · dental, vision &amp; allied care appear in <b>12.0%</b> of posts — overwhelmingly as things <b>not insured</b>; repeated calls to add <b>dental, vision, hearing, mental health</b> to provincial coverage.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M9 20l-5-2V4l5 2 6-2 5 2v14l-5-2-6 2zM9 6v14M15 4v14"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Year 1</span><span class="elapsed">the map of her care</span>
+      <h3>One patient, six addresses</h3>
+      <p>By year's end, Lucienne's "comprehensive" care has a map: the doctor's office for the body, the pharmacy for the bridge, a psychiatrist's waitlist for the mind, a private therapist she pays for when she can, a dentist and an optometrist she pays for always. She has a family doctor — and still, most weeks, her health care happens somewhere else.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · the word is "comprehensive"; the pattern across <b>7,161 posts</b> is a patchwork — care split by what's covered, stopgapped, or excluded.</div></div>
+    </div>
+  </div>
+
+  <div class="stage fork reveal">
+    <div class="rail"><div class="med" style="border-color:#9A6A4A"><svg viewBox="0 0 24 24" style="stroke:#9A6A4A"><path d="M3 12h18M3 12l4-4M3 12l4 4"/></svg></div></div>
+    <div class="scard" style="border:none;background:none;box-shadow:none;padding:6px 0 0">
+      <div class="forkhead">And then her story splits — the way the data does</div>
+      <div class="fork2">
+        <div class="ocard win">
+          <div class="otag">The rare win</div>
+          <h4>The referral finally lands</h4>
+          <p>Months later, the psychiatrist consult comes through — the diagnosis, and coverage for the medication that follows. A nurse practitioner or team clinic bundles more of her care under one roof. The circle, for Lucienne, widens.</p>
+          <div class="mini">From the data: psychiatrists <b>are</b> covered once reached; the most-cited referral waits are <b>3–6 months</b>.</div>
+        </div>
+        <div class="ocard real">
+          <div class="otag">The common reality</div>
+          <h4>The patchwork holds</h4>
+          <p>For most, the edges stay where they are. Therapy stays out of pocket or out of reach; the assessment stays unaffordable; the teeth wait for a crisis. People cite waits stretching years — and budgets that decide what "health" includes.</p>
+          <div class="mini">From the data: waits cited in this pillar run to <b>2 years (173×)</b> and <b>5 years (107×)</b>; therapy at <b>$100–$200+/session</b>, assessments <b>$2,000–$5,000</b>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<section class="corpus"><div class="wrap">
+  <div class="chead reveal"><div class="ck">Pillar 2 · the corpus in numbers</div><h2>What the 7,161 comprehensiveness posts are about</h2></div>
+  <div class="reveal">
+      <div class="gbar"><span class="gterm">Mental-health scope</span><span class="gtrack"><span class="gfill" style="width:100%"></span></span><span class="gval">2,461 · 34.4%</span></div>
+      <div class="gbar"><span class="gterm">System &amp; coverage debate</span><span class="gtrack"><span class="gfill" style="width:48%"></span></span><span class="gval">1,189 · 16.6%</span></div>
+      <div class="gbar"><span class="gterm">Pharmacist scope</span><span class="gtrack"><span class="gfill" style="width:35%"></span></span><span class="gval">865 · 12.1%</span></div>
+      <div class="gbar"><span class="gterm">Screening &amp; prevention</span><span class="gtrack"><span class="gfill" style="width:27%"></span></span><span class="gval">657 · 9.2%</span></div>
+      <div class="gbar"><span class="gterm">General scope of practice</span><span class="gtrack"><span class="gfill" style="width:22%"></span></span><span class="gval">530 · 7.4%</span></div>
+      <div class="gbar"><span class="gterm">Chronic management</span><span class="gtrack"><span class="gfill" style="width:14%"></span></span><span class="gval">345 · 4.8%</span></div>
+      <div class="gbar"><span class="gterm">Dental, vision &amp; allied</span><span class="gtrack"><span class="gfill" style="width:11%"></span></span><span class="gval">277 · 3.9%</span></div>
+      <div class="gbar"><span class="gterm">Children's care</span><span class="gtrack"><span class="gfill" style="width:8%"></span></span><span class="gval">186 · 2.6%</span></div>
+      <div class="gbar"><span class="gterm">Sexual health</span><span class="gtrack"><span class="gfill" style="width:5%"></span></span><span class="gval">117 · 1.6%</span></div>
+      <div class="gbar"><span class="gterm">Referred out / not offered</span><span class="gtrack"><span class="gfill" style="width:5%"></span></span><span class="gval">116 · 1.6%</span></div>
+      <div class="gbar"><span class="gterm">Walk-in scope limits</span><span class="gtrack"><span class="gfill" style="width:4%"></span></span><span class="gval">92 · 1.3%</span></div>
+      <div class="gbar"><span class="gterm">Women's health</span><span class="gtrack"><span class="gfill" style="width:1%"></span></span><span class="gval">36 · 0.5%</span></div>
+      <div class="gbar"><span class="gterm">Other</span><span class="gtrack"><span class="gfill" style="width:12%"></span></span><span class="gval">290 · 4.0%</span></div>
+      <div class="gcap">Each post counted once by primary theme · named coverage 96.0% · 85% comments.</div>
+      <div class="gsplit">
+        <div class="gcard"><div class="gt">Cited out-of-pocket costs</div><div class="gl">therapy per session: $200 ×13 · $100 ×8 · $400 ×6 · $150 ×4<br>ADHD assessment: $2,000 ×7 · $5,000 ×4 · $3,500 ×3 · $3,000 ×3</div></div>
+        <div class="gcard"><div class="gt">Most-cited waits (MH / referral)</div><div class="gl">6 mo ×172 · 3 mo ×125<br>2 y ×173 · 5 y ×107 · 10 y ×69</div></div>
+      </div>
+  </div>
+</div></section>
+
+<div class="close">
+  <h2>Lucienne has a doctor. She still doesn't have comprehensive care.</h2>
+  <p>That is this pillar's finding, assembled from 7,161 posts: coverage draws a circle around the body — and leaves the mind to a referral wall, the mouth and the eyes to the market, and the gaps in between to the pharmacist. Getting in the door, it turns out, is only the first pillar. The second is what's actually behind it.</p>
+  <p>The posts don't ask for luxury. They ask, again and again, for the same short list: <span class="big">mental health, dental, vision, hearing — inside the plan.</span></p>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="fl"><b>Method.</b> "Lucienne" is a composite persona. Her year is assembled from the 7,161 posts and comments classified as Comprehensiveness under Starfield's 4C framework (8.0% of the 89,398-post corpus; 85% comments, 15% original posts). Named themes cover 96% of the pillar. Costs and waits are the most frequently cited values in the relevant contexts; situations are paraphrased from real posts. No detail is invented and no individual is identified.</p>
+    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit, Canadian primary-care discourse, January 2021 – August 2025 · n = 89,398 (Comprehensiveness = 7,161) · Memorial University, Faculty of Medicine.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce) document.body.classList.add('go');
+  var NS='http://www.w3.org/2000/svg';
+
+  // hero isotype: 100 figures, Lucienne highlighted
+  var svg=document.getElementById('heroIso');
+  if(svg){
+    var cols=20,total=100,vb=svg.viewBox.baseVal,cw=vb.width/cols,rows=5,ch=vb.height/rows;
+    var pw=cw*0.56,ph=ch*0.74,ox=(cw-pw)/2,oy=(ch-ph)/2, lucIdx=52;
+    for(var i=0;i<total;i++){
+      var r=Math.floor(i/cols),c=i%cols, isL=(i===lucIdx);
+      var gx=c*cw+ox, gy=r*ch+oy, w=pw, h=ph;
+      if(isL){w=pw*1.5;h=ph*1.5;gx-=(w-pw)/2;gy-=(h-ph)/2;}
+      var u=document.createElementNS(NS,'use');
+      u.setAttribute('href','#mini');u.setAttributeNS('http://www.w3.org/1999/xlink','href','#mini');
+      u.setAttribute('x',gx.toFixed(2));u.setAttribute('y',gy.toFixed(2));
+      u.setAttribute('width',w.toFixed(2));u.setAttribute('height',h.toFixed(2));
+      u.setAttribute('fill', isL?'#E0714A':'#3F5A56');
+      if(!reduce){u.style.opacity='0';u.style.transition='opacity .4s ease';u.style.transitionDelay=(i*7)+'ms';}
+      svg.appendChild(u);
+    }
+    var sr=Math.floor(lucIdx/cols), sc=lucIdx%cols, lx=(sc*cw+cw/2), ly=(sr*ch+oy)-4;
+    var t=document.createElementNS(NS,'text');t.setAttribute('x',lx);t.setAttribute('y',ly-6);
+    t.setAttribute('text-anchor','middle');t.setAttribute('style','font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;fill:#F2A07C');
+    t.textContent='Lucienne';svg.appendChild(t);
+    if(!reduce){requestAnimationFrame(function(){requestAnimationFrame(function(){var us=svg.querySelectorAll('use');for(var k=0;k<us.length;k++)us[k].style.opacity='1';});});}
+  }
+
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
+  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  /* ============ 3D: THE HOLOGRAM ============ */
+  var fb=document.getElementById('fallback');
+  if(!window.THREE){ if(fb) fb.style.display='block'; return; }
+  var hero=document.querySelector('.hero3d'), stage=document.getElementById('stage');
+  var W=stage.clientWidth,H=stage.clientHeight;
+
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,600);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+
+  var world=new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x25344f,0.9));
+  var cyanL=new THREE.PointLight(0x5FD8F0,1.4,40); cyanL.position.set(0,4.5,0); world.add(cyanL);
+  var rim=new THREE.DirectionalLight(0x8fb0d6,0.35); rim.position.set(-10,18,12); scene.add(rim);
+
+  // starfield
+  var SC=750, spos=new Float32Array(SC*3);
+  for(var i=0;i<SC;i++){var rr=60+Math.random()*160, th=Math.random()*Math.PI*2, phv=(Math.random()-0.5)*Math.PI;
+    spos[i*3]=Math.cos(th)*Math.cos(phv)*rr; spos[i*3+1]=Math.sin(phv)*rr*0.7+10; spos[i*3+2]=Math.sin(th)*Math.cos(phv)*rr;}
+  var sgeo=new THREE.BufferGeometry(); sgeo.setAttribute('position',new THREE.BufferAttribute(spos,3));
+  world.add(new THREE.Points(sgeo,new THREE.PointsMaterial({color:0xBFD8F2,size:0.16,transparent:true,opacity:0.7,depthWrite:false})));
+
+  // projector pad
+  var pad=new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.6,0.18,48),new THREE.MeshStandardMaterial({color:0x0D1830,roughness:0.4,metalness:0.7,emissive:0x11284a,emissiveIntensity:0.6}));
+  pad.position.y=0.09; world.add(pad);
+  var padRim=new THREE.Mesh(new THREE.TorusGeometry(2.32,0.045,10,64),new THREE.MeshBasicMaterial({color:0x6FE0F5}));
+  padRim.rotation.x=-Math.PI/2; padRim.position.y=0.19; world.add(padRim);
+  var pgCv=document.createElement('canvas'); pgCv.width=256; pgCv.height=256; var pgx=pgCv.getContext('2d');
+  var pg=pgx.createRadialGradient(128,128,8,128,128,128); pg.addColorStop(0,'rgba(120,225,245,0.8)'); pg.addColorStop(1,'rgba(120,225,245,0)');
+  pgx.fillStyle=pg; pgx.fillRect(0,0,256,256);
+  var padGlow=new THREE.Mesh(new THREE.PlaneGeometry(5.4,5.4),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(pgCv),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+  padGlow.rotation.x=-Math.PI/2; padGlow.position.y=0.21; world.add(padGlow);
+  var cone=new THREE.Mesh(new THREE.CylinderGeometry(1.15,2.2,7.6,32,1,true),new THREE.MeshBasicMaterial({color:0x7FE8FF,transparent:true,opacity:0.05,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+  cone.position.y=4.0; world.add(cone);
+
+  // hologram figure (Lucienne)
+  var fig=new THREE.Group(); world.add(fig);
+  var wireM=new THREE.MeshBasicMaterial({color:0x8FE9FF,wireframe:true,transparent:true,opacity:0.55});
+  var ghostM=new THREE.MeshBasicMaterial({color:0x3FB8D8,transparent:true,opacity:0.10,depthWrite:false,blending:THREE.AdditiveBlending});
+  function part(geo,x,y,z,rz){var a=new THREE.Mesh(geo,wireM),b=new THREE.Mesh(geo,ghostM);
+    [a,b].forEach(function(m){m.position.set(x,y,z); if(rz)m.rotation.z=rz; fig.add(m);});}
+  part(new THREE.SphereGeometry(0.62,16,13),0,6.95,0);
+  part(new THREE.CylinderGeometry(0.17,0.2,0.34,10),0,6.32,0);
+  part(new THREE.CylinderGeometry(0.5,0.66,2.3,12),0,5.0,0);
+  part(new THREE.SphereGeometry(0.56,14,10),0,3.78,0);
+  part(new THREE.CylinderGeometry(0.13,0.15,2.2,8), 0.95,4.95,0,-0.32);
+  part(new THREE.CylinderGeometry(0.13,0.15,2.2,8),-0.95,4.95,0, 0.32);
+  part(new THREE.CylinderGeometry(0.16,0.18,2.6,8), 0.33,2.35,0,-0.05);
+  part(new THREE.CylinderGeometry(0.16,0.18,2.6,8),-0.33,2.35,0, 0.05);
+
+  // gyro rings
+  var rings=[];
+  [[2.7,0.5],[3.4,-0.9],[4.1,0.25]].forEach(function(cfg,i){
+    var rg=new THREE.Mesh(new THREE.TorusGeometry(cfg[0],0.022,8,72),new THREE.MeshBasicMaterial({color:0x6FD6EE,transparent:true,opacity:0.35,depthWrite:false,blending:THREE.AdditiveBlending}));
+    rg.position.y=4.6; rg.rotation.x=Math.PI/2+cfg[1]*0.3; world.add(rg); rings.push({m:rg,sp:(i%2?-1:1)*(0.15+i*0.07)});
+  });
+
+  // scanline
+  var scan=new THREE.Mesh(new THREE.TorusGeometry(1.15,0.02,8,48),new THREE.MeshBasicMaterial({color:0xBFF3FF,transparent:true,opacity:0.8,depthWrite:false,blending:THREE.AdditiveBlending}));
+  scan.rotation.x=Math.PI/2; world.add(scan);
+
+  // hologram dust
+  var DC=260, dpos=new Float32Array(DC*3), dsp=new Float32Array(DC);
+  for(var i=0;i<DC;i++){var a=Math.random()*6.283,r2=Math.random()*1.5;
+    dpos[i*3]=Math.cos(a)*r2; dpos[i*3+1]=0.4+Math.random()*7.2; dpos[i*3+2]=Math.sin(a)*r2; dsp[i]=0.006+Math.random()*0.012;}
+  var dgeo=new THREE.BufferGeometry(); dgeo.setAttribute('position',new THREE.BufferAttribute(dpos,3));
+  var dust=new THREE.Points(dgeo,new THREE.PointsMaterial({color:0x9FE9FA,size:0.055,transparent:true,opacity:0.65,depthWrite:false,blending:THREE.AdditiveBlending}));
+  world.add(dust);
+
+  // ---- service nodes orbiting the body ----
+  var TEAL=0x35C4B5, GOLD=0xE0A83C, CORAL=0xFF6B45, STEEL=0x55637A;
+  var NODES=[
+    {n:'Mental health',v:34.4,c:CORAL,anchor:[0,6.95,0],R:6.4,h:7.3,sp:0.10,ph:0.4},
+    {n:'Pharmacist',v:19.6,c:GOLD,anchor:[1.35,4.0,0],R:5.4,h:4.2,sp:0.13,ph:1.4},
+    {n:'Screening',v:14.4,c:TEAL,anchor:[0,5.6,0],R:5.9,h:5.8,sp:0.08,ph:2.3},
+    {n:'Dental & vision',v:12.0,c:STEEL,anchor:[0,6.6,0.55],R:6.8,h:6.6,sp:0.11,ph:3.2},
+    {n:'Chronic care',v:11.6,c:TEAL,anchor:[0,4.7,0],R:5.1,h:3.4,sp:0.09,ph:4.1},
+    {n:'Children',v:11.6,c:TEAL,anchor:[-1.35,4.0,0],R:6.1,h:2.8,sp:0.12,ph:5.0},
+    {n:'Sexual health',v:3.4,c:TEAL,anchor:[0,3.75,0],R:4.7,h:2.2,sp:0.14,ph:5.7},
+    {n:"Women's health",v:3.1,c:TEAL,anchor:[0,3.75,0],R:7.2,h:5.0,sp:0.07,ph:0.9}
+  ];
+  function glowTex(hex){var cv=document.createElement('canvas');cv.width=128;cv.height=128;var x=cv.getContext('2d');
+    var g=x.createRadialGradient(64,64,2,64,64,64); g.addColorStop(0,hex); g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g; x.fillRect(0,0,128,128); return new THREE.CanvasTexture(cv);}
+  function nodeLabel(name,val){var cv=document.createElement('canvas');cv.width=512;cv.height=150;var x=cv.getContext('2d');x.textAlign='center';
+    x.fillStyle='#EAF6FC';x.font='500 42px "Space Grotesk", sans-serif';x.fillText(name,256,58);
+    x.fillStyle='#8FE9FF';x.font='600 46px "IBM Plex Mono", monospace';x.fillText(val,256,114);
+    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(2.9,2.9*150/512,1);sp.material.opacity=0;return sp;}
+  var nodeObjs=[];
+  NODES.forEach(function(d){
+    var r=0.22+d.v*0.02;
+    var mesh=new THREE.Mesh(new THREE.SphereGeometry(r,18,14),new THREE.MeshStandardMaterial({color:d.c,emissive:d.c,emissiveIntensity:0.35,roughness:0.3,metalness:0.25,transparent:true,opacity:0}));
+    world.add(mesh);
+    var glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex('rgba(255,255,255,0.9)'),color:d.c,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));
+    glow.scale.set(r*5.4,r*5.4,1); world.add(glow);
+    var lab=nodeLabel(d.n,d.v.toFixed(1)+'%'); world.add(lab);
+    var lgeo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+    var line=new THREE.Line(lgeo,new THREE.LineBasicMaterial({color:d.c,transparent:true,opacity:0}));
+    world.add(line);
+    nodeObjs.push({d:d,mesh:mesh,glow:glow,lab:lab,line:line,r:r});
+  });
+
+  // exclusion tags (beat 3)
+  function tagSprite(txt,hex){var cv=document.createElement('canvas');cv.width=560;cv.height=96;var x=cv.getContext('2d');
+    x.fillStyle=hex; x.fillRect(0,0,560,96); x.strokeStyle='rgba(255,255,255,.35)'; x.lineWidth=5; x.strokeRect(7,7,546,82);
+    x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';x.font='600 36px "IBM Plex Mono", monospace';x.fillText(txt,280,50);
+    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(3.2,0.55,1);sp.material.opacity=0;return sp;}
+  var tagMind=tagSprite('THE MIND · REFERRAL WALL','#D85A30'); tagMind.position.set(-3.4,8.3,0); world.add(tagMind);
+  var tagMouth=tagSprite('MOUTH & EYES · NOT INSURED','#55637A'); tagMouth.position.set(3.5,7.6,0); world.add(tagMouth);
+  var tagPharm=tagSprite('PHARMACIST · THE STOPGAP','#C8902B'); tagPharm.position.set(3.4,3.0,0); world.add(tagPharm);
+  // exclusion beacons on the body
+  var beacons=[];
+  [[0,6.95,0.62],[0,6.62,0.6],[0.22,6.98,0.55]].forEach(function(pv){
+    var b=new THREE.Mesh(new THREE.SphereGeometry(0.09,10,8),new THREE.MeshBasicMaterial({color:0xFF6B45,transparent:true,opacity:0}));
+    b.position.set(pv[0],pv[1],pv[2]); world.add(b); beacons.push(b);
+  });
+
+  var prog=0; function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
+  window.addEventListener('scroll',calc,{passive:true}); calc();
+  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+  function lp(a,b,t){return a+(b-a)*t;}
+
+  var dragRot=0,dragging=false,lastX=0;
+  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
+  window.addEventListener('pointerup',function(){dragging=false;});
+  var caps=[].slice.call(document.querySelectorAll('.cap')), cue=document.getElementById('cue');
+  var tmpA=new THREE.Vector3();
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var p=prog, time=Date.now()*0.001;
+    var e=p*p*(3-2*p);
+    var ang=lp(0.35,2.7,e), dist=lp(11.5,22,e), hgt=lp(3.4,12.5,e);
+    camera.position.set(Math.sin(ang)*dist,hgt,Math.cos(ang)*dist);
+    camera.lookAt(0,4.5,0);
+    world.rotation.y=dragRot;
+
+    // figure assembles + floats
+    var fs=Math.max(0.001,sm(p,0.0,0.15));
+    var bob=Math.sin(time*1.1)*0.07;
+    fig.scale.set(fs,fs,fs); fig.position.y=bob;
+    wireM.opacity=0.55*fs; ghostM.opacity=0.10*fs;
+    fig.rotation.y=time*0.14;
+
+    // pad + cone pulse
+    padGlow.material.opacity=0.75+Math.sin(time*1.7)*0.15;
+    cone.material.opacity=0.045+Math.sin(time*1.7)*0.015;
+    padRim.material.color.setHSL(0.52,0.85,0.62+Math.sin(time*1.7)*0.06);
+
+    // rings + scanline
+    for(var i=0;i<rings.length;i++){rings[i].m.rotation.z+=rings[i].sp*0.01;}
+    var sy=1.0+((time*0.9)%1)*6.6; scan.position.y=sy+bob; scan.material.opacity=0.75-0.5*Math.abs(Math.sin((time*0.9)%1*Math.PI));
+
+    // dust rises
+    var da=dgeo.attributes.position.array;
+    for(var i=0;i<DC;i++){da[i*3+1]+=dsp[i]; if(da[i*3+1]>7.8)da[i*3+1]=0.4;}
+    dgeo.attributes.position.needsUpdate=true;
+
+    // nodes: spiral in, orbit, tether, coverage glow
+    var nv=sm(p,0.20,0.45), cv=sm(p,0.50,0.68);
+    for(var i=0;i<nodeObjs.length;i++){
+      var o=nodeObjs[i], d=o.d;
+      var Rn=lp(d.R*2.6,d.R,nv);
+      var a2=d.ph+time*d.sp;
+      var nx=Math.sin(a2)*Rn, nz=Math.cos(a2)*Rn, ny=d.h+Math.sin(time*0.9+d.ph)*0.18;
+      o.mesh.position.set(nx,ny,nz);
+      o.mesh.material.opacity=nv;
+      o.mesh.material.emissiveIntensity=0.35+cv*(d.c===TEAL?0.55:(d.c===GOLD?0.5:(d.c===CORAL?0.6:0.05)));
+      o.glow.position.set(nx,ny,nz); o.glow.material.opacity=nv*(0.35+cv*0.3);
+      o.lab.position.set(nx,ny+o.r+0.75,nz); o.lab.material.opacity=sm(p,0.28,0.5);
+      tmpA.set(d.anchor[0],d.anchor[1]+bob,d.anchor[2]);
+      var pos=o.line.geometry.attributes.position.array;
+      pos[0]=nx;pos[1]=ny;pos[2]=nz;pos[3]=tmpA.x;pos[4]=tmpA.y;pos[5]=tmpA.z;
+      o.line.geometry.attributes.position.needsUpdate=true;
+      o.line.material.opacity=nv*0.4;
+    }
+    // tags + beacons
+    tagMind.material.opacity=cv; tagMouth.material.opacity=cv; tagPharm.material.opacity=cv;
+    for(var i=0;i<beacons.length;i++){beacons[i].material.opacity=cv*(0.45+0.45*Math.sin(time*6+i*1.8)); beacons[i].position.y+= 0;}
+
+    for(var i=0;i<caps.length;i++){var lo=parseFloat(caps[i].dataset.lo),hi=parseFloat(caps[i].dataset.hi);var o2=Math.min(sm(p,lo,lo+0.05),1-sm(p,hi-0.05,hi));caps[i].style.opacity=Math.max(0,o2);}
+    if(cue) cue.style.opacity=(p>0.05?0:1);
+    var bd=document.getElementById('beatdots');if(bd){var bi=p<0.215?0:p<0.485?1:p<0.745?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    
+    renderer.render(scene,camera);
+  }
+  animate(); if(fb) fb.style.display='none';
+  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+})();
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mini" viewBox="0 0 20 24"><circle cx="10" cy="5.4" r="4.1"/><path d="M2.4 23.5C2.4 15 5 11.8 10 11.8C15 11.8 17.6 15 17.6 23.5Z"/></symbol>
+</defs></svg>
+</body>
+</html>

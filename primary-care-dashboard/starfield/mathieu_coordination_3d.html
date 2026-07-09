@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Space Between — Mathieu and the Referral Maze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
+  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#122F2C;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
+
+/* 3D MAZE HERO — wine & amber */
+.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%, #3A1626 0%, #200B14 48%, #0E050A 100%)}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#stage{position:absolute;inset:0;touch-action:pan-y;cursor:grab}#stage:active{cursor:grabbing}#stage canvas{display:block}
+.h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(14,5,10,.92),rgba(14,5,10,.5) 50%,transparent);pointer-events:none}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D6A9B4}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:600;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FFE4BC,#F0A050);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F8F1EC;font-weight:500;font-size:25px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#E0BFA6;margin:12px auto 0;max-width:480px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#D6A9B4;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#E0BFA6;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+
+/* PERSONA HERO */
+.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--coral);border-bottom:3px solid var(--coral);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(216,90,48,.18),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.heroIso{width:100%;height:auto;display:block;max-width:520px}
+.herocap{font-family:var(--font-mono);font-size:12.5px;line-height:1.6;color:var(--hero-mut);max-width:520px;margin-top:14px}
+.herocap b{color:#F2A07C;font-weight:600}
+
+.who{max-width:760px;margin:46px auto 6px;padding:0 26px}
+.whocard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.whocard .lbl{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:10px}
+.whocard p{font-size:17px;line-height:1.62;margin:0}
+.whocard p b{font-weight:500}
+
+/* TIMELINE */
+.tlwrap{padding:40px 0 30px}
+.stage{display:flex;gap:20px;padding-bottom:26px;position:relative}
+.rail{position:relative;width:50px;flex:none;display:flex;justify-content:center}
+.rail .line{position:absolute;top:6px;bottom:-26px;width:2px;background:var(--line)}
+.stage:last-child .rail .line,.stage.fork .rail .line{display:none}
+.med{position:relative;z-index:2;width:50px;height:50px;border-radius:50%;background:#fff;border:2px solid var(--coral);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(216,90,48,.16)}
+.med svg{width:24px;height:24px;stroke:var(--coral);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.scard{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px 20px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.time{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--coral);padding:4px 11px;border-radius:999px;margin-bottom:11px}
+.elapsed{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-left:10px;letter-spacing:.02em}
+.scard h3{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:0 0 9px;line-height:1.18}
+.scard p{font-size:16.5px;line-height:1.62;margin:0 0 14px;color:#23302D}
+.dchip{display:flex;gap:9px;align-items:flex-start;font-family:var(--font-mono);font-size:12px;line-height:1.5;color:var(--coral-deep);background:#FBEDE6;border:1px solid #F3D8CC;border-radius:9px;padding:9px 12px}
+.dchip svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:2;flex:none;margin-top:1px}
+.dchip b{color:#8A331A;font-weight:600}
+
+.forkhead{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:14px 0 18px;text-align:center}
+.fork2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ocard{border-radius:14px;padding:20px 22px;border:1px solid var(--line);background:#fff}
+.ocard.win{border-color:#BFE0CF;background:linear-gradient(180deg,#F2FAF5,#fff)}
+.ocard.real{border-color:#E3D9D2;background:linear-gradient(180deg,#FAF6F2,#fff)}
+.ocard .otag{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.ocard.win .otag{color:#2E7D5B}.ocard.real .otag{color:#9A6A4A}
+.ocard h4{font-family:var(--font-display);font-weight:600;font-size:18px;margin:0 0 9px}
+.ocard p{font-size:15.5px;line-height:1.58;margin:0 0 12px;color:#28332F}
+.ocard .mini{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+
+.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--coral)}
+.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+
+.reveal{opacity:0;transform:translateY(14px)}
+body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+@media (max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}.who{padding:0 18px}.close{padding-left:18px;padding-right:18px}
+  .cap .big{font-size:44px}.cap h2{font-size:19px}.cap p{font-size:11.5px}
+  .hero h1{font-size:36px}.hero .dek{font-size:17px}
+  .rail{width:42px}.med{width:42px;height:42px}.med svg{width:20px;height:20px}.stage{gap:14px}
+  .fork2{grid-template-columns:1fr}
+}
+
+/* corpus graphs */
+.corpus{margin:10px 0 4px}
+.chead .ck{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-deep)}
+.chead h2{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:6px 0 16px}
+.gbar{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.gterm{flex:0 0 200px;font-family:var(--font-mono);font-size:12.5px;font-weight:500;line-height:1.3}
+.gtrack{flex:1;height:9px;background:var(--track);overflow:hidden;min-width:50px}
+.gfill{display:block;height:100%;background:var(--coral)}
+.gval{flex:0 0 122px;text-align:right;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.gcap{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.65}
+.gsplit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.gcard{border:1px solid var(--line);background:#fff;border-radius:12px;padding:15px 18px}
+.gcard .gt{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:8px}
+.gcard .gl{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:#23302D}
+@media (max-width:680px){.gterm{flex-basis:118px;font-size:11.5px}.gval{flex-basis:92px;font-size:11px}.gsplit{grid-template-columns:1fr}}
+
+/* 3d explainer & polish */
+.scenetag{position:absolute;top:52px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);padding:0 30px}
+.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.6)}
+@media (max-width:680px){.beatdots{right:10px}.scenetag{font-size:9.5px}}
+</style>
+</head>
+<body>
+
+<!-- ============ 3D HERO: THE REFERRAL MAZE ============ -->
+<section class="hero3d">
+  <div class="sticky">
+    <div id="stage"></div>
+    <div class="h3ov">
+      <div class="brand">Starfield's 4C Series · Pillar 3 · Coordination · n = 2,735</div>
+      <div class="scenetag">The scene · the maze between a family doctor and a specialist</div>
+      <div class="cap" data-lo="0" data-hi="0.20"><div class="big">2,735</div><h2>posts about what happens <em>between</em> doctors — the referral, the results, the records</h2></div>
+      <div class="cap" data-lo="0.23" data-hi="0.47"><h2>From family doctor to specialist is not a hallway. It's a maze.</h2><p>Specialist referrals run through 39% of these posts. Waiting runs through 43%. Tests and results through 31%.</p></div>
+      <div class="cap" data-lo="0.50" data-hi="0.73"><h2>The dead ends are real</h2><p>Results that never reach the doctor · referrals that lapse under the six-month rule · scans nobody calls about · files you end up chasing yourself.</p></div>
+      <div class="cap" data-lo="0.76" data-hi="1.02"><h2>Meet Mathieu.</h2><p>His referral went out in January. This is the path it took. Scroll on.</p></div>
+      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6A9B4" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">Loading the 3D scene… if it doesn't appear, the story is just below — scroll down.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MATHIEU HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">A research composite · pillar 3 of 4 · coordination</div>
+    <h1>The space between</h1>
+    <p class="dek">Mathieu is built from the 2,735 posts about care that has to travel — between a family doctor, a lab, an imaging clinic, and a specialist. He has a doctor. He has a problem. The maze is everything in between.</p>
+    <svg id="heroIso" class="heroIso" viewBox="0 0 480 132" role="img" aria-label="A crowd of 100 figures with one, Mathieu, highlighted in coral"></svg>
+    <div class="herocap">Find <b>Mathieu</b> in the crowd. Every dead end and every wait in his story is drawn from the real posts — nothing is invented.</div>
+  </div>
+</header>
+
+<div class="who">
+  <div class="whocard reveal">
+    <div class="lbl">Who is Mathieu?</div>
+    <p>Mathieu is a <b>composite</b> — one person assembled from the thousands who wrote about referrals, requisitions, results, and records: the <b>connections</b> between providers, and how often they fail. His journey is a braid of theirs. He is fiction in name only. The numbers are the data's.</p>
+  </div>
+</div>
+
+<main class="tlwrap">
+<div class="wrap">
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M4 12h12M12 6l6 6-6 6"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Day 0</span><span class="elapsed">the handoff begins</span>
+      <h3>The referral goes out</h3>
+      <p>Mathieu's elbow has been wrong for months, and his family doctor agrees: this needs a specialist. In Canada that means a referral — the doctor sends it, and Mathieu's job, he's told, is to wait for a call. The single largest theme in this pillar begins exactly here: a piece of paper leaving one office for another.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · specialist referrals are the <b>largest theme — 39.4%</b> of all 2,735 coordination posts. Waiting runs through <b>43.4%</b>.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Week 6</span><span class="elapsed">the first dead end</span>
+      <h3>Silence, then the phone call</h3>
+      <p>Six weeks, no call. Mathieu phones the specialist's office himself and hears what the posts describe again and again: nothing ever arrived — or nothing was ever sent — and either way, nobody was going to tell him. He learns the first law of the maze: <em>no one calls you when a handoff fails.</em></p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · posts describe referrals and results that were <b>never received, never sent, never heard back about</b> — and short waits of <b>2–3 weeks</b> (cited 69× and 56×) quietly becoming months.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 2</span><span class="elapsed">a new piece of paper</span>
+      <h3>The requisition</h3>
+      <p>The referral is re-sent, and now a second document enters the maze: a requisition for an MRI. Tests, labs, and imaging are the second-biggest thread of this pillar — every scan its own queue, every result its own journey back. Mathieu is now waiting on two pieces of paper instead of one.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><div>From the data · tests, labs &amp; results run through <b>30.5%</b> of posts. The most-cited waits: <b>6 months (138×)</b>, <b>3 months (81×)</b>, <b>2 months (71×)</b>.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H4zM8 20h8M12 16v4M7 8l3 3 5-5"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 6</span><span class="elapsed">the results go nowhere</span>
+      <h3>He looks up his own scan</h3>
+      <p>The MRI happens. Then — nothing. One poster describes exactly this: the results didn't reach the doctor in time, so they gave up waiting and looked them up themselves through the provincial portal. Mathieu does the same, reading radiology language alone at his kitchen table. The receptionist's comfort is the maze's second law: <em>if it were bad, someone would have called.</em></p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div>From the data · dozens of posts describe <b>chasing results yourself</b>; portals and e-records appear in <b>10.7%</b> — often as the only way to see your own scan.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M16 8l-8 8M8 8l8 8"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 8</span><span class="elapsed">the six-month rule</span>
+      <h3>The referral expires</h3>
+      <p>When the specialist's office finally has an opening, Mathieu learns the maze's strangest rule from the posts: see the specialist again within six months, or the referral lapses and you start over with a new one. One long-time patient calls it what it is — <em>such a waste</em> — a door that quietly relocks itself while you stand in line for it.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg><div>From the data · paraphrasing a real post: seeing the same specialist for years still means a <b>fresh referral</b> if more than <b>six months</b> pass between visits.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h4"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 18</span><span class="elapsed">the private detour</span>
+      <h3>He pays his way out of one corridor</h3>
+      <p>This beat belongs to one poster almost verbatim, paraphrased: eighteen months waiting for an MRI, never hearing back from the public option, and finally paying for a private scan — because only then could the elbow surgery move forward. The maze has an exit you can buy. Not everyone can.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · <b>18 months (37×)</b>, <b>2 years (130×)</b>, <b>3 years (78×)</b> and <b>5 years (78×)</b> are the long waits people cite around referrals, scans, and surgery.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M17 3l4 4-4 4M21 7H8a5 5 0 000 10h1M7 21l-4-4 4-4"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Year 2</span><span class="elapsed">back to the start</span>
+      <h3>The specialist sends him home</h3>
+      <p>The consult finally happens — and ends the way the maze always ends: <em>follow up with your family doctor.</em> The findings travel back the same fragile paths they came by. Mathieu returns to the start square carrying his own file, because by now he's learned the maze's final law: the only courier who never loses the papers is the patient.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · follow-up &amp; handoffs appear in <b>6.2%</b> of posts, records transfer in <b>5.4%</b> — the return trip is part of the maze too.</div></div>
+    </div>
+  </div>
+
+  <div class="stage fork reveal">
+    <div class="rail"><div class="med" style="border-color:#9A6A4A"><svg viewBox="0 0 24 24" style="stroke:#9A6A4A"><path d="M3 12h18M3 12l4-4M3 12l4 4"/></svg></div></div>
+    <div class="scard" style="border:none;background:none;box-shadow:none;padding:6px 0 0">
+      <div class="forkhead">And then his story splits — the way the data does</div>
+      <div class="fork2">
+        <div class="ocard win">
+          <div class="otag">The rare win</div>
+          <h4>The system that talks to itself</h4>
+          <p>Some posters found the exits: a lab portal where results appear in a day, visible to you <em>and</em> your doctor; a provincial records app with everything at any clinician's fingertips; a nurse practitioner who requisitions, prescribes, and refers without a single dropped baton.</p>
+          <div class="mini">From the data: portal &amp; e-record posts (10.7%) are this pillar's most hopeful — "10/10 recommend" energy, paraphrased.</div>
+        </div>
+        <div class="ocard real">
+          <div class="otag">The common reality</div>
+          <h4>The patient is the courier</h4>
+          <p>For most, coordination stays a job the sick do themselves: phoning to confirm the fax landed, chasing results, restarting lapsed referrals, hand-carrying history between offices that don't speak. The connections exist — the patient is what holds them together.</p>
+          <div class="mini">From the data: waits cited to <b>2 years (130×)</b> and <b>5 years (78×)</b>; dozens describe doing the follow-up themselves.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<section class="corpus"><div class="wrap">
+  <div class="chead reveal"><div class="ck">Pillar 3 · the corpus in numbers</div><h2>What the 2,735 coordination posts are about</h2></div>
+  <div class="reveal">
+      <div class="gbar"><span class="gterm">Specialist referrals</span><span class="gtrack"><span class="gfill" style="width:100%"></span></span><span class="gval">1,077 · 39.4%</span></div>
+      <div class="gbar"><span class="gterm">General care navigation</span><span class="gtrack"><span class="gfill" style="width:41%"></span></span><span class="gval">443 · 16.2%</span></div>
+      <div class="gbar"><span class="gterm">Waiting</span><span class="gtrack"><span class="gfill" style="width:41%"></span></span><span class="gval">438 · 16.0%</span></div>
+      <div class="gbar"><span class="gterm">Tests, labs &amp; results</span><span class="gtrack"><span class="gfill" style="width:39%"></span></span><span class="gval">421 · 15.4%</span></div>
+      <div class="gbar"><span class="gterm">Portals &amp; EMR</span><span class="gtrack"><span class="gfill" style="width:7%"></span></span><span class="gval">78 · 2.9%</span></div>
+      <div class="gbar"><span class="gterm">Follow-up &amp; handoffs</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">33 · 1.2%</span></div>
+      <div class="gbar"><span class="gterm">Records &amp; transfer</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">29 · 1.1%</span></div>
+      <div class="gbar"><span class="gterm">Multiple providers</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">29 · 1.1%</span></div>
+      <div class="gbar"><span class="gterm">Other</span><span class="gtrack"><span class="gfill" style="width:17%"></span></span><span class="gval">187 · 6.8%</span></div>
+      <div class="gcap">Each post counted once by primary theme · named coverage 93.2% · 90% comments. By mention: waiting 43.4% · referrals 39.4% · tests/results 30.5% · portals 10.7%.</div>
+      <div class="gsplit">
+        <div class="gcard"><div class="gt">Short waits cited</div><div class="gl">2 wk ×69 · 3 wk ×56<br>2 mo ×71 · 3 mo ×81</div></div>
+        <div class="gcard"><div class="gt">Long waits cited</div><div class="gl">6 mo ×138 · 18 mo ×37<br>2 y ×130 · 3 y ×78 · 5 y ×78</div></div>
+      </div>
+  </div>
+</div></section>
+
+<div class="close">
+  <h2>The offices don't talk to each other. So the patient becomes the messenger.</h2>
+  <p>That is this pillar's finding, assembled from 2,735 posts: the referral is the front door to everything — specialists, scans, surgery — and the corridors between offices are where care goes quiet. Papers vanish without notice. Results reach the patient before the doctor, or reach no one. Referrals expire while their owners wait. Coordination, in this archive, is not something the system does. It's something the sick do.</p>
+  <p>And the fix the posts keep pointing to is almost boring: <span class="big">let the records travel — portals, shared files, a system that talks to itself.</span></p>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="fl"><b>Method.</b> "Mathieu" is a composite persona. His journey is assembled from the 2,735 posts and comments classified as Coordination under Starfield's 4C framework (3.1% of the 89,398-post corpus; 90% comments, 10% original posts). Named themes cover 93.2% of the pillar. Waits are the most frequently cited durations in referral, test, and specialist contexts; situations — including the six-month referral rule, the self-retrieved MRI results, and the 18-month MRI followed by a private scan — are paraphrased from real posts. No detail is invented and no individual is identified.</p>
+    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit, Canadian primary-care discourse, January 2021 – August 2025 · n = 89,398 (Coordination = 2,735) · Memorial University, Faculty of Medicine.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce) document.body.classList.add('go');
+  var NS='http://www.w3.org/2000/svg';
+
+  // hero isotype: 100 figures, Mathieu highlighted
+  var svg=document.getElementById('heroIso');
+  if(svg){
+    var cols=20,total=100,vb=svg.viewBox.baseVal,cw=vb.width/cols,rows=5,ch=vb.height/rows;
+    var pw=cw*0.56,ph=ch*0.74,ox=(cw-pw)/2,oy=(ch-ph)/2, mIdx=47;
+    for(var i=0;i<total;i++){
+      var r=Math.floor(i/cols),c=i%cols, isM=(i===mIdx);
+      var gx=c*cw+ox, gy=r*ch+oy, w=pw, h=ph;
+      if(isM){w=pw*1.5;h=ph*1.5;gx-=(w-pw)/2;gy-=(h-ph)/2;}
+      var u=document.createElementNS(NS,'use');
+      u.setAttribute('href','#mini');u.setAttributeNS('http://www.w3.org/1999/xlink','href','#mini');
+      u.setAttribute('x',gx.toFixed(2));u.setAttribute('y',gy.toFixed(2));
+      u.setAttribute('width',w.toFixed(2));u.setAttribute('height',h.toFixed(2));
+      u.setAttribute('fill', isM?'#E0714A':'#3F5A56');
+      if(!reduce){u.style.opacity='0';u.style.transition='opacity .4s ease';u.style.transitionDelay=(i*7)+'ms';}
+      svg.appendChild(u);
+    }
+    var sr=Math.floor(mIdx/cols), sc=mIdx%cols, lx=(sc*cw+cw/2), ly=(sr*ch+oy)-4;
+    var t=document.createElementNS(NS,'text');t.setAttribute('x',lx);t.setAttribute('y',ly-6);
+    t.setAttribute('text-anchor','middle');t.setAttribute('style','font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;fill:#F2A07C');
+    t.textContent='Mathieu';svg.appendChild(t);
+    if(!reduce){requestAnimationFrame(function(){requestAnimationFrame(function(){var us=svg.querySelectorAll('use');for(var k=0;k<us.length;k++)us[k].style.opacity='1';});});}
+  }
+
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
+  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  /* ============ 3D: THE REFERRAL MAZE ============ */
+  var fb=document.getElementById('fallback');
+  if(!window.THREE){ if(fb) fb.style.display='block'; return; }
+  var hero=document.querySelector('.hero3d'), stage=document.getElementById('stage');
+  var W=stage.clientWidth,H=stage.clientHeight;
+
+  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x14060C,0.011);
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,600);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+
+  var world=new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x4a2c38,0.9));
+  var key=new THREE.DirectionalLight(0xd6b0a0,0.35); key.position.set(10,26,14); scene.add(key);
+  var amberL=new THREE.PointLight(0xF0A050,1.1,70); amberL.position.set(0,16,0); world.add(amberL);
+
+  var floor=new THREE.Mesh(new THREE.PlaneGeometry(240,240),new THREE.MeshStandardMaterial({color:0x120609,roughness:0.35,metalness:0.7,transparent:true,opacity:0.94}));
+  floor.rotation.x=-Math.PI/2; floor.position.y=-0.02; world.add(floor);
+
+  // ---- maze from the walked path ----
+  var CS=2.4, COLS=15, ROWS=11;
+  function cellPos(c,r){return new THREE.Vector3((c-7)*CS,0,(r-5)*CS);}
+  var PATH=[[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],
+    [2,7],[3,7],
+    [3,8],[3,9],[3,8],[3,7],
+    [4,7],[5,7],[5,6],[5,5],[5,4],[5,3],
+    [4,3],[5,3],
+    [6,3],[7,3],
+    [7,2],[7,1],[7,2],[7,3],
+    [7,4],[7,5],[8,5],[9,5],[9,6],[9,7],
+    [10,7],[9,7],
+    [9,8],[9,9],[10,9],[11,9],[12,9],[13,9]];
+  var corridor={};
+  PATH.forEach(function(p){corridor[p[0]+'_'+p[1]]=true;});
+  // walls: every non-corridor cell
+  var wallCells=[];
+  for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){if(!corridor[c+'_'+r])wallCells.push([c,r]);}
+  var wallGeo=new THREE.BoxGeometry(CS*0.98,1,CS*0.98);
+  var wallMat=new THREE.MeshStandardMaterial({color:0x3A1B26,roughness:0.55,metalness:0.35,emissive:0x84402A,emissiveIntensity:0.22});
+  var walls=new THREE.InstancedMesh(wallGeo,wallMat,wallCells.length);
+  var capGeo=new THREE.BoxGeometry(CS*1.0,0.09,CS*1.0);
+  var capMat=new THREE.MeshStandardMaterial({color:0xF0A050,emissive:0xF0A050,emissiveIntensity:0.85,roughness:0.4,metalness:0.3});
+  var caps2=new THREE.InstancedMesh(capGeo,capMat,wallCells.length);
+  var dum=new THREE.Object3D();
+  wallCells.forEach(function(cr,i){
+    var h=1.45+((cr[0]*7+cr[1]*13)%5)*0.11;
+    var p=cellPos(cr[0],cr[1]);
+    dum.position.set(p.x,h/2,p.z); dum.scale.set(1,h,1); dum.updateMatrix(); walls.setMatrixAt(i,dum.matrix);
+    dum.position.set(p.x,h+0.045,p.z); dum.scale.set(1,1,1); dum.updateMatrix(); caps2.setMatrixAt(i,dum.matrix);
+  });
+  walls.instanceMatrix.needsUpdate=true; caps2.instanceMatrix.needsUpdate=true;
+  world.add(walls); world.add(caps2);
+
+  // waypoints + cumulative distances
+  var pts=PATH.map(function(p){return cellPos(p[0],p[1]);});
+  var cum=[0]; for(var i=1;i<pts.length;i++){cum.push(cum[i-1]+pts[i].distanceTo(pts[i-1]));}
+  var totalLen=cum[cum.length-1];
+  function posAt(d){
+    if(d<=0)return {p:pts[0].clone(),i:0};
+    if(d>=totalLen)return {p:pts[pts.length-1].clone(),i:pts.length-1};
+    var i=1; while(cum[i]<d)i++;
+    var seg=cum[i]-cum[i-1]||1, t=(d-cum[i-1])/seg;
+    return {p:pts[i-1].clone().lerp(pts[i],t),i:i-1};
+  }
+
+  // walked trail (glowing line)
+  var trailArr=new Float32Array((pts.length+1)*3);
+  var trailGeo=new THREE.BufferGeometry(); trailGeo.setAttribute('position',new THREE.BufferAttribute(trailArr,3));
+  trailGeo.setDrawRange(0,0);
+  var trail=new THREE.Line(trailGeo,new THREE.LineBasicMaterial({color:0xFFD9A6,transparent:true,opacity:0.85,blending:THREE.AdditiveBlending}));
+  trail.position.y=0.14; world.add(trail);
+
+  // Mathieu figure
+  var mMat=new THREE.MeshStandardMaterial({color:0xFFFFFF,emissive:0x664433,emissiveIntensity:0.3,roughness:0.45,metalness:0.2});
+  var mB=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.26,0.62,10),mMat);
+  var mH=new THREE.Mesh(new THREE.SphereGeometry(0.19,12,10),mMat);
+  world.add(mB); world.add(mH);
+  var mLight=new THREE.PointLight(0xFFF0D8,1.1,7); world.add(mLight);
+  var mRing=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.05,10,32),new THREE.MeshBasicMaterial({color:0xFFFFFF}));
+  mRing.rotation.x=-Math.PI/2; world.add(mRing);
+  function labSprite(txt,hex,wd){var cv=document.createElement('canvas');cv.width=620;cv.height=104;var x=cv.getContext('2d');
+    if(hex){x.fillStyle=hex;x.fillRect(0,0,620,104);x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=5;x.strokeRect(7,7,606,90);}
+    x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';x.font='600 38px "IBM Plex Mono", monospace';x.fillText(txt,310,54);
+    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(wd,wd*104/620,1);return sp;}
+  var mLab=labSprite('Mathieu \u25BC',null,2.4); world.add(mLab);
+
+  // start plate + specialist gate
+  var startLab=labSprite('FAMILY DOCTOR','#2E7D72',3.4); var sp0=cellPos(1,1); startLab.position.set(sp0.x,2.7,sp0.z); world.add(startLab);
+  var gpos=cellPos(13,9);
+  var gateMat=new THREE.MeshStandardMaterial({color:0x35C4B5,emissive:0x35C4B5,emissiveIntensity:0.85,roughness:0.3,metalness:0.4});
+  [[-1.05,1.5],[1.05,1.5]].forEach(function(pp){var pil=new THREE.Mesh(new THREE.BoxGeometry(0.35,3.0,0.35),gateMat);pil.position.set(gpos.x+pp[0],pp[1],gpos.z);world.add(pil);});
+  var lint=new THREE.Mesh(new THREE.BoxGeometry(2.45,0.35,0.35),gateMat); lint.position.set(gpos.x,3.05,gpos.z); world.add(lint);
+  var gateBeam=new THREE.Mesh(new THREE.CylinderGeometry(0.5,1.5,11,24,1,true),new THREE.MeshBasicMaterial({color:0x7FF0E0,transparent:true,opacity:0.10,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+  gateBeam.position.set(gpos.x,5.6,gpos.z); world.add(gateBeam);
+  var gateL=new THREE.PointLight(0x35C4B5,1.6,16); gateL.position.set(gpos.x,3,gpos.z); world.add(gateL);
+  var gateLab=labSprite('SPECIALIST','#1E6E62',3.2); gateLab.position.set(gpos.x,4.4,gpos.z); world.add(gateLab);
+
+  // dead-end signs (real failure modes)
+  var SIGNS=[
+    {c:4,r:3,t:'RESULTS NEVER REACHED THE DOCTOR'},
+    {c:7,r:1,t:'NEVER HEARD BACK'},
+    {c:3,r:9,t:'REFERRAL LAPSED \u00B7 6-MONTH RULE'},
+    {c:10,r:7,t:'CHASE IT YOURSELF'}
+  ];
+  var signSprites=[];
+  SIGNS.forEach(function(s){var pp=cellPos(s.c,s.r);var sp=labSprite(s.t,'#D85A30',4.6);sp.position.set(pp.x,2.5,pp.z);sp.material.opacity=0;world.add(sp);signSprites.push(sp);});
+
+  // rising embers
+  var EC=300,ep=new Float32Array(EC*3),es=new Float32Array(EC);
+  for(var i=0;i<EC;i++){ep[i*3]=(Math.random()-0.5)*46;ep[i*3+1]=Math.random()*20;ep[i*3+2]=(Math.random()-0.5)*36;es[i]=0.005+Math.random()*0.012;}
+  var egeo=new THREE.BufferGeometry(); egeo.setAttribute('position',new THREE.BufferAttribute(ep,3));
+  world.add(new THREE.Points(egeo,new THREE.PointsMaterial({color:0xF0A050,size:0.09,transparent:true,opacity:0.5,depthWrite:false,blending:THREE.AdditiveBlending})));
+
+  var prog=0; function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
+  window.addEventListener('scroll',calc,{passive:true}); calc();
+  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+  function lp(a,b,t){return a+(b-a)*t;}
+
+  var dragRot=0,dragging=false,lastX=0;
+  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
+  window.addEventListener('pointerup',function(){dragging=false;});
+  var capsEls=[].slice.call(document.querySelectorAll('.cap')), cue=document.getElementById('cue');
+  var camPos=new THREE.Vector3(), camLook=new THREE.Vector3();
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var p=prog, time=Date.now()*0.001;
+
+    // figure along path
+    var d=totalLen*sm(p,0.04,0.92);
+    var at=posAt(d), fp=at.p;
+    var bob=Math.sin(time*2.1)*0.03;
+    mB.position.set(fp.x,0.34+bob,fp.z); mH.position.set(fp.x,0.82+bob,fp.z);
+    mLight.position.set(fp.x,1.6,fp.z); mRing.position.set(fp.x,0.05,fp.z);
+    mRing.scale.setScalar(1+Math.sin(time*2.4)*0.07);
+    mLab.position.set(fp.x,1.85+bob,fp.z);
+
+    // trail up to current point
+    var n=at.i+1;
+    for(var i=0;i<n;i++){trailArr[i*3]=pts[i].x;trailArr[i*3+1]=0;trailArr[i*3+2]=pts[i].z;}
+    trailArr[n*3]=fp.x;trailArr[n*3+1]=0;trailArr[n*3+2]=fp.z;
+    trailGeo.setDrawRange(0,n+1); trailGeo.attributes.position.needsUpdate=true;
+
+    // camera: follow → overhead reveal → tilt toward gate
+    var e2=sm(p,0.16,0.6);
+    var nearP={x:fp.x+1.5,y:2.6,z:fp.z+5.2}, HIGH={x:2.5,y:35,z:13};
+    camPos.set(lp(nearP.x,HIGH.x,e2),lp(nearP.y,HIGH.y,e2),lp(nearP.z,HIGH.z,e2));
+    var g2=sm(p,0.74,0.96);
+    camLook.set(lp(lp(fp.x,0,e2),gpos.x,g2*0.55),lp(lp(1,0,e2),1.5,g2),lp(lp(fp.z,1.5,e2),gpos.z,g2*0.55));
+    camera.position.copy(camPos); camera.lookAt(camLook);
+    world.rotation.y=dragRot;
+
+    // pulses
+    capMat.emissiveIntensity=0.75+Math.sin(time*1.6)*0.18;
+    gateBeam.material.opacity=0.08+Math.sin(time*1.5)*0.03;
+    gateL.intensity=1.4+Math.sin(time*1.5)*0.35;
+
+    // signs fade in
+    var sv=sm(p,0.5,0.66);
+    for(var i=0;i<signSprites.length;i++){signSprites[i].material.opacity=sv;}
+
+    // embers
+    var ea=egeo.attributes.position.array;
+    for(var i=0;i<EC;i++){ea[i*3+1]+=es[i]; if(ea[i*3+1]>21)ea[i*3+1]=0;}
+    egeo.attributes.position.needsUpdate=true;
+
+    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o2=Math.min(sm(p,lo,lo+0.05),1-sm(p,hi-0.05,hi));capsEls[i].style.opacity=Math.max(0,o2);}
+    if(cue) cue.style.opacity=(p>0.05?0:1);
+    var bd=document.getElementById('beatdots');if(bd){var bi=p<0.215?0:p<0.485?1:p<0.745?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    
+    renderer.render(scene,camera);
+  }
+  animate(); if(fb) fb.style.display='none';
+  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+})();
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mini" viewBox="0 0 20 24"><circle cx="10" cy="5.4" r="4.1"/><path d="M2.4 23.5C2.4 15 5 11.8 10 11.8C15 11.8 17.6 15 17.6 23.5Z"/></symbol>
+</defs></svg>
+</body>
+</html>

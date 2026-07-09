@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wait — Sara's Search for a Family Doctor (3D)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--sage:#6FA396;
+  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#122F2C;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;--warm:#E8A24A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
+
+/* ===== 3D SCROLL HERO ===== */
+.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%, #14352F 0%, #0A1E1B 48%, #05100E 100%)}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#stage{position:absolute;inset:0;touch-action:pan-y;cursor:grab}#stage:active{cursor:grabbing}#stage canvas{display:block}
+.h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut)}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(5,16,14,.92),rgba(5,16,14,.5) 50%,transparent);pointer-events:none}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:600;font-size:66px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FBC99C,#E0714A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F2F6F4;font-weight:500;font-size:26px;line-height:1.2;margin:14px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.5)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#B7D2CC;margin:13px auto 0;max-width:450px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-mut);transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#A9C6C0;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+
+/* ===== SARA HERO ===== */
+.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--coral);border-bottom:3px solid var(--coral);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(216,90,48,.18),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px;font-weight:400}
+.heroIsoWrap{position:relative;z-index:1}
+.heroIso{width:100%;height:auto;display:block;max-width:520px}
+.herocap{font-family:var(--font-mono);font-size:12.5px;line-height:1.6;color:var(--hero-mut);max-width:520px;margin-top:14px}
+.herocap b{color:#F2A07C;font-weight:600}
+
+/* ===== WHO IS SARA ===== */
+.who{max-width:760px;margin:46px auto 6px;padding:0 26px}
+.whocard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.whocard .lbl{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:10px}
+.whocard p{font-size:17px;line-height:1.62;color:var(--ink);margin:0}
+.whocard p b{font-weight:500}
+
+/* ===== TIMELINE ===== */
+.tlwrap{padding:40px 0 30px}
+.tl{position:relative}
+.stage{display:flex;gap:20px;padding-bottom:26px;position:relative}
+.rail{position:relative;width:50px;flex:none;display:flex;justify-content:center}
+.rail .line{position:absolute;top:6px;bottom:-26px;width:2px;background:var(--line)}
+.stage:last-child .rail .line,.stage.fork .rail .line{display:none}
+.med{position:relative;z-index:2;width:50px;height:50px;border-radius:50%;background:#fff;border:2px solid var(--coral);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(216,90,48,.16)}
+.med svg{width:24px;height:24px;stroke:var(--coral);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.scard{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px 20px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.time{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--coral);padding:4px 11px;border-radius:999px;margin-bottom:11px}
+.elapsed{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-left:10px;letter-spacing:.02em}
+.scard h3{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.01em;margin:0 0 9px;line-height:1.18}
+.scard p{font-size:16.5px;line-height:1.62;margin:0 0 14px;color:#23302D}
+.scene{margin:2px 0 14px}
+.scene svg{width:100%;height:auto;display:block;max-width:430px}
+.dchip{display:flex;gap:9px;align-items:flex-start;font-family:var(--font-mono);font-size:12px;line-height:1.5;color:var(--coral-deep);background:#FBEDE6;border:1px solid #F3D8CC;border-radius:9px;padding:9px 12px}
+.dchip svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:2;flex:none;margin-top:1px}
+.dchip b{color:#8A331A;font-weight:600}
+
+/* ===== FORK ===== */
+.forkhead{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:14px 0 18px;text-align:center}
+.fork2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ocard{border-radius:14px;padding:20px 22px;border:1px solid var(--line);background:#fff}
+.ocard.win{border-color:#BFE0CF;background:linear-gradient(180deg,#F2FAF5,#fff)}
+.ocard.real{border-color:#E3D9D2;background:linear-gradient(180deg,#FAF6F2,#fff)}
+.ocard .otag{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.ocard.win .otag{color:#2E7D5B}.ocard.real .otag{color:#9A6A4A}
+.ocard h4{font-family:var(--font-display);font-weight:600;font-size:18px;margin:0 0 9px;letter-spacing:-.01em}
+.ocard p{font-size:15.5px;line-height:1.58;margin:0 0 12px;color:#28332F}
+.ocard .mini{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* ===== CLOSE ===== */
+.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--coral)}
+.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+
+/* ===== MOTION ===== */
+.reveal{opacity:0;transform:translateY(14px)}
+body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+@media (max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}.who{padding:0 18px}.close{padding-left:18px;padding-right:18px}
+  .cap .big{font-size:46px}.cap h2{font-size:20px}.cap p{font-size:11.5px}
+  .hero h1{font-size:36px}.hero .dek{font-size:17px}
+  .rail{width:42px}.med{width:42px;height:42px}.med svg{width:20px;height:20px}.stage{gap:14px}
+  .fork2{grid-template-columns:1fr}
+}
+
+/* corpus graphs */
+.corpus{margin:10px 0 4px}
+.chead .ck{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-deep)}
+.chead h2{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-.02em;margin:6px 0 16px}
+.gbar{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.gterm{flex:0 0 200px;font-family:var(--font-mono);font-size:12.5px;font-weight:500;line-height:1.3}
+.gtrack{flex:1;height:9px;background:var(--track);overflow:hidden;min-width:50px}
+.gfill{display:block;height:100%;background:var(--coral)}
+.gval{flex:0 0 122px;text-align:right;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.gcap{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.65}
+.gsplit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.gcard{border:1px solid var(--line);background:#fff;border-radius:12px;padding:15px 18px}
+.gcard .gt{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--coral-deep);margin-bottom:8px}
+.gcard .gl{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:#23302D}
+@media (max-width:680px){.gterm{flex-basis:118px;font-size:11.5px}.gval{flex-basis:92px;font-size:11px}.gsplit{grid-template-columns:1fr}}
+
+/* 3d explainer & polish */
+.scenetag{position:absolute;top:52px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);padding:0 30px}
+.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.28);transition:background .3s,transform .3s}
+.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.6)}
+@media (max-width:680px){.beatdots{right:10px}.scenetag{font-size:9.5px}}
+</style>
+</head>
+<body>
+
+<!-- ============ 3D HERO ============ -->
+<section class="hero3d">
+  <div class="sticky">
+    <div id="stage"></div>
+    <div class="h3ov">
+      <div class="brand">Starfield's 4C Series · Pillar 1 · Contact / Access · n = 77,241</div>
+      <div class="scenetag">The scene · a crowd of thousands at one locked door</div>
+      <div class="cap" data-lo="0" data-hi="0.20"><div class="big">86.4%</div><h2>of the conversation is people just trying to get in</h2></div>
+      <div class="cap" data-lo="0.23" data-hi="0.47"><h2>The light is on. The door is closed.</h2><p>Across 77,241 posts about reaching care, the answer is near-universal — not accepting new patients.</p></div>
+      <div class="cap" data-lo="0.50" data-hi="0.73"><h2>So the crowd is pushed to the alternatives</h2><p>Pay privately · walk-in · the ER · a nurse practitioner · or just a prescription.</p></div>
+      <div class="cap" data-lo="0.76" data-hi="1.02"><h2>77,241 people lived this.</h2><p>Now step out of the crowd and follow just one of them. Keep scrolling — meet Sara.</p></div>
+      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8FB6AD" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">Loading the 3D scene… if it doesn't appear, the story is just below — scroll down.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SARA HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">A research composite · one person, built from the data</div>
+    <h1>The wait</h1>
+    <p class="dek">Out of the 77,241 in that crowd, one person. Sara isn't real — she's a single character built from thousands of real journeys in the dataset. This is her year trying to find a family doctor.</p>
+    <div class="heroIsoWrap">
+      <svg id="heroIso" class="heroIso" viewBox="0 0 480 132" role="img" aria-label="A crowd of 100 figures with one, Sara, highlighted in coral"></svg>
+      <div class="herocap">Find <b>Sara</b> in the crowd. Every wait-time and dead end in her story below is drawn from the real posts — nothing is invented.</div>
+    </div>
+  </div>
+</header>
+
+<div class="who">
+  <div class="whocard reveal">
+    <div class="lbl">Who is Sara?</div>
+    <p>Sara is a <b>composite</b> — one person assembled from the thousands who wrote about reaching primary care. Her timeline is a braid of their timelines: the calls, the lists, the waits, the workarounds, each measured by what people actually reported. She is fiction in name only. The numbers are the data's.</p>
+  </div>
+</div>
+
+<main class="tlwrap">
+<div class="wrap">
+<div class="tl">
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M14 3v18M14 3l-9 2v14l9 2M9 12h.01"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Day 0</span><span class="elapsed">the door she didn't know was closing</span>
+      <h3>Her doctor retires</h3>
+      <p>It starts quietly. Sara's family doctor retires — or she moves to a new province and finds she's at the back of a fresh queue. Overnight, with no warning, she has no one. She isn't worried yet. She assumes she'll just sign up somewhere.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/></svg><div>From the data · losing a doctor to a retirement or move begins <b>3.1%–3.7%</b> of access posts; many also mention a <b>$25–$100 fee</b> just to transfer their own file.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2 1a11 11 0 005 5l1-2 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Week 1</span><span class="elapsed">~10 clinics called</span>
+      <h3>The phone calls begin</h3>
+      <p>She makes a list of every clinic in town and starts dialling. The answer is the same at each one, almost word for word: <em>not accepting new patients.</em> A receptionist — kindly, wearily — tells her there's no point calling around; the doctors simply aren't taking anyone.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div>From the data · <b>"not accepting new patients"</b> is the near-universal reply across the 42,225 search posts; people report calling for <b>weeks</b>.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1zM7 6h10v14H7zM10 11h5M10 15h5"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Week 2</span><span class="elapsed">added to the list — no date given</span>
+      <h3>811, and the waitlist</h3>
+      <p>Someone tells her to call the provincial health line. She does, and is added to the official wait list — Health Care Connect, or its local equivalent. No timeline. No number. Just a confirmation that she is, now, officially waiting.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div>From the data · the registry is the formal route in the <b>6,067</b> waitlist posts — and it comes with <b>no timeline</b>, only the list.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 1</span><span class="elapsed">12-hour wait</span>
+      <h3>The first walk-in</h3>
+      <p>A sinus infection won't quit, so she tries a walk-in clinic. She arrives early and waits most of the day — twelve hours by the time she's seen, by a doctor she's never met and won't see again. Nothing is added to a record, because there is no record. It works, barely. It is not care.</p>
+      <div class="scene"><svg viewBox="0 0 430 96" aria-hidden="true">
+        <circle cx="44" cy="48" r="28" fill="#FBEDE6" stroke="#D85A30" stroke-width="2"/>
+        <line x1="44" y1="48" x2="44" y2="28" stroke="#D85A30" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="44" y1="48" x2="58" y2="56" stroke="#D85A30" stroke-width="2" stroke-linecap="round"/>
+        <text x="44" y="92" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#8A331A;font-weight:600">12 h</text>
+        <g fill="#EAD9CF" stroke="#D9C2B6" stroke-width="1">
+          <rect x="120" y="40" width="34" height="30" rx="5"/><rect x="120" y="30" width="34" height="8" rx="3"/>
+          <rect x="170" y="40" width="34" height="30" rx="5"/><rect x="170" y="30" width="34" height="8" rx="3"/>
+          <rect x="270" y="40" width="34" height="30" rx="5"/><rect x="270" y="30" width="34" height="8" rx="3"/>
+          <rect x="320" y="40" width="34" height="30" rx="5"/><rect x="320" y="30" width="34" height="8" rx="3"/>
+        </g>
+        <rect x="220" y="40" width="34" height="30" rx="5" fill="#F5C4B3" stroke="#D85A30" stroke-width="1"/><rect x="220" y="30" width="34" height="8" rx="3" fill="#F5C4B3" stroke="#D85A30" stroke-width="1"/>
+        <circle cx="237" cy="34" r="6" fill="#D85A30"/>
+      </svg></div>
+      <div class="dchip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div>From the data · <b>12-hour</b> walk-in and ER waits are among the most-cited durations, reported hundreds of times.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h4"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 2</span><span class="elapsed">paying to be seen</span>
+      <h3>Going private, just for a refill</h3>
+      <p>She needs a prescription renewed and can't face another all-day wait. So she does what a fifth of these posts describe: she pays. A virtual service connects her to a doctor in minutes — some are covered, some charge a fee — and she starts to wonder, quietly, whether this is just how it works now.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><div>From the data · paying, private clinics, and virtual visits are <b>mentioned in 21.7%</b> of access posts — the single most common coping theme.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM12 8v4M12 16h.01"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 4</span><span class="elapsed">6-hour ER wait</span>
+      <h3>The emergency room, for something it isn't for</h3>
+      <p>One night the chest pain is frightening enough that she goes to the ER — not because it belongs there, but because there is nowhere else. Six hours in a plastic chair. It turns out to be something a family doctor would have caught months earlier, at a desk, in ten minutes.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><div>From the data · the ER is the fallback in <b>11.9%</b> of posts; <b>6-hour</b> waits for non-emergencies are repeatedly described.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M8 3c0 4 8 5 8 9s-8 5-8 9M16 3c0 4-8 5-8 9"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Month 6</span><span class="elapsed">the list hasn't moved</span>
+      <h3>Half a year, no movement</h3>
+      <p>Six months in, her place on the list is exactly where it started. She begins reading other people's stories and finds the timelines that wait for her: two years is common, five isn't rare, and somewhere she sees the words <em>ten-year wait list.</em> In one province, people are told four years — today.</p>
+      <div class="scene"><svg viewBox="0 0 430 92" aria-hidden="true">
+        <g fill="#EEEDE5">
+          <rect x="0" y="8" width="300" height="9" rx="4"/><rect x="0" y="24" width="300" height="9" rx="4"/>
+          <rect x="0" y="40" width="300" height="9" rx="4"/><rect x="0" y="56" width="300" height="9" rx="4"/>
+          <rect x="0" y="72" width="300" height="9" rx="4"/>
+        </g>
+        <rect x="0" y="56" width="300" height="9" rx="4" fill="#F5C4B3" stroke="#D85A30" stroke-width="0.6"/>
+        <text x="316" y="62" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#8A331A;font-weight:600">Sara</text>
+        <text x="316" y="16" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#65665E">month 6</text>
+      </svg></div>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg><div>From the data · waitlist durations cited most often: <b>2 years (885×)</b>, <b>5 years (562×)</b>, <b>6 months (628×)</b> — and reports of <b>10-year</b> lists.</div></div>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="rail"><div class="line"></div><div class="med"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M8 13l2 2 4-4"/></svg></div></div>
+    <div class="scard">
+      <span class="time">Year 1</span><span class="elapsed">still calling, weekly</span>
+      <h3>A full year, and a door behind the door</h3>
+      <p>By a year, calling clinics has become a habit. And a new wall appears: she needs a referral she can't get. A psychiatrist, a specialist — both require a family doctor to send her, and she has none. The system that won't let her in the front door has quietly locked every room behind it too.</p>
+      <div class="dchip"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div>From the data · mental-health access (mentioned in <b>8.7%</b>) and specialists both need a GP referral; ADHD assessments cost <b>$700+</b> privately or wait months.</div></div>
+    </div>
+  </div>
+
+  <div class="stage fork reveal">
+    <div class="rail"><div class="med" style="border-color:#9A6A4A"><svg viewBox="0 0 24 24" style="stroke:#9A6A4A"><path d="M3 12h18M3 12l4-4M3 12l4 4"/></svg></div></div>
+    <div class="scard" style="border:none;background:none;box-shadow:none;padding:6px 0 0">
+      <div class="forkhead">And then her story splits — the way the data does</div>
+      <div class="fork2">
+        <div class="ocard win">
+          <div class="otag">The rare win · ~4–24 months</div>
+          <h4>Someone finally says yes</h4>
+          <p>The weekly calls pay off — a clinic opens a slot — or a nurse practitioner at a community Access clinic takes her on. She never sees a family doctor, exactly. But she has someone now, and she keeps them for years.</p>
+          <div class="mini">From the data: persistence "paid off after 4 months"; one person, assigned an NP, stayed with them <b>9 years</b>.</div>
+        </div>
+        <div class="ocard real">
+          <div class="otag">The common reality · year 2 and on</div>
+          <h4>She is still on the list</h4>
+          <p>For most, year one becomes year two, then three. The walk-ins and the paid visits become permanent. Some, after long enough, simply stop trying — building a smaller, lonelier version of care because the real thing never came.</p>
+          <div class="mini">From the data: <b>2 years</b> is the most-cited wait; some report <b>8 years</b> on the list before giving up.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</main>
+
+<section class="corpus"><div class="wrap">
+  <div class="chead reveal"><div class="ck">Pillar 1 · the corpus in numbers</div><h2>What the 77,241 access posts are about</h2></div>
+  <div class="reveal">
+      <div class="gbar"><span class="gterm">Family-doctor search</span><span class="gtrack"><span class="gfill" style="width:100%"></span></span><span class="gval">42,225 · 54.7%</span></div>
+      <div class="gbar"><span class="gterm">Walk-in &amp; urgent care</span><span class="gtrack"><span class="gfill" style="width:28%"></span></span><span class="gval">11,752 · 15.2%</span></div>
+      <div class="gbar"><span class="gterm">Waitlists &amp; wait times</span><span class="gtrack"><span class="gfill" style="width:14%"></span></span><span class="gval">6,067 · 7.9%</span></div>
+      <div class="gbar"><span class="gterm">General clinic talk</span><span class="gtrack"><span class="gfill" style="width:12%"></span></span><span class="gval">5,047 · 6.5%</span></div>
+      <div class="gbar"><span class="gterm">Paying / private / virtual</span><span class="gtrack"><span class="gfill" style="width:11%"></span></span><span class="gval">4,497 · 5.8%</span></div>
+      <div class="gbar"><span class="gterm">Nurse practitioners</span><span class="gtrack"><span class="gfill" style="width:4%"></span></span><span class="gval">1,580 · 2.0%</span></div>
+      <div class="gbar"><span class="gterm">ER as fallback</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">1,428 · 1.8%</span></div>
+      <div class="gbar"><span class="gterm">System &amp; policy</span><span class="gtrack"><span class="gfill" style="width:3%"></span></span><span class="gval">1,299 · 1.7%</span></div>
+      <div class="gbar"><span class="gterm">Prescriptions &amp; pharmacy</span><span class="gtrack"><span class="gfill" style="width:2%"></span></span><span class="gval">952 · 1.2%</span></div>
+      <div class="gbar"><span class="gterm">Appointments &amp; booking</span><span class="gtrack"><span class="gfill" style="width:2%"></span></span><span class="gval">750 · 1.0%</span></div>
+      <div class="gbar"><span class="gterm">Specialists &amp; referrals</span><span class="gtrack"><span class="gfill" style="width:2%"></span></span><span class="gval">711 · 0.9%</span></div>
+      <div class="gbar"><span class="gterm">Mental-health access</span><span class="gtrack"><span class="gfill" style="width:1%"></span></span><span class="gval">279 · 0.4%</span></div>
+      <div class="gbar"><span class="gterm">Other</span><span class="gtrack"><span class="gfill" style="width:1%"></span></span><span class="gval">654 · 0.8%</span></div>
+      <div class="gcap">Each post counted once by primary theme · named coverage 99.2% · 89% comments, 11% original posts.</div>
+      <div class="gsplit">
+        <div class="gcard"><div class="gt">Mentioned anywhere (dual lens)</div><div class="gl">paying / private 21.7% · walk-in 17.6% · ER 11.9% · chronic illness 9.8% · mental health 8.7% · system framing 15.8%</div></div>
+        <div class="gcard"><div class="gt">Most-cited waits</div><div class="gl">waitlists: 2 y ×885 · 5 y ×562 · 6 mo ×628 · "10-year lists"<br>walk-in / ER: 12 h ×398 · next appointment: 6 mo ×760</div></div>
+      </div>
+  </div>
+</div></section>
+
+<div class="close">
+  <h2>Sara is not one person. She is the average of 77,241.</h2>
+  <p>Her year is a composite, but it is not a guess. Every wait she endures, every door that closes, every workaround she improvises is drawn from what real people wrote — sequenced into a single timeline so the shape of the ordeal becomes visible. Read alone, each post is one frustration. Read together, as one journey, they are a year of someone's life spent simply trying to get in.</p>
+  <p>And that is the finding beneath all of it: for most people, primary care in Canada isn't about the medicine at all. <span class="big">It's about the wait at the door.</span></p>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="fl"><b>Method.</b> "Sara" is a composite persona. Her timeline is assembled from the 77,241 posts and comments classified as Contact/Access (Starfield's 4C framework). Each stage and duration reflects patterns and figures drawn from the data — durations are the most frequently reported values for that stage; situations are paraphrased from real posts. No detail is invented and no individual is identified.</p>
+    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit, Canadian primary-care discourse, January 2021 – August 2025 · n = 89,398 (Contact/Access = 77,241) · Memorial University, Faculty of Medicine.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce) document.body.classList.add('go');
+  var NS='http://www.w3.org/2000/svg';
+
+  // ---- Sara hero isotype: 100 figures, Sara highlighted ----
+  var svg=document.getElementById('heroIso');
+  if(svg){
+    var cols=20,total=100,vb=svg.viewBox.baseVal,cw=vb.width/cols,rows=5,ch=vb.height/rows;
+    var pw=cw*0.56,ph=ch*0.74,ox=(cw-pw)/2,oy=(ch-ph)/2, saraIdx=49;
+    for(var i=0;i<total;i++){
+      var r=Math.floor(i/cols),c=i%cols, isS=(i===saraIdx);
+      var gx=c*cw+ox, gy=r*ch+oy, w=pw, h=ph;
+      if(isS){ w=pw*1.5; h=ph*1.5; gx-=(w-pw)/2; gy-=(h-ph)/2; }
+      var u=document.createElementNS(NS,'use');
+      u.setAttribute('href','#mini'); u.setAttributeNS('http://www.w3.org/1999/xlink','href','#mini');
+      u.setAttribute('x',gx.toFixed(2)); u.setAttribute('y',gy.toFixed(2));
+      u.setAttribute('width',w.toFixed(2)); u.setAttribute('height',h.toFixed(2));
+      u.setAttribute('fill', isS?'#E0714A':'#3F5A56');
+      if(!reduce){u.style.opacity='0';u.style.transition='opacity .4s ease';u.style.transitionDelay=(i*7)+'ms';}
+      svg.appendChild(u);
+    }
+    var sr=Math.floor(saraIdx/cols), sc=saraIdx%cols, lx=(sc*cw+cw/2), ly=(sr*ch+oy)-4;
+    var t=document.createElementNS(NS,'text'); t.setAttribute('x',lx); t.setAttribute('y',ly-6);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('style','font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;fill:#F2A07C');
+    t.textContent='Sara'; svg.appendChild(t);
+    var ar=document.createElementNS(NS,'path'); ar.setAttribute('d','M'+lx+' '+(ly-3)+' l0 4'); ar.setAttribute('stroke','#F2A07C'); ar.setAttribute('stroke-width','1.5'); svg.appendChild(ar);
+    if(!reduce){ requestAnimationFrame(function(){requestAnimationFrame(function(){var us=svg.querySelectorAll('use');for(var k=0;k<us.length;k++)us[k].style.opacity='1';});}); }
+  }
+
+  // ---- scroll reveals ----
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
+  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  /* ================= 3D ================= */
+  var fb=document.getElementById('fallback');
+  if(!window.THREE){ if(fb) fb.style.display='block'; return; }
+  var hero=document.querySelector('.hero3d'), stage=document.getElementById('stage');
+  var W=stage.clientWidth,H=stage.clientHeight;
+
+  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x06120F,0.02);
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,500);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
+
+  var world=new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x2c4a4a,0.8));
+  var key=new THREE.DirectionalLight(0xbfd0ca,0.4); key.position.set(8,24,18); scene.add(key);
+  var coralTop=new THREE.PointLight(0xE0714A,1.2,90); coralTop.position.set(0,14,16); world.add(coralTop);
+  var doorLight=new THREE.PointLight(0xFFC081,2.6,34); doorLight.position.set(0,2.4,0.6); world.add(doorLight);
+
+  var grid=new THREE.GridHelper(200,110,0x335f59,0x16322c); grid.material.transparent=true; grid.material.opacity=0.45; world.add(grid);
+  var floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x06130F,roughness:0.4,metalness:0.66,transparent:true,opacity:0.92}));
+  floor.rotation.x=-Math.PI/2; floor.position.y=-0.02; world.add(floor);
+  // distant skyline — depth and scale behind the scene
+  var sky=new THREE.Group();
+  for(var si=0;si<46;si++){var bw=1.2+Math.random()*2.4,bh=4+Math.random()*14,bx=-48+Math.random()*96,bz=-24-Math.random()*24;
+    var bm=new THREE.Mesh(new THREE.BoxGeometry(bw,bh,bw),new THREE.MeshStandardMaterial({color:0x0b231f,roughness:0.9,metalness:0.2,emissive:0x123029,emissiveIntensity:0.35}));
+    bm.position.set(bx,bh/2,bz); sky.add(bm);}
+  world.add(sky);
+
+  var wallMat=new THREE.MeshStandardMaterial({color:0x102825,roughness:0.75,metalness:0.25});
+  var GAP=3.4, WALLH=5, WZ=-1;
+  var PANELW=2.4;
+  var lW=new THREE.Mesh(new THREE.BoxGeometry(PANELW,WALLH,0.6),wallMat); lW.position.set(-GAP/2-PANELW/2,WALLH/2,WZ); world.add(lW);
+  var rW=new THREE.Mesh(new THREE.BoxGeometry(PANELW,WALLH,0.6),wallMat); rW.position.set(GAP/2+PANELW/2,WALLH/2,WZ); world.add(rW);
+  var lin=new THREE.Mesh(new THREE.BoxGeometry(GAP+0.4,1.2,0.6),wallMat); lin.position.set(0,WALLH-0.6,WZ); world.add(lin);
+
+  var glow=new THREE.Mesh(new THREE.PlaneGeometry(GAP-0.2,3.6),new THREE.MeshBasicMaterial({color:0xFFD9A6,transparent:true,opacity:0.95}));
+  glow.position.set(0,1.9,WZ-0.5); world.add(glow);
+  var glowSoft=new THREE.Mesh(new THREE.PlaneGeometry(GAP+3,6),new THREE.MeshBasicMaterial({color:0xFFB877,transparent:true,opacity:0.16,depthWrite:false,blending:THREE.AdditiveBlending}));
+  glowSoft.position.set(0,2.2,WZ-0.46); world.add(glowSoft);
+  // NEW: volumetric beam of warm light spilling forward from the doorway
+  var beamGeo=new THREE.ConeGeometry(3.0,10,28,1,true); beamGeo.rotateX(-Math.PI/2);
+  var doorBeam=new THREE.Mesh(beamGeo,new THREE.MeshBasicMaterial({color:0xFFD9A6,transparent:true,opacity:0.06,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+  doorBeam.position.set(0,2.0,WZ+5); world.add(doorBeam);
+  // NEW: warm glowing pool of light on the floor at the threshold
+  var poolCv=document.createElement('canvas'); poolCv.width=128; poolCv.height=128; var pcx=poolCv.getContext('2d');
+  var pgrad=pcx.createRadialGradient(64,64,4,64,64,64); pgrad.addColorStop(0,'rgba(255,205,150,0.85)'); pgrad.addColorStop(1,'rgba(255,205,150,0)');
+  pcx.fillStyle=pgrad; pcx.fillRect(0,0,128,128);
+  var pool=new THREE.Mesh(new THREE.PlaneGeometry(9,7),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(poolCv),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+  pool.rotation.x=-Math.PI/2; pool.position.set(0,0.02,WZ+2.6); world.add(pool);
+
+  function texPlane(draw,cw,ch,pw,ph,x,y,z){var cv=document.createElement('canvas');cv.width=cw;cv.height=ch;draw(cv.getContext('2d'),cw,ch);var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;var m=new THREE.Mesh(new THREE.PlaneGeometry(pw,ph),new THREE.MeshBasicMaterial({map:tex,transparent:true}));m.position.set(x,y,z);return m;}
+  var sign1=texPlane(function(x,w,h){x.clearRect(0,0,w,h);x.textAlign='center';x.textBaseline='middle';if('letterSpacing' in x)x.letterSpacing='8px';x.fillStyle='#EFEFEA';x.font='600 92px "Space Grotesk", sans-serif';x.fillText('FAMILY DOCTOR',w/2,h/2);},1024,200,3.4,0.66,0,WALLH-0.62,WZ+0.32); world.add(sign1);
+  var sign2=texPlane(function(x,w,h){x.fillStyle='#D85A30';x.fillRect(0,0,w,h);x.strokeStyle='rgba(255,255,255,0.25)';x.lineWidth=8;x.strokeRect(18,18,w-36,h-36);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';if('letterSpacing' in x)x.letterSpacing='2px';x.font='600 96px "IBM Plex Mono", monospace';x.fillText('NOT ACCEPTING',w/2,h*0.36);x.fillText('NEW PATIENTS',w/2,h*0.66);},1024,470,2.7,1.24,0,1.78,WZ+0.42); world.add(sign2);
+
+  var bodyGeo=new THREE.CylinderGeometry(0.14,0.22,0.5,8); bodyGeo.translate(0,0.25,0);
+  var headGeo=new THREE.SphereGeometry(0.15,10,8); headGeo.translate(0,0.62,0);
+  var crowdMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0x551a0c,emissiveIntensity:0.22,roughness:0.5,metalness:0.2});
+  var COLS=30,ROWS=20,GRIDN=COLS*ROWS,TRICKLE=10,COUNT=GRIDN+TRICKLE;
+  var bodies=new THREE.InstancedMesh(bodyGeo,crowdMat,COUNT), heads=new THREE.InstancedMesh(headGeo,crowdMat,COUNT);
+  var dummy=new THREE.Object3D(), info=[];
+  for(var r=0;r<ROWS;r++){for(var c=0;c<COLS;c++){var x=(c-(COLS-1)/2)*0.92+(Math.random()-0.5)*0.4;var z=2.2+r*1.0+(Math.random()-0.5)*0.45;var near=1-Math.min(1,(z-2)/20);x*=(1-near*0.18);info.push({x:x,z:z,sy:0.85+Math.random()*0.5,ph:Math.random()*6.28});}}
+  for(var tt=0;tt<TRICKLE;tt++){info.push({x:(Math.random()-0.5)*1.6,z:-1.6-Math.random()*4.0,sy:0.9+Math.random()*0.3,ph:Math.random()*6.28});}
+  // Sara: now in the MIDDLE of the crowd, taller and white, with a beam of light so she's findable
+  var saraIdx=10*COLS+15;
+  info[saraIdx].x=0; info[saraIdx].z=11.5; info[saraIdx].sy=1.5; info[saraIdx].ph=0;
+  var cCoral=new THREE.Color(0xD85A30), cSara=new THREE.Color(0xFFFFFF);
+  for(var ci=0;ci<COUNT;ci++){var col=(ci===saraIdx)?cSara:cCoral;bodies.setColorAt(ci,col);heads.setColorAt(ci,col);}
+  bodies.instanceColor.needsUpdate=true; heads.instanceColor.needsUpdate=true;
+  world.add(bodies); world.add(heads);
+  // Sara marker: ground ring + overhead light beam + spotlight + floating name
+  var saraRing=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.055,10,36),new THREE.MeshBasicMaterial({color:0xFFFFFF})); saraRing.rotation.x=-Math.PI/2; world.add(saraRing);
+  var saraBeam=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.95,8,24,1,true),new THREE.MeshBasicMaterial({color:0xFFE9C8,transparent:true,opacity:0.16,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending})); world.add(saraBeam);
+  var saraSpot=new THREE.PointLight(0xFFF0D8,1.3,10); world.add(saraSpot);
+  var saraLab=(function(){var cv=document.createElement('canvas');cv.width=256;cv.height=140;var x=cv.getContext('2d');x.clearRect(0,0,256,140);x.textAlign='center';x.fillStyle='#FFFFFF';x.font='600 62px "Space Grotesk", sans-serif';x.fillText('Sara',128,56);x.fillStyle='#F2A07C';x.font='600 34px "IBM Plex Mono", monospace';x.fillText('\u25BC',128,104);var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(2.3,1.26,1);return sp;})();
+  world.add(saraLab);
+
+  var ROUTES=[{n:'Pay privately',v:21.7,c:0xE0714A},{n:'Walk-in clinic',v:17.6,c:0xD85A30},{n:'Emergency room',v:11.9,c:0xC0461F},{n:'Nurse practitioner',v:6.6,c:0xE89A7E},{n:'Prescription',v:5.2,c:0xF0BBA4}];
+  var HS=0.42, towers=[];
+  function labelSprite(name,val,wn){var cv=document.createElement('canvas');cv.width=512;cv.height=170;var x=cv.getContext('2d');x.clearRect(0,0,512,170);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#F2EFEA';x.font='600 46px "Space Grotesk", sans-serif';x.fillText(name,256,62);x.fillStyle='#F2A07C';x.font='600 52px "IBM Plex Mono", monospace';x.fillText(val,256,120);var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(wn,wn*170/512,1);sp.material.opacity=0;return sp;}
+  var TX=[6.0,8.7,11.4,-6.0,-8.7], TZ=WZ;
+  function faceTex(name,val){var cv=document.createElement('canvas');cv.width=320;cv.height=200;var x=cv.getContext('2d');x.clearRect(0,0,320,200);x.textAlign='center';
+    x.fillStyle='#FFF4EC';x.font='600 52px "IBM Plex Mono", monospace';x.fillText(val,160,64);
+    x.fillStyle='#FFF4EC';x.font='500 30px "Space Grotesk", sans-serif';
+    var w=name.split(' '),l1=w[0],l2=w.slice(1).join(' ');
+    x.fillText(l1,160,120); if(l2) x.fillText(l2,160,158);
+    var t=new THREE.CanvasTexture(cv);t.anisotropy=4;return t;}
+  ROUTES.forEach(function(d,i){var h=d.v*HS,x=TX[i];var mat=new THREE.MeshStandardMaterial({color:d.c,emissive:d.c,emissiveIntensity:0.5,roughness:0.32,metalness:0.35});var m=new THREE.Mesh(new THREE.BoxGeometry(1.7,h,1.7),mat);m.position.set(x,h/2,TZ);m.scale.y=0.0001;world.add(m);
+    var cap=new THREE.Mesh(new THREE.BoxGeometry(1.78,0.12,1.78),new THREE.MeshBasicMaterial({color:0xFFE6D8}));world.add(cap);
+    var face=new THREE.Mesh(new THREE.PlaneGeometry(1.55,0.97),new THREE.MeshBasicMaterial({map:faceTex(d.n,d.v.toFixed(1)+'%'),transparent:true,depthWrite:false})); face.position.set(x,h-0.55,TZ+0.862); world.add(face);
+    var lab=labelSprite(d.n,d.v.toFixed(1)+'%',3.2); lab.position.set(x,h+1.4,TZ); world.add(lab);
+    towers.push({m:m,cap:cap,face:face,lab:lab,h:h,x:x,z:TZ});});
+
+  var PC=420,pp=new Float32Array(PC*3),spd=new Float32Array(PC);
+  for(var i=0;i<PC;i++){pp[i*3]=(Math.random()-0.5)*70;pp[i*3+1]=Math.random()*28;pp[i*3+2]=(Math.random()-0.5)*60-4;spd[i]=0.004+Math.random()*0.013;}
+  var pgeo=new THREE.BufferGeometry(); pgeo.setAttribute('position',new THREE.BufferAttribute(pp,3));
+  var pts=new THREE.Points(pgeo,new THREE.PointsMaterial({color:0xF2A07C,size:0.08,transparent:true,opacity:0.5,depthWrite:false,blending:THREE.AdditiveBlending})); world.add(pts);
+
+  var prog=0; function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
+  window.addEventListener('scroll',calc,{passive:true}); calc();
+
+  var KF=[{p:0.00,pos:[0,3.2,13.5],look:[0,2.0,-1]},{p:0.22,pos:[0,3.8,9.5],look:[0,2.1,-1]},{p:0.48,pos:[0,7.2,16],look:[0,2.8,-2.5]},{p:0.74,pos:[0,12,26],look:[0,3.4,-5]},{p:1.00,pos:[0,16.5,36],look:[0,4.2,-6]}];
+  function lpf(a,b,t){return a+(b-a)*t;}
+  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);camera.position.set(lpf(A.pos[0],B.pos[0],t),lpf(A.pos[1],B.pos[1],t),lpf(A.pos[2],B.pos[2],t));camera.lookAt(lpf(A.look[0],B.look[0],t),lpf(A.look[1],B.look[1],t),lpf(A.look[2],B.look[2],t));}
+  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+
+  var dragRot=0,dragging=false,lastX=0;
+  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
+  window.addEventListener('pointerup',function(){dragging=false;});
+  var caps=[].slice.call(document.querySelectorAll('.cap')), cue=document.getElementById('cue');
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var p=prog, time=Date.now()*0.001;
+    camAt(p);
+    world.rotation.y=dragRot+Math.sin(time*0.07)*0.05;
+    var sv=sm(p,0.04,0.22); sign1.material.opacity=sv; sign2.material.opacity=sv;
+    doorLight.intensity=2.0+Math.sin(time*1.3)*0.3; glow.material.opacity=0.85+Math.sin(time*1.3)*0.08;
+    var tv=sm(p,0.48,0.74);
+    for(var i=0;i<towers.length;i++){var T=towers[i];var s=Math.max(0.0001,tv);T.m.scale.y=s;T.m.position.y=(T.h*s)/2;T.cap.position.set(T.x,T.h*s+0.06,T.z);T.cap.visible=tv>0.02;T.face.material.opacity=tv;T.face.position.y=Math.max(0.6,T.h*s-0.55);T.lab.material.opacity=tv;T.lab.position.y=T.h*s+1.4;}
+    var push=sm(p,0.05,0.42)*1.4;
+    for(var k=0;k<COUNT;k++){var f=info[k];var bob=Math.sin(time*1.6+f.ph)*0.045;dummy.position.set(f.x,bob,f.z-push);dummy.scale.set(1,f.sy,1);dummy.rotation.y=0;dummy.updateMatrix();bodies.setMatrixAt(k,dummy.matrix);heads.setMatrixAt(k,dummy.matrix);}
+    bodies.instanceMatrix.needsUpdate=true; heads.instanceMatrix.needsUpdate=true;
+    var sX=info[saraIdx].x, sZ=info[saraIdx].z-push, sBob=Math.sin(time*1.6)*0.045;
+    saraRing.position.set(sX,0.03,sZ); saraRing.scale.setScalar(1+Math.sin(time*2.2)*0.06);
+    saraBeam.position.set(sX,4.0,sZ); saraBeam.material.opacity=0.13+Math.sin(time*1.8)*0.04;
+    saraSpot.position.set(sX,3.0,sZ);
+    saraLab.position.set(sX,0.62*info[saraIdx].sy+1.75+sBob,sZ);
+    var pa=pgeo.attributes.position.array; for(var i=0;i<PC;i++){pa[i*3+1]+=spd[i];if(pa[i*3+1]>29)pa[i*3+1]=0;} pgeo.attributes.position.needsUpdate=true;
+    for(var i=0;i<caps.length;i++){var lo=parseFloat(caps[i].dataset.lo),hi=parseFloat(caps[i].dataset.hi);var o=Math.min(sm(p,lo,lo+0.05),1-sm(p,hi-0.05,hi));caps[i].style.opacity=Math.max(0,o);}
+    if(cue) cue.style.opacity=(p>0.05?0:1);
+    var bd=document.getElementById('beatdots');if(bd){var bi=p<0.215?0:p<0.485?1:p<0.745?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    
+    renderer.render(scene,camera);
+  }
+  animate(); if(fb) fb.style.display='none';
+  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+})();
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mini" viewBox="0 0 20 24"><circle cx="10" cy="5.4" r="4.1"/><path d="M2.4 23.5C2.4 15 5 11.8 10 11.8C15 11.8 17.6 15 17.6 23.5Z"/></symbol>
+</defs></svg>
+</body>
+</html>
