@@ -427,7 +427,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
   // ── BEADS + SPIKE BARS ───────────────────────────────────────────────────
   var beads=[];
   MONTHLY.forEach(function(m,i){
-    var t=i/54;
+    var t=i/55;
     var pt=curve.getPointAt(t);
     var col=negColor(m[0]);
     var beadR=Math.sqrt(m[1]/maxVol)*0.42+0.11;
@@ -487,7 +487,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
     sp.scale.set(w,w*100/580,1);return sp;
   }
   YEAR_DATA.forEach(function(d){
-    var pt=curve.getPointAt(d[0]/54);
+    var pt=curve.getPointAt(d[0]/55);
     var col=d[2];
     // Ring
     var ring=new THREE.Mesh(
