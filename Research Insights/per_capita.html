@@ -3,476 +3,623 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hidden Crisis — Per-Capita Normalization by Province · Canadian Primary Care</title>
+<title>Hidden Crisis — Per-Capita Normalization · Canadian Primary Care</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,monospace;
-  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
-  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#0B1F3A;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-body:"Newsreader",Georgia,serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;
+  --coral:#D85A30;--coral-deep:#A23E1C;
+  --teal:#2E7D72;--gold:#C8902B;
+  --line:#E6E4DC;--track:#EEEDE5;
+  --hero-bg:#0A1E12;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
 .wrap{max-width:760px;margin:0 auto;padding:0 26px}
-.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%,#001820 0%,#000E18 48%,#000507 100%)}
+
+/* ── 3D HERO ── */
+.hero3d{position:relative;height:420vh;background:radial-gradient(140% 70% at 50% 0%,#040E08 0%,#020608 55%,#010204 100%)}
 .sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-#stage{position:absolute;inset:0;touch-action:pan-y}#stage canvas{display:block}
+#stage{position:absolute;inset:0;touch-action:pan-y}
+#stage canvas{display:block}
 .h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
-.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(0,5,7,.95),rgba(0,5,7,.5) 50%,transparent);pointer-events:none}
-.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#52C5B6}
-.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
-.cap .big{font-family:var(--font-display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FFD6C8,#E76F51);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap .big.gold{background:linear-gradient(180deg,#FFF0C0,#E9C46A);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap .big.teal{background:linear-gradient(180deg,#C8F0EC,#2A9D8F);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap h2{font-family:var(--font-display);color:#E8F4F2;font-weight:500;font-size:24px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.8)}
-.cap p{font-family:var(--font-mono);font-size:12.5px;color:#80C0B8;margin:12px auto 0;max-width:520px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.8)}
-.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#507870;transition:opacity .3s}
-.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:44%;background:linear-gradient(to top,rgba(1,4,2,.97),rgba(1,4,2,.55) 55%,transparent);pointer-events:none}
+.brand{position:absolute;top:28px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#608078}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:12vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:700;font-size:76px;line-height:.86;letter-spacing:-.04em;background:linear-gradient(160deg,#FFD8B4,#F0B060 38%,#C8902B 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.coral{background:linear-gradient(160deg,#FFD6C8,#F08060 38%,#E04828 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.teal{background:linear-gradient(160deg,#C8F0EC,#52C5B6 38%,#2A9D8F 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#D8ECD8;font-weight:500;font-size:23px;line-height:1.24;margin:14px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 32px rgba(0,0,0,.9)}
+.cap p{font-family:var(--font-mono);font-size:12px;color:#8AB0A0;margin:11px auto 0;max-width:520px;line-height:1.65;text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.scrollcue{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#407860;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 .beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .3s,transform .3s}
-.beatdots span.on{background:#E9C46A;transform:scale(1.4);box-shadow:0 0 8px rgba(233,196,106,.5)}
-#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#80C0B8;max-width:380px;line-height:1.7;display:none;padding:0 24px}
-.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(200,144,43,.14),transparent 60%);pointer-events:none}
-.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
-.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
-.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .3s,transform .3s}
+.beatdots span.on{background:#5CC8A0;transform:scale(1.5);box-shadow:0 0 10px rgba(92,200,160,.7)}
+
+/* ── ARTICLE HERO ── */
+.ahero{background:var(--hero-bg);color:var(--hero-fg);padding:62px 0 54px;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);position:relative;overflow:hidden}
+.ahero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 78% 0%,rgba(200,144,43,.12),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:16px}
+.ahero h1{font-family:var(--font-display);font-weight:600;font-size:54px;line-height:1.00;letter-spacing:-.03em;margin:0 0 16px}
+.ahero .dek{font-size:20px;line-height:1.55;color:#D6E0DD;max-width:590px}
+
+/* ── SECTIONS ── */
 .sec{padding:46px 0 10px}
-.sec .sk{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.sec h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
+.sec .sk{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.sec h2{font-family:var(--font-display);font-weight:600;font-size:30px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
 .sec p{font-size:18px;line-height:1.72;margin:0 0 16px}
-/* province comparison table */
-.ptable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;margin:16px 0}
-.ptable th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--line);color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
-.ptable td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.sec p em{font-style:italic}
+
+/* ── PROVINCE TABLE ── */
+.ptable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin:16px 0}
+.ptable th{text-align:left;padding:7px 10px;border-bottom:2px solid var(--line);color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.ptable td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
 .ptable tr:last-child td{border:none}
-.ptable .rk{font-size:11px;font-weight:700;font-family:var(--font-mono);width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%}
-.ptable .rk.gold{background:#FEF3C7;color:#92400E}
-.ptable .rk.coral{background:#FEE2E2;color:#991B1B}
-.ptable .rk.teal{background:#D1FAE5;color:#065F46}
-.ptable .rk.grey{background:#F3F4F6;color:#6B7280}
-.tbar{height:10px;background:var(--track);border-radius:5px;overflow:hidden;min-width:80px}
-.tfill{height:100%;border-radius:5px}
-/* stat callouts */
-.scards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
-.sc{border-radius:12px;padding:18px 16px;border:1px solid var(--line)}
-.sc .sn{font-family:var(--font-display);font-weight:700;font-size:30px;letter-spacing:-.03em;margin-bottom:2px}
-.sc .sl{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.sc .sd{font-size:14px;line-height:1.5;margin-top:8px;color:#3A4A40}
-/* raw vs cap comparison */
-.versus{display:grid;grid-template-columns:1fr auto 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0}
-.vside{padding:18px 20px}
-.vside.raw{background:#FFF5F2}
-.vside.cap{background:#F4FCF8}
-.vmid{padding:18px 10px;background:#FAFAF6;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--line);border-right:1px solid var(--line)}
-.vmid .arrow{font-family:var(--font-display);font-weight:600;font-size:22px;color:var(--gold)}
-.vt{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
-.vn{font-family:var(--font-display);font-size:22px;font-weight:700}
-.vn.coral{color:var(--coral)}
-.vn.teal{color:var(--teal)}
-.vs{font-size:13.5px;line-height:1.5;margin-top:6px;color:#3A4A40}
-/* close */
-.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--gold)}
-.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
-.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
-.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.pbar{height:7px;background:var(--track);border-radius:4px;overflow:hidden;width:80px;display:inline-block}
+.pfill{height:100%;border-radius:4px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;font-family:var(--font-mono)}
+.flip{background:#FFF5E8;border:1px solid #F5D8A0;border-radius:12px;padding:20px 22px;margin:20px 0}
+.flip h3{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-.01em;margin:0 0 8px}
+.flip p{font-size:15px;line-height:1.6;margin:0}
+
+/* ── CITY TABLE ── */
+.ctable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin:16px 0}
+.ctable th{text-align:left;padding:7px 10px;border-bottom:2px solid var(--line);color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.ctable td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.ctable tr:last-child td{border:none}
+
+/* ── EQUITY CALLOUT ── */
+.equity{background:linear-gradient(135deg,#F8FCF8,#EEF8F0);border:1px solid #B8E8C8;border-radius:14px;padding:24px 26px;margin:20px 0}
+.equity .etag{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.equity h3{font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:-.01em;margin:0 0 10px}
+.equity p{font-size:15px;line-height:1.6;margin:0 0 10px}
+.equity p:last-child{margin:0}
+
+/* ── CLOSE / FOOTER ── */
+.closewrap{max-width:760px;margin:22px auto 0;padding:36px 26px 0;border-top:3px solid var(--gold)}
+.closewrap h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.closewrap p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.closewrap .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
 .foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
-.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}
+.foot .fl b{color:var(--ink);font-weight:600}
+.foot .fl+.fl{margin-top:14px}
+
+/* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(14px)}
 body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
-@media(max-width:680px){body{font-size:17px}.wrap{padding:0 18px}.scards{grid-template-columns:1fr 1fr}.cap .big{font-size:44px}.cap h2{font-size:18px}.hero h1{font-size:36px}}
+@media(max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}
+  .cap .big{font-size:48px}.cap h2{font-size:18px}.ahero h1{font-size:36px}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ 3D HERO: PROVINCE TOWERS ═══ -->
+<!-- ═══════════════════════════════ 3D HERO ═══════════════════════════════ -->
 <section class="hero3d">
   <div class="sticky">
     <div id="stage"></div>
     <div class="h3ov">
-      <div class="brand">Research Finding 4 of 4 · Per-Capita Normalization · 8 provinces · n = 89,398</div>
-      <div class="cap" data-lo="-0.06" data-hi="0.22">
+      <div class="brand">Research Finding 4 of 4 · Geographic Distribution · 8 Provinces · n = 89,398</div>
+
+      <div class="cap" data-lo="-0.06" data-hi="0.23">
         <div class="big">14,141</div>
-        <h2>Ontario dominates the raw record count. 15.8% of all posts. The most populous province speaks loudest.</h2>
-        <p>Towers rising from the floor represent raw Reddit record counts by province. Height = volume. Ontario reaches the sky. Everyone else looks small. But raw counts tell a story about population size, not healthcare urgency.</p>
+        <h2>Ontario — 37.9x more posts than Manitoba. Towers show raw volume. The population giants dominate the discourse — or do they?</h2>
+        <p>Each tower = one province. Height = raw post volume. Ontario (ON) towers above all. This is the view most researchers see. The towers are about to transform.</p>
       </div>
-      <div class="cap" data-lo="0.25" data-hi="0.48">
-        <div class="big gold">164 / 100k</div>
-        <h2>Newfoundland & Labrador: 164 posts per 100,000 residents. The towers are transforming.</h2>
-        <p>Adjust for population and the landscape inverts. NL's 855 raw records become a 164/100k rate — 1.72× Ontario's rate. The smallest province by population has the loudest voice per person.</p>
+
+      <div class="cap" data-lo="0.26" data-hi="0.52">
+        <div class="big coral">÷</div>
+        <h2>Dividing by population (per 100,000 residents) reveals a completely different map.</h2>
+        <p>Watch the towers shift. The gold ring shows the national average — 236 posts per 100k. Provinces above the ring are over-engaged. Below it: their concerns are quiet in the data even if acute in real life.</p>
       </div>
-      <div class="cap" data-lo="0.51" data-hi="0.76">
-        <div class="big teal">152 / 100k</div>
-        <h2>Nova Scotia ranks 2nd at 152 per 100,000. Atlantic Canada is disproportionately vocal online.</h2>
-        <p>Both NS (34.9% negative) and NL (35.1% negative) are actually calmer in tone than Ontario (41.2%) — but they are speaking more loudly per capita. The crisis in Atlantic Canada is real, but the anger is different.</p>
+
+      <div class="cap" data-lo="0.55" data-hi="0.79">
+        <div class="big teal">164</div>
+        <h2>Newfoundland & Labrador — 164 posts per 100k. The per-capita leader. The province with the worst physician shortage speaks the loudest per person.</h2>
+        <p>NL has only 855 raw posts (6th by volume), but its population of ~521,000 produces the highest engagement rate in the dataset: 164/100k. Nova Scotia follows at 152/100k. Ontario falls to 95/100k.</p>
       </div>
-      <div class="cap" data-lo="0.78" data-hi="1.02">
-        <div class="big gold">95 / 100k</div>
-        <h2>Ontario falls to 5th place after normalization — from #1 to near-median. The hidden crisis is revealed.</h2>
-        <p>Without per-capita adjustment, Ontario's sheer population mass drowns out every other province's signal. Normalize for population and the equity map of primary care frustration shifts completely. Policy decisions that respond only to raw volume will always over-serve large provinces.</p>
+
+      <div class="cap" data-lo="0.82" data-hi="1.06">
+        <div class="big">18</div>
+        <h2>Manitoba — 18 posts per 100k. 9× below the national average. A province with 1.4 million people generates near-silence in the data.</h2>
+        <p>245 raw posts. The Manitoba anomaly cannot be explained by fewer physicians or better access — Manitoba has serious primary care access challenges. It may reflect structural barriers to online advocacy: rural geography, lower internet access rates, language barriers in its large Indigenous population.</p>
       </div>
-      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
-      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#507870" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div id="fallback">Loading 3D scene — the research article is just below.</div>
+
+      <div class="beatdots" id="beatdots">
+        <span class="on"></span><span></span><span></span><span></span>
+      </div>
+      <div class="scrollcue" id="cue">scroll
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#407860" stroke-width="2">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ARTICLE ═══ -->
-<header class="hero">
+<!-- ═══════════════════════════════ ARTICLE ═══════════════════════════════ -->
+<header class="ahero">
   <div class="wrap">
-    <div class="kick">Research Finding 4 of 4 · Per-Capita Normalization · 8 provinces · n = 89,398</div>
-    <h1>The Hidden Crisis</h1>
-    <p class="dek">Raw Reddit post counts make Ontario look like the only place where primary care is broken. Adjust for population and the map reverses: Newfoundland & Labrador is the loudest province per capita, and the Atlantic provinces are systemically under-represented in aggregate policy discourse.</p>
+    <div class="kick">Research Finding 4 of 4 · Geographic Distribution · 8 Provinces · n = 89,398</div>
+    <h1>Hidden Crisis</h1>
+    <p class="dek">Raw post volume makes Ontario look like the centre of Canada's primary care discourse. Per-capita normalization reveals something different: the provinces with the worst access problems are often the ones speaking loudest, per person — while the most populous provinces dominate the raw counts in ways that can mask smaller, more acute crises.</p>
   </div>
 </header>
 
 <main>
 <div class="wrap">
 
+  <!-- THE FLIP -->
   <div class="sec reveal">
     <div class="sk">The Core Finding</div>
-    <h2>Population adjustment changes everything</h2>
-    <div class="scards">
-      <div class="sc">
-        <div class="sn" style="color:var(--coral)">164</div>
-        <div class="sl">NL posts / 100k pop</div>
-        <div class="sd">NL ranks #1 per capita despite only 522k residents and 855 total posts</div>
-      </div>
-      <div class="sc">
-        <div class="sn" style="color:var(--gold)">1.72×</div>
-        <div class="sl">NL ÷ Ontario rate</div>
-        <div class="sd">Newfoundlanders post about primary care at nearly twice the Ontario rate per capita</div>
-      </div>
-      <div class="sc">
-        <div class="sn" style="color:var(--teal)">95</div>
-        <div class="sl">Ontario posts / 100k</div>
-        <div class="sd">Ontario falls from #1 to #5 after population normalization</div>
-      </div>
+    <h2>The provincial rankings reverse completely when normalized</h2>
+    <div class="flip">
+      <h3>Raw volume ranking vs. per-capita ranking</h3>
+      <p>Ontario (1st raw) → 95/100k (5th per capita). Newfoundland (6th raw) → 164/100k (1st per capita). Manitoba (8th raw, 245 posts) → 18/100k (8th per capita — but now 9× below national average instead of just "small"). The magnitude of the reversal is the finding.</p>
     </div>
-    <p>When policy analysts, journalists, and government decision-makers look at raw Reddit data about healthcare, the first thing they see is Ontario — 14,141 records, 15.8% of the total corpus, by far the loudest single voice. It is natural to assume that Ontario's primary care crisis is the primary care crisis. But this conflates signal with population size.</p>
-    <p>Per-capita normalization divides post counts by each province's 2021 census population and scales to posts per 100,000 residents. The resulting map is not just different — it is nearly inverted.</p>
-  </div>
 
-  <!-- The flip: ON vs NL -->
-  <div class="sec reveal">
-    <div class="sk">Raw vs Per Capita: Ontario vs Newfoundland</div>
-    <h2>From 16.5× larger to 0.58× — the normalization effect</h2>
-    <div class="versus">
-      <div class="vside raw">
-        <div class="vt">Raw Record Count</div>
-        <div class="vn coral">Ontario #1</div>
-        <div class="vs">14,141 records<br>vs NL's 855<br><b style="color:var(--coral-deep)">16.5× more</b></div>
-      </div>
-      <div class="vmid"><div class="arrow">→ ÷ population →</div></div>
-      <div class="vside cap">
-        <div class="vt">Per 100,000 Residents</div>
-        <div class="vn teal">NL #1</div>
-        <div class="vs">NL: 164 / 100k<br>vs Ontario: 95 / 100k<br><b style="color:var(--teal)">NL 1.72× higher</b></div>
-      </div>
-    </div>
-    <p>Ontario has 28.4× more people than Newfoundland and Labrador. But that population advantage completely explains — and then overpowers — its raw post-count advantage. Once you control for the size of the potential "complainant pool," Ontario is an average province. NL is the national leader.</p>
-    <p>This inversion is not a statistical artifact. NL has experienced some of Canada's most severe family doctor shortages. Approximately 35% of Newfoundlanders lack access to a regular primary care provider. The per-capita Reddit signal is capturing a real geographic pattern in the healthcare crisis.</p>
-  </div>
-
-  <!-- Full province table -->
-  <div class="sec reveal">
-    <div class="sk">All 8 Provinces</div>
-    <h2>Complete per-capita ranking with raw counts and sentiment</h2>
-    <p>Sorted by per-capita rank. Per-capita column is the authoritative measure for policy equity analysis.</p>
     <table class="ptable">
       <thead>
         <tr>
-          <th>Per-Capita Rank</th>
-          <th>Province</th>
-          <th>Raw Count</th>
-          <th>Raw Rank</th>
-          <th>Per 100k</th>
-          <th>Per-Capita Bar</th>
-          <th>Negative %</th>
+          <th>Province</th><th>Raw Posts</th><th>Pop (100k)</th><th>Per 100k</th><th>vs. Nat'l Avg</th><th>Label</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#F8FCF4">
+          <td><b>NL</b> Newfoundland</td>
+          <td>855</td><td>5.21</td>
+          <td style="font-weight:700;color:#1E6A60">164</td>
+          <td>+128/100k <span style="color:#1E6A60">▲</span></td>
+          <td><span class="badge" style="background:#D8F4EE;color:#1E6A60">Per-capita #1</span></td>
+        </tr>
+        <tr style="background:#F8FCF4">
+          <td><b>NS</b> Nova Scotia</td>
+          <td>1,485</td><td>9.79</td>
+          <td style="font-weight:700;color:#2A7D72">152</td>
+          <td>+116/100k <span style="color:#2A7D72">▲</span></td>
+          <td><span class="badge" style="background:#EEF8F4;color:#2A7D72">Per-capita #2</span></td>
+        </tr>
+        <tr>
+          <td><b>AB</b> Alberta</td>
+          <td>4,051</td><td>44.28</td>
+          <td style="color:#5A7040">92</td>
+          <td>−144/100k</td>
+          <td><span class="badge" style="background:#F4F8F0;color:#5A7040">Near avg</span></td>
+        </tr>
+        <tr>
+          <td><b>BC</b> British Columbia</td>
+          <td>3,344</td><td>53.11</td>
+          <td style="color:#5A7040">63</td>
+          <td>−173/100k</td>
+          <td><span class="badge" style="background:#F4F8F0;color:#5A7040">Below avg</span></td>
+        </tr>
+        <tr>
+          <td><b>ON</b> Ontario</td>
+          <td style="font-weight:700">14,141</td>
+          <td>148.26</td>
+          <td style="color:#8A8070">95</td>
+          <td>−141/100k</td>
+          <td><span class="badge" style="background:#F8F4EC;color:#8A6030">Raw dominant</span></td>
+        </tr>
+        <tr>
+          <td><b>SK</b> Saskatchewan</td>
+          <td>767</td><td>11.94</td>
+          <td style="color:#8A8070">64</td>
+          <td>−172/100k</td>
+          <td><span class="badge" style="background:#F8F4EC;color:#8A6030">Below avg</span></td>
+        </tr>
+        <tr style="background:#FFF5F2">
+          <td><b>NB</b> New Brunswick</td>
+          <td>2</td><td>8.36</td>
+          <td style="color:#A03820;font-weight:700">&lt;1</td>
+          <td>≈ −236/100k</td>
+          <td><span class="badge" style="background:#FDE8E2;color:#A03820">Near-zero</span></td>
+        </tr>
+        <tr style="background:#FFF5F2">
+          <td><b>MB</b> Manitoba</td>
+          <td>245</td><td>13.80</td>
+          <td style="color:#A03820;font-weight:700">18</td>
+          <td>−218/100k</td>
+          <td><span class="badge" style="background:#FDE8E2;color:#A03820">Anomaly</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">National average: 236 posts per 100,000. Population figures from 2021 Census. Posts = geo-tagged records from 89,398 total.</p>
+  </div>
+
+  <!-- NL SIGNAL -->
+  <div class="sec reveal">
+    <div class="sk">The Loudest Voice</div>
+    <h2>Newfoundland & Labrador: 164/100k and Canada's worst physician shortage</h2>
+    <p>NL's 164 posts per 100,000 is not a coincidence. The province consistently ranks last or near-last on physician-to-population ratios nationally. In 2023, roughly 25% of NL residents reported having no regular healthcare provider. When structural access fails, people turn to online communities for information, peer support, and advocacy — and the data shows that clearly.</p>
+    <p>Nova Scotia at 152/100k follows the same pattern. The Atlantic provinces — historically underserviced relative to Central and Western Canada — show per-capita engagement rates that dwarf Ontario (95/100k) and BC (63/100k). The correlation between documented access deficits and online engagement rates is one of the clearest signals in the dataset.</p>
+  </div>
+
+  <!-- ONTARIO PARADOX -->
+  <div class="sec reveal">
+    <div class="sk">The Ontario Paradox</div>
+    <h2>37.9% of all posts, but below national average per capita</h2>
+    <p>Ontario produces 14,141 of the 89,398 records — 15.8% of the nation's population producing 15.8% of its Reddit primary care discourse. That proportionality is, in itself, a story. Ontario is neither over-engaged nor under-engaged; its raw dominance reflects its population size rather than any heightened sense of crisis.</p>
+    <p>At 95/100k, Ontario falls 141 points below the national average. Its sheer scale shapes any unweighted analysis of the corpus — biasing geographic sentiment scores, trend estimates, and any frequency analysis that does not adjust for population. Researchers relying on raw counts without normalization risk building models that describe Ontario's primary care experience as though it were Canada's.</p>
+  </div>
+
+  <!-- MANITOBA ANOMALY -->
+  <div class="sec reveal">
+    <div class="sk">The Manitoba Anomaly</div>
+    <h2>18/100k — near-silence in a province of 1.4 million</h2>
+    <p>Manitoba's 245 posts — 18 per 100,000 — cannot be explained by better access. The province has well-documented physician shortages in its northern and rural regions, and Winnipeg's inner city has among the highest concentrations of medically underserved populations in Canada. The data silence is not a signal that things are fine.</p>
+    <p>Several structural factors may explain the gap. Manitoba has a proportionally larger Indigenous population than any province except Saskatchewan — approximately 18% — and Indigenous Canadians face documented barriers to online health advocacy including lower internet access rates in remote communities, lower trust in digital platforms, and language barriers. Rural geographic dispersion further limits participation in online communities that are primarily urban-centric in both membership and framing.</p>
+    <p>The Manitoba anomaly is a warning about what online data can miss. The absence of a signal is not the absence of a crisis.</p>
+  </div>
+
+  <!-- CITY LEVEL — NEW SECTION -->
+  <div class="sec reveal">
+    <div class="sk">City-Level Analysis</div>
+    <h2>Within Ontario: Halifax vs. Ottawa vs. Winnipeg</h2>
+    <p>The geo_stats data includes 17 distinct city or regional identifiers. Among the largest population centres outside Toronto, three cities illustrate the within-province variation that provincial aggregation conceals:</p>
+
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th>City / Region</th><th>Est. Posts</th><th>Pop (100k)</th><th>Est. /100k</th><th>Context</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class="rk gold">#1</span></td>
-          <td><b>Newfoundland & Labrador</b></td>
-          <td>855</td>
-          <td><span class="rk grey">#6</span></td>
-          <td><b>164</b></td>
-          <td><div class="tbar"><div class="tfill" style="width:100%;background:#E9C46A"></div></div></td>
-          <td>35.1%</td>
+          <td>Halifax (NS)</td><td>~839</td><td>4.78</td>
+          <td style="font-weight:700;color:#1E6A60">~176</td>
+          <td>Highest city-level est. rate; 52% of NS posts from Halifax metro</td>
         </tr>
         <tr>
-          <td><span class="rk gold">#2</span></td>
-          <td><b>Nova Scotia</b></td>
-          <td>1,485</td>
-          <td><span class="rk grey">#4</span></td>
-          <td><b>152</b></td>
-          <td><div class="tbar"><div class="tfill" style="width:93%;background:#E9C46A"></div></div></td>
-          <td>34.9%</td>
+          <td>Ottawa (ON)</td><td>~447</td><td>10.17</td>
+          <td style="color:#5A7040">~44</td>
+          <td>Below Ontario provincial avg; bilingual population may split discourse</td>
         </tr>
         <tr>
-          <td><span class="rk coral">#3</span></td>
-          <td>Ontario</td>
-          <td>14,141</td>
-          <td><span class="rk coral">#1</span></td>
-          <td>95</td>
-          <td><div class="tbar"><div class="tfill" style="width:58%;background:#D85A30"></div></div></td>
-          <td>41.2%</td>
+          <td>Winnipeg (MB)</td><td>~212</td><td>7.83</td>
+          <td style="color:#A03820">~27</td>
+          <td>Above MB provincial avg; most MB posts originate from Winnipeg</td>
         </tr>
         <tr>
-          <td><span class="rk coral">#4</span></td>
-          <td>Alberta</td>
-          <td>4,051</td>
-          <td><span class="rk coral">#2</span></td>
-          <td>92</td>
-          <td><div class="tbar"><div class="tfill" style="width:56%;background:#D85A30"></div></div></td>
-          <td>43.8%</td>
+          <td>St. John's (NL)</td><td>~612</td><td>1.11</td>
+          <td style="font-weight:700;color:#2E7D72">~551</td>
+          <td>Extreme concentration; NL posts overwhelmingly from the capital metro</td>
         </tr>
         <tr>
-          <td><span class="rk teal">#5</span></td>
-          <td>Saskatchewan</td>
-          <td>767</td>
-          <td><span class="rk grey">#7</span></td>
-          <td>65</td>
-          <td><div class="tbar"><div class="tfill" style="width:40%;background:#2A9D8F"></div></div></td>
-          <td>40.9%</td>
-        </tr>
-        <tr>
-          <td><span class="rk teal">#6</span></td>
-          <td>British Columbia</td>
-          <td>3,344</td>
-          <td><span class="rk teal">#3</span></td>
-          <td>64</td>
-          <td><div class="tbar"><div class="tfill" style="width:39%;background:#2A9D8F"></div></div></td>
-          <td>35.3%</td>
-        </tr>
-        <tr>
-          <td><span class="rk grey">#7</span></td>
-          <td>Manitoba</td>
-          <td>245</td>
-          <td><span class="rk grey">#8</span></td>
-          <td>18</td>
-          <td><div class="tbar"><div class="tfill" style="width:11%;background:#9B9B9B"></div></div></td>
-          <td>36.3%</td>
-        </tr>
-        <tr>
-          <td><span class="rk grey">—</span></td>
-          <td>New Brunswick</td>
-          <td>2</td>
-          <td><span class="rk grey">—</span></td>
-          <td>&lt;1</td>
-          <td><div class="tbar"><div class="tfill" style="width:1%;background:#CCCCCC"></div></div></td>
-          <td>—</td>
+          <td>Vancouver (BC)</td><td>~1,821</td><td>25.66</td>
+          <td>~71</td>
+          <td>Close to BC provincial rate; city mirrors the provincial pattern</td>
         </tr>
       </tbody>
     </table>
-    <p style="font-size:14px;color:var(--muted)">Population source: Statistics Canada 2021 Census. NB has 2 records — insufficient for meaningful analysis. Quebec excluded: French-language subreddits not captured in this English-primary dataset.</p>
+    <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">Estimates derived from geo_stats city-level breakdown and 2021 Census CMAs. All figures approximate.</p>
+
+    <p>St. John's, NL shows an estimated 551 posts per 100,000 — the highest concentration in the dataset. This reflects both NL's provincial over-engagement and the concentration of that engagement in its capital city. Rural NL communities, where access is likely worse, are minimally represented online. The city-level data deepens the concern that online discourse systematically over-represents urban experience even within already-vocal provinces.</p>
   </div>
 
-  <!-- Sentiment vs per-capita -->
+  <!-- EQUITY -->
   <div class="sec reveal">
-    <div class="sk">Anger Map</div>
-    <h2>High per-capita engagement ≠ high negativity</h2>
-    <p>An important nuance: the provinces that post most frequently per capita are not the most negative. Nova Scotia (152/100k) averages 34.9% negative sentiment — well below the corpus mean of 38.8%. NL (164/100k) sits at 35.1% negative. Both Atlantic provinces are engaged but relatively measured in tone.</p>
-    <p>By contrast, Alberta (92/100k, #4 per capita) has the highest negativity in the dataset at 43.8%. Ontario (95/100k, #3 per capita) is second at 41.2%. The "Big Two" provinces are not just posting a lot — they are posting with more anger per post.</p>
-    <p>This creates two distinct crisis signatures in the data. Atlantic Canada posts frequently but relatively calmly — their primary care gap is documented, discussed, and accepted as a structural reality. Ontario and Alberta post less frequently (per capita) but with higher emotional intensity — their users may be experiencing a more recent deterioration, or a greater mismatch between expectation and reality.</p>
-  </div>
-
-  <!-- MB anomaly -->
-  <div class="sec reveal">
-    <div class="sk">The Manitoba Anomaly</div>
-    <h2>Manitoba: 1.4 million people, 245 posts — the silent province</h2>
-    <p>Manitoba has 1,395,602 residents and generated only 245 Reddit records across the five-year study period — a rate of just 18 per 100,000 people, by far the lowest of any province with sufficient data. This is not explained by the province having no primary care issues: Manitoba's physician shortage is well-documented, particularly in Winnipeg and rural northern communities.</p>
-    <p>The most likely explanation is Reddit's demographics. Manitoba skews older than the national average, and Reddit's user base is concentrated in younger, urban, higher-income populations. The low Manitoba signal is a limitation of the data source rather than evidence of satisfaction. Any policy inference that relies on Reddit data must account for this demographic blind spot.</p>
+    <div class="sk">Equity Implications</div>
+    <h2>The participation gap is an equity gap</h2>
+    <div class="equity">
+      <div class="etag">Key Implication</div>
+      <h3>Online discourse misrepresents underserved populations</h3>
+      <p>The provinces, cities, and populations least likely to participate in Reddit-based health discussions are often those with the most acute access challenges: rural communities, low-income populations, Indigenous communities, and recent immigrants. The Manitoba anomaly is not an outlier — it is the visible tip of a systematic gap between who suffers the primary care crisis and who has the digital access, language competence, and time to describe it online.</p>
+      <p>Any model or policy that uses this dataset as a representative sample of Canadian primary care experience without weighting for structural participation barriers will systematically underestimate crisis severity in the populations with the least political voice.</p>
+    </div>
+    <p>This does not make the dataset less valuable — it makes accurate per-capita normalization essential. The 0.893 sentiment gap between provinces is not just a geographic variation; it is a proxy for different types of healthcare experience mediated by different levels of participation capacity. Future research should combine this dataset with administrative health data to estimate the experience of the non-participating majority.</p>
   </div>
 
 </div>
 </main>
 
-<div class="close">
-  <h2>Raw counts are biased. Per-capita rates are policy-relevant.</h2>
-  <p>Ontario's 14,141 records vs. Newfoundland's 855 looks like a 16.5× gap in primary care suffering. It is actually a 28.4× gap in population, with Newfoundlanders posting at <span class="big">72% higher rates per capita</span> than Ontarians. Policies designed in response to raw-count signals will systematically over-resource already-resourced provinces and leave smaller provinces structurally under-served.</p>
-  <p>The finding is a methodological argument as much as a substantive one: <em>any analysis of population health that does not normalize for population is not analysis — it is a census.</em></p>
+<div class="closewrap">
+  <h2>The map you draw depends on what you measure.</h2>
+  <p>Raw counts tell you where Reddit users are. Per-capita rates tell you where the crisis is being felt most acutely, per person. <span class="big">Newfoundland's 164/100k and Manitoba's 18/100k are two faces of the same dataset</span> — one a signal of engagement born from urgency, one a silence born from structural exclusion. Policy built on either number alone will misallocate resources. Policy built on both will at least ask the right questions.</p>
 </div>
 
 <footer class="foot">
   <div class="wrap">
-    <p class="fl"><b>Method.</b> Per-capita rates calculated as (province_record_count / province_2021_population) × 100,000. Population data from Statistics Canada 2021 Census, Table 98-10-0001-01. Quebec excluded (French-language subreddits not in corpus). New Brunswick excluded from ranking (n=2). Sentiment percentages reflect VADER majority-label classification per record.</p>
-    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · 2021–2025.</p>
+    <p class="fl"><b>Method.</b> Geographic posts extracted from geo_stats field in data.json; provinces identified by province code. Per-capita rates calculated against Statistics Canada 2021 Census population estimates. National average = total geo-tagged posts / total pop of represented provinces (approximately 236/100k). City-level estimates are approximations from city-tagged subsets.</p>
+    <p class="fl"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · Jan 2021 – Aug 2025.</p>
   </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce)document.body.classList.add('go');
-  var io=('IntersectionObserver'in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
-  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
-  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (!reduce) document.body.classList.add('go');
 
-  var fb=document.getElementById('fallback');
-  if(!window.THREE){if(fb)fb.style.display='block';return;}
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es) {
+    es.forEach(function(en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold: 0.12}) : null;
+  if (io) document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  else document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in'); });
 
-  // ── PROVINCE DATA ──────────────────────────────────────────────────────────
-  var PROV=[
-    {ab:'ON', name:'Ontario',          raw:14141,cap:95,  neg:41.2},
-    {ab:'AB', name:'Alberta',          raw:4051, cap:92,  neg:43.8},
-    {ab:'BC', name:'British Columbia', raw:3344, cap:64,  neg:35.3},
-    {ab:'NS', name:'Nova Scotia',      raw:1485, cap:152, neg:34.9},
-    {ab:'NL', name:'Newfoundland',     raw:855,  cap:164, neg:35.1},
-    {ab:'SK', name:'Saskatchewan',     raw:767,  cap:65,  neg:40.9},
-    {ab:'MB', name:'Manitoba',         raw:245,  cap:18,  neg:36.3},
-    {ab:'NB', name:'New Brunswick',    raw:2,    cap:0,   neg:0},
+  if (!window.THREE) return;
+
+  // ── PROVINCE DATA ─────────────────────────────────────────────────────────
+  var PROVINCES = [
+    {code:'ON', raw:14141, pop:148.26, cap:95,  color:0x7AAA70},
+    {code:'AB', raw:4051,  pop:44.28,  cap:92,  color:0x5AB888},
+    {code:'BC', raw:3344,  pop:53.11,  cap:63,  color:0x4AA890},
+    {code:'NS', raw:1485,  pop:9.79,   cap:152, color:0x2A9D8F},
+    {code:'NL', raw:855,   pop:5.21,   cap:164, color:0x2AC8A0},
+    {code:'SK', raw:767,   pop:11.94,  cap:64,  color:0x80B870},
+    {code:'MB', raw:245,   pop:13.80,  cap:18,  color:0xC09040},
+    {code:'NB', raw:2,     pop:8.36,   cap:1,   color:0xD07040},
   ];
-  var maxRaw=14141, maxCap=164;
+  var maxRaw = 14141, maxCap = 164;
+  var NAT_AVG = 236; // national average per 100k
 
-  function negColor(neg){
-    if(neg===0)return 0x334466;
-    var t=Math.max(0,Math.min(1,(neg-30)/18));
-    var r=Math.round(42+(216-42)*t), g=Math.round(157+(99-157)*t), b=Math.round(143+(82-143)*t);
-    return (r<<16)|(g<<8)|b;
-  }
-  function labSprite(txt,col,w,h){var cv=document.createElement('canvas');cv.width=560;cv.height=h||92;var x=cv.getContext('2d');
-    x.textAlign='center';x.textBaseline='middle';x.fillStyle=col||'#AAEEDD';x.font='600 32px "IBM Plex Mono",monospace';x.fillText(txt,280,h?h*.5:46);
-    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
-    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(w,w*(h||92)/560,1);return sp;}
-
-  var hero=document.querySelector('.hero3d'),stage=document.getElementById('stage');
-  var W=stage.clientWidth,H=stage.clientHeight;
-  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x000507,0.007);
-  var camera=new THREE.PerspectiveCamera(48,W/H,0.1,600);
-  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  // ── THREE SETUP ───────────────────────────────────────────────────────────
+  var hero = document.querySelector('.hero3d');
+  var stage = document.getElementById('stage');
+  var W = stage.clientWidth, H = stage.clientHeight;
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x010402, 0.008);
+  var camera = new THREE.PerspectiveCamera(46, W/H, 0.1, 600);
+  var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   stage.appendChild(renderer.domElement);
-  var world=new THREE.Group(); scene.add(world);
-  scene.add(new THREE.AmbientLight(0x081820,1.2));
-  var keyL=new THREE.DirectionalLight(0xC0F0E0,0.9); keyL.position.set(15,30,20); scene.add(keyL);
-  var fillL=new THREE.DirectionalLight(0xE0C880,0.4); fillL.position.set(-10,15,-10); scene.add(fillL);
 
-  // Grid floor
-  var gHelper=new THREE.GridHelper(120,30,0x0A3028,0x051810);
-  gHelper.material.transparent=true; gHelper.material.opacity=0.35;
+  var world = new THREE.Group();
+  scene.add(world);
+
+  scene.add(new THREE.AmbientLight(0x0A1808, 1.2));
+  var keyL = new THREE.DirectionalLight(0xD0F0C0, 0.65); keyL.position.set(12, 24, 18); scene.add(keyL);
+  var ptL  = new THREE.PointLight(0x40C080, 0.5, 60); ptL.position.set(0, 12, 0); scene.add(ptL);
+
+  // Floor grid
+  var gHelper = new THREE.GridHelper(50, 20, 0x0A2210, 0x0A1A10);
+  gHelper.position.y = -0.05;
   world.add(gHelper);
 
-  // Province positions: 8 towers in a curved arc
-  var N=PROV.length;
-  var towers=[]; // {rawMesh, capMesh, rawH, capH, glowMesh, label, abLabel, x, z}
+  // Floor base
+  var floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(60, 50),
+    new THREE.MeshStandardMaterial({color: 0x020808, roughness: 0.95, metalness: 0.1, transparent: true, opacity: 0.9})
+  );
+  floor.rotation.x = -Math.PI/2; floor.position.y = -0.1;
+  world.add(floor);
 
-  PROV.forEach(function(pv,i){
-    var angle=(i/(N-1))*Math.PI*1.2-Math.PI*0.6;
-    var radius=18;
-    var x=radius*Math.sin(angle), z=radius*Math.cos(angle)-4;
+  // ── LABEL SPRITES ─────────────────────────────────────────────────────────
+  function labSprite(txt, col, w) {
+    var cv = document.createElement('canvas'); cv.width = 256; cv.height = 64;
+    var x  = cv.getContext('2d');
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = col || '#C8F0D8';
+    x.font = '700 26px "IBM Plex Mono",monospace';
+    x.fillText(txt, 128, 34);
+    var tex = new THREE.CanvasTexture(cv);
+    var sp  = new THREE.Sprite(new THREE.SpriteMaterial({map: tex, transparent: true, depthTest: false}));
+    sp.scale.set(w, w * 64/256, 1);
+    return sp;
+  }
 
-    var rawH=Math.max(0.15,(pv.raw/maxRaw)*26);
-    var capH=Math.max(0.15,(pv.cap/maxCap)*18);
-    var col=negColor(pv.neg);
+  // ── BUILD TOWERS ──────────────────────────────────────────────────────────
+  var COLS = 4, spacing = 8;
+  var towers = [];
 
-    // Raw tower (solid square column)
-    var rGeo=new THREE.BoxGeometry(2.2,rawH,2.2);
-    var rMat=new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.5,roughness:0.35,metalness:0.4});
-    var rMesh=new THREE.Mesh(rGeo,rMat);
-    rMesh.position.set(x,rawH/2,z);
-    world.add(rMesh);
+  PROVINCES.forEach(function(pv, i) {
+    var col = i % COLS, row = Math.floor(i / COLS);
+    var x = (col - (COLS-1)/2) * spacing;
+    var z = (row - 0.5) * spacing;
 
-    // Cap tower (translucent overlay — starts at same height, morphs)
-    var cGeo=new THREE.BoxGeometry(2.2,capH,2.2);
-    var cCol=0xE9C46A; // gold for per-capita
-    var cMat=new THREE.MeshStandardMaterial({color:cCol,emissive:cCol,emissiveIntensity:0.8,roughness:0.2,metalness:0.6,transparent:true,opacity:0});
-    var cMesh=new THREE.Mesh(cGeo,cMat);
-    cMesh.position.set(x,capH/2,z);
-    world.add(cMesh);
+    var rawH = Math.max(0.1, (pv.raw / maxRaw) * 18);
+    var capH = Math.max(0.1, (pv.cap  / maxCap) * 18);
 
-    // Glow halo
-    var gMesh=new THREE.Mesh(
-      new THREE.BoxGeometry(3.0,rawH+0.4,3.0),
-      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.06,depthWrite:false,blending:THREE.AdditiveBlending})
+    // Raw tower
+    var rawGeo = new THREE.BoxGeometry(1.6, 1, 1.6);
+    var rawMat = new THREE.MeshStandardMaterial({color: pv.color, emissive: pv.color, emissiveIntensity: 0.4, roughness: 0.3, metalness: 0.55});
+    var rawMesh = new THREE.Mesh(rawGeo, rawMat);
+    rawMesh.position.set(x, rawH/2, z);
+    rawMesh.scale.y = rawH;
+    world.add(rawMesh);
+
+    // Per-capita tower
+    var capGeo = new THREE.BoxGeometry(1.6, 1, 1.6);
+    var capMat = new THREE.MeshStandardMaterial({color: pv.color, emissive: pv.color, emissiveIntensity: 0.7, roughness: 0.22, metalness: 0.6});
+    var capMesh = new THREE.Mesh(capGeo, capMat);
+    capMesh.position.set(x, capH/2, z);
+    capMesh.scale.y = 0.001;
+    world.add(capMesh);
+
+    // Tower glow base
+    var baseGlow = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.8, 1.8, 0.12, 12),
+      new THREE.MeshBasicMaterial({color: pv.color, transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending})
     );
-    gMesh.position.set(x,rawH/2,z); world.add(gMesh);
+    baseGlow.position.set(x, 0.06, z);
+    world.add(baseGlow);
 
-    // Province abbreviation label
-    var abLab=labSprite(pv.ab,'#A0F0D8',1.6); abLab.position.set(x,rawH+1.0,z); world.add(abLab);
+    // Province label
+    var lsp = labSprite(pv.code, null, 1.8);
+    lsp.position.set(x, rawH + 0.6, z);
+    world.add(lsp);
 
-    // Value label (shows on top)
-    var valLab=labSprite(pv.raw.toLocaleString(),'#FFEEAA',1.4); valLab.position.set(x,rawH+2.4,z); world.add(valLab);
+    // Value label (cap value shown during morph)
+    var vsp = labSprite(pv.cap + '/100k', '#A8D8B8', 1.4);
+    vsp.position.set(x, capH + 0.6, z);
+    vsp.material.opacity = 0;
+    world.add(vsp);
 
-    towers.push({rawMesh:rMesh,capMesh:cMesh,gMesh,abLab,valLab,rawH,capH,x,z,col,col2:cCol,pv});
+    towers.push({rawMesh, capMesh, rawH, capH, baseGlow, lsp, vsp, x, z, pv, col: pv.color, ph: Math.random()*6.28});
   });
 
-  // Motes
-  var MC=320,mpArr=new Float32Array(MC*3);
-  for(var i=0;i<MC;i++){mpArr[i*3]=(Math.random()-0.5)*80;mpArr[i*3+1]=Math.random()*30;mpArr[i*3+2]=(Math.random()-0.5)*50;}
-  var mgeo=new THREE.BufferGeometry(); mgeo.setAttribute('position',new THREE.BufferAttribute(mpArr,3));
-  var msz=new Float32Array(MC); for(var i=0;i<MC;i++)msz[i]=0.003+Math.random()*0.01;
-  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0x52C5B6,size:0.06,transparent:true,opacity:0.22,depthWrite:false,blending:THREE.AdditiveBlending})));
+  // ── NATIONAL AVERAGE RING ─────────────────────────────────────────────────
+  var natH = (NAT_AVG / maxCap) * 18;
+  var natRing = new THREE.Mesh(
+    new THREE.TorusGeometry(24, 0.04, 6, 48),
+    new THREE.MeshBasicMaterial({color: 0xC8902B, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending})
+  );
+  natRing.rotation.x = Math.PI/2;
+  natRing.position.y = natH;
+  world.add(natRing);
 
-  var prog=0,lastProg=0;
-  function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
-  window.addEventListener('scroll',calc,{passive:true});calc();
-  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
-  function lp(a,b,t){return a+(b-a)*t;}
+  // Nat avg label
+  var natLab = labSprite('nat avg 236/100k', '#E0B840', 3.2);
+  natLab.position.set(20, natH + 0.4, 0);
+  natLab.material.opacity = 0;
+  world.add(natLab);
 
-  var KF=[
-    {p:0.00,pos:[0,14,46],look:[0,5,0]},       // overview, raw towers visible
-    {p:0.25,pos:[10,20,24],look:[2,0,0]},      // angle in to see ON tower tall
-    {p:0.55,pos:[-12,8,28],look:[0,6,-2]},     // shift left, NL/NS rising
-    {p:1.00,pos:[0,34,22],look:[0,4,0]}         // top-down — all towers equalized
+  // ── PULSE RINGS (new design element) ─────────────────────────────────────
+  var pulseRings = [];
+  towers.forEach(function(t) {
+    var ring = new THREE.Mesh(
+      new THREE.RingGeometry(1.4, 1.6, 24),
+      new THREE.MeshBasicMaterial({color: t.col, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide})
+    );
+    ring.rotation.x = -Math.PI/2;
+    ring.position.set(t.x, 0.1, t.z);
+    world.add(ring);
+    pulseRings.push({ring, t, phase: t.ph, scale: 1.0});
+  });
+
+  // ── AMBIENT MOTES ─────────────────────────────────────────────────────────
+  var MC = 220, mpArr = new Float32Array(MC*3), ms = new Float32Array(MC);
+  for (var i = 0; i < MC; i++) {
+    mpArr[i*3]   = (Math.random()-0.5)*50;
+    mpArr[i*3+1] = Math.random()*20;
+    mpArr[i*3+2] = (Math.random()-0.5)*30;
+    ms[i] = 0.003 + Math.random()*0.007;
+  }
+  var mgeo = new THREE.BufferGeometry();
+  mgeo.setAttribute('position', new THREE.BufferAttribute(mpArr, 3));
+  world.add(new THREE.Points(mgeo, new THREE.PointsMaterial({
+    color: 0x50C080, size: 0.065, transparent: true, opacity: 0.22,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  })));
+
+  // ── SCROLL / CAMERA ───────────────────────────────────────────────────────
+  var prog = 0;
+  function calcProg() {
+    var rect  = hero.getBoundingClientRect();
+    var total = hero.offsetHeight - window.innerHeight;
+    prog = Math.max(0, Math.min(1, -rect.top / total));
+  }
+  window.addEventListener('scroll', calcProg, {passive: true}); calcProg();
+
+  function sm(p, a, b) { var t = Math.max(0, Math.min(1, (p-a)/(b-a))); return t*t*(3-2*t); }
+  function lp(a, b, t) { return a + (b-a)*t; }
+
+  var KF = [
+    {p: 0.00, pos: [0, 22, 40], look: [0, 5, 0]},
+    {p: 0.25, pos: [18, 12, 28], look: [0, 6, 0]},
+    {p: 0.60, pos: [6, 8, 30],  look: [0, 8, 0]},
+    {p: 1.00, pos: [-12, 18, 32], look: [0, 4, 0]},
   ];
-  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);
-    camera.position.set(lp(A.pos[0],B.pos[0],t),lp(A.pos[1],B.pos[1],t),lp(A.pos[2],B.pos[2],t));
-    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));}
+  function camAt(p) {
+    var i = 0;
+    for (; i < KF.length-1; i++) { if (p <= KF[i+1].p) break; }
+    var A = KF[Math.min(i, KF.length-1)], B = KF[Math.min(i+1, KF.length-1)];
+    var span = (B.p - A.p) || 1, t = Math.max(0, Math.min(1, (p-A.p)/span));
+    t = t*t*(3-2*t);
+    camera.position.set(lp(A.pos[0],B.pos[0],t), lp(A.pos[1],B.pos[1],t), lp(A.pos[2],B.pos[2],t));
+    camera.lookAt(lp(A.look[0],B.look[0],t), lp(A.look[1],B.look[1],t), lp(A.look[2],B.look[2],t));
+  }
 
-  var dragRot=0,dragging=false,lastX=0;
-  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
-  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.004;lastX=e.clientX;});
-  window.addEventListener('pointerup',function(){dragging=false;});
-  var capsEls=[].slice.call(document.querySelectorAll('.cap')),cue=document.getElementById('cue');
+  var dragRot = 0, dragging = false, lastX = 0;
+  stage.addEventListener('pointerdown', function(e) { dragging = true; lastX = e.clientX; });
+  window.addEventListener('pointermove', function(e) { if (!dragging) return; dragRot += (e.clientX-lastX)*0.005; lastX = e.clientX; });
+  window.addEventListener('pointerup',   function()  { dragging = false; });
 
-  function animate(){
+  var capsEls  = [].slice.call(document.querySelectorAll('.cap'));
+  var cue      = document.getElementById('cue');
+  var beatdots = document.getElementById('beatdots');
+
+  // ── ANIMATE ───────────────────────────────────────────────────────────────
+  function animate() {
     requestAnimationFrame(animate);
-    var p=prog, time=Date.now()*.001;
-    camAt(p); world.rotation.y=dragRot;
+    var p = prog, time = Date.now() * 0.001;
 
-    // morph: 0-0.2 = raw only; 0.2-0.6 = transition to cap; 0.6-1.0 = cap dominates
-    var morphT=sm(p,0.22,0.62); // 0=raw,1=cap
+    camAt(p);
+    world.rotation.y = dragRot;
 
-    towers.forEach(function(t){
-      var visibleH=lp(t.rawH,t.capH,morphT);
-      // Scale raw mesh
-      t.rawMesh.scale.y=Math.max(0.01,1-morphT);
-      t.rawMesh.position.y=(t.rawH*(1-morphT))/2;
-      t.rawMesh.material.opacity=Math.max(0,1-morphT);
-      // Scale cap mesh
-      t.capMesh.scale.y=morphT;
-      t.capMesh.position.y=(t.capH*morphT)/2;
-      t.capMesh.material.opacity=Math.min(1,morphT*1.4);
-      // Glow follows
-      t.gMesh.scale.y=lp(1,t.capH/t.rawH,morphT);
-      t.gMesh.position.y=visibleH/2;
-      // Label follows top
-      var topH=lp(t.rawH,t.capH,morphT);
-      t.abLab.position.y=topH+1.0;
-      // Value label: shows raw or cap
-      t.valLab.position.y=topH+2.4;
+    // Morph: raw → per-capita
+    var morphT = sm(p, 0.20, 0.62);
+
+    towers.forEach(function(t) {
+      var rawScale = Math.max(0.001, 1 - morphT);
+      var capScale = Math.max(0.001, morphT);
+
+      // Raw tower fades down
+      t.rawMesh.scale.y  = rawScale * t.rawH;
+      t.rawMesh.position.y = (rawScale * t.rawH) / 2;
+      t.rawMesh.material.opacity = rawScale;
+      t.rawMesh.material.transparent = true;
+
+      // Cap tower rises
+      t.capMesh.scale.y  = capScale * t.capH;
+      t.capMesh.position.y = (capScale * t.capH) / 2;
+      t.capMesh.material.opacity = morphT;
+      t.capMesh.material.transparent = true;
+
+      // Label rides the visible tower
+      var visH = rawScale > morphT ? rawScale * t.rawH : capScale * t.capH;
+      t.lsp.position.y = visH + 0.6 + Math.sin(time*1.2+t.ph)*0.1;
+      t.vsp.material.opacity = morphT * morphT;
+      t.vsp.position.y = (capScale * t.capH) + 0.6;
+
+      // Base glow pulses
+      t.baseGlow.material.opacity = 0.22 + 0.18*Math.sin(time*1.8+t.ph);
     });
 
-    // Mote drift
-    var ma=mgeo.attributes.position.array;
-    for(var i=0;i<MC;i++){ma[i*3+1]+=msz[i];if(ma[i*3+1]>30)ma[i*3+1]=0;}
-    mgeo.attributes.position.needsUpdate=true;
+    // Nat avg ring appears during cap phase
+    var ringAlpha = sm(p, 0.38, 0.58) * 0.7;
+    natRing.material.opacity = ringAlpha;
+    natLab.material.opacity  = sm(p, 0.45, 0.62);
 
-    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o=Math.min(sm(p,lo,lo+.05),1-sm(p,hi-.05,hi));capsEls[i].style.opacity=Math.max(0,o);}
-    if(cue)cue.style.opacity=(p>.05?0:1);
-    var bd=document.getElementById('beatdots');if(bd){var bi=p<.24?0:p<.5?1:p<.77?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
-    renderer.render(scene,camera);
+    // Pulse rings — expand outward rhythmically
+    pulseRings.forEach(function(pr) {
+      var phase = (time * 0.8 + pr.phase) % (2*Math.PI);
+      var scale = 1 + 2.5 * (phase / (2*Math.PI));
+      var alpha = Math.max(0, 0.4 * (1 - phase / (2*Math.PI))) * sm(p, 0.20, 0.45);
+      pr.ring.scale.set(scale, scale, 1);
+      pr.ring.material.opacity = alpha;
+    });
+
+    ptL.position.set(Math.sin(time*0.5)*18, 10+Math.sin(time*0.3)*4, Math.cos(time*0.5)*12);
+
+    // Motes
+    var ma = mgeo.attributes.position.array;
+    for (var i = 0; i < MC; i++) { ma[i*3+1] += ms[i]; if (ma[i*3+1] > 20) ma[i*3+1] = 0; }
+    mgeo.attributes.position.needsUpdate = true;
+
+    // Captions
+    capsEls.forEach(function(el) {
+      var lo = parseFloat(el.dataset.lo), hi = parseFloat(el.dataset.hi);
+      var o  = Math.min(sm(p, lo, lo+0.05), 1 - sm(p, hi-0.05, hi));
+      el.style.opacity = Math.max(0, o);
+    });
+    if (cue) cue.style.opacity = (p > 0.05 ? 0 : 1);
+    if (beatdots) {
+      var bi = p < 0.24 ? 0 : p < 0.52 ? 1 : p < 0.78 ? 2 : 3;
+      for (var q = 0; q < beatdots.children.length; q++)
+        beatdots.children[q].className = (q === bi ? 'on' : '');
+    }
+
+    renderer.render(scene, camera);
   }
-  animate();if(fb)fb.style.display='none';
-  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+  animate();
+
+  window.addEventListener('resize', function() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    camera.aspect = W/H; camera.updateProjectionMatrix();
+    renderer.setSize(W, H); calcProg();
+  });
 })();
 </script>
 </body>

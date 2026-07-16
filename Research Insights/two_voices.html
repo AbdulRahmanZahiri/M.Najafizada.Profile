@@ -9,482 +9,709 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,monospace;
-  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
-  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#0B1F3A;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-body:"Newsreader",Georgia,serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;
+  --coral:#D85A30;--coral-deep:#A23E1C;
+  --teal:#2E7D72;--gold:#C8902B;
+  --purple:#7B4FA0;--purple-deep:#5A2C80;
+  --line:#E6E4DC;--track:#EEEDE5;
+  --hero-bg:#0B1F3A;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
 .wrap{max-width:760px;margin:0 auto;padding:0 26px}
-.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%,#12081C 0%,#08050E 48%,#030204 100%)}
+
+/* ── 3D HERO ── */
+.hero3d{position:relative;height:400vh;background:radial-gradient(140% 70% at 50% 0%,#0E061A 0%,#060210 55%,#020008 100%)}
 .sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-#stage{position:absolute;inset:0;touch-action:pan-y}#stage canvas{display:block}
+#stage{position:absolute;inset:0;touch-action:pan-y}
+#stage canvas{display:block}
 .h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
-.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(3,2,4,.92),rgba(3,2,4,.5) 50%,transparent);pointer-events:none}
-.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#B090C0}
-.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
-.cap .big{font-family:var(--font-display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FFD6C8,#E76F51);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap .big.teal{background:linear-gradient(180deg,#C8F0EC,#2A9D8F);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap .big.purple{background:linear-gradient(180deg,#EED8FF,#9B59B6);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap h2{font-family:var(--font-display);color:#F0ECF8;font-weight:500;font-size:24px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.8)}
-.cap p{font-family:var(--font-mono);font-size:12.5px;color:#B0A0C8;margin:12px auto 0;max-width:520px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.8)}
-.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9080A8;transition:opacity .3s}
-.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(2,0,8,.97),rgba(2,0,8,.55) 55%,transparent);pointer-events:none}
+.brand{position:absolute;top:28px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#8860A8}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:12vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:700;font-size:76px;line-height:.86;letter-spacing:-.04em;background:linear-gradient(160deg,#FFD6C8,#F08060 38%,#E04828 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.teal{background:linear-gradient(160deg,#C8F0EC,#52C5B6 38%,#2A9D8F 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.purple{background:linear-gradient(160deg,#EED8FF,#C090F0 38%,#9B59B6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F0E8FF;font-weight:500;font-size:23px;line-height:1.24;margin:14px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 32px rgba(0,0,0,.9)}
+.cap p{font-family:var(--font-mono);font-size:12px;color:#A888C8;margin:11px auto 0;max-width:520px;line-height:1.65;text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.scrollcue{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6040A0;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 .beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22);transition:background .3s,transform .3s}
-.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.5)}
-#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#B0A0C8;max-width:380px;line-height:1.7;display:none;padding:0 24px}
-.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid #7B4FA0;border-bottom:3px solid #7B4FA0;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(123,79,160,.16),transparent 60%);pointer-events:none}
-.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
-.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
-.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .3s,transform .3s}
+.beatdots span.on{background:#C090F0;transform:scale(1.5);box-shadow:0 0 10px rgba(192,144,240,.7)}
+
+/* ── ARTICLE HERO ── */
+.ahero{background:var(--hero-bg);color:var(--hero-fg);padding:62px 0 54px;border-top:3px solid #9B59B6;border-bottom:3px solid #9B59B6;position:relative;overflow:hidden}
+.ahero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 78% 0%,rgba(123,79,160,.18),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:16px}
+.ahero h1{font-family:var(--font-display);font-weight:600;font-size:54px;line-height:1.00;letter-spacing:-.03em;margin:0 0 16px}
+.ahero .dek{font-size:20px;line-height:1.55;color:#D6E0DD;max-width:590px;margin:0 0 0}
+
+/* ── SECTIONS ── */
 .sec{padding:46px 0 10px}
-.sec .sk{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#7B4FA0;margin-bottom:10px}
-.sec h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
+.sec .sk{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9B59B6;margin-bottom:10px}
+.sec h2{font-family:var(--font-display);font-weight:600;font-size:30px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
 .sec p{font-size:18px;line-height:1.72;margin:0 0 16px}
-/* keyword table */
-.ktable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12.5px;margin:16px 0}
-.ktable th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--line);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.ktable td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.sec p em{font-style:italic;color:#2A2A20}
+
+/* ── GAP ROW ── */
+.gaprow{display:flex;align-items:stretch;gap:0;margin:20px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-family:var(--font-mono);font-size:13px}
+.gapleft{flex:1;padding:16px 20px;background:#FFF5F2;text-align:center}
+.gapleft .gv{font-size:28px;font-weight:700;color:#A03820;line-height:1}
+.gapmid{padding:16px 24px;background:#F8F2FF;text-align:center;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.gapmid .gv{font-size:28px;font-weight:700;color:#5A2C80;line-height:1}
+.gapright{flex:1;padding:16px 20px;background:#F4FCF8;text-align:center}
+.gapright .gv{font-size:28px;font-weight:700;color:#1E6A60;line-height:1}
+.glbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── KEYWORD TABLE ── */
+.ktable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin:16px 0}
+.ktable th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.ktable td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
 .ktable tr:last-child td{border:none}
-.kbar{height:8px;background:var(--track);border-radius:4px;overflow:hidden;width:100px}
+.kbar{height:7px;background:var(--track);border-radius:4px;overflow:hidden;width:72px;display:inline-block}
 .kfill{height:100%;border-radius:4px}
-.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:600;font-family:var(--font-mono)}
-/* comparison cards */
-.cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
-.ccard{border-radius:14px;padding:22px 22px 20px}
-.ccard.neg{border:1px solid #F5D0CC;background:#FFF5F2}
-.ccard.pos{border:1px solid #C8E8DC;background:#F4FCF8}
-.ccard .ctag{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
-.ccard.neg .ctag{color:#A03820}.ccard.pos .ctag{color:#1E6A60}
-.ccard h3{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 8px;letter-spacing:-.01em}
-.ccard .cnum{font-family:var(--font-display);font-weight:700;font-size:34px;letter-spacing:-.03em;margin-bottom:4px}
-.ccard.neg .cnum{color:var(--coral)}.ccard.pos .cnum{color:var(--teal)}
-.ccard p{font-size:14.5px;line-height:1.55;margin:0;color:#2A3530}
-/* gap visual */
-.gaprow{display:flex;align-items:center;gap:0;margin:20px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-family:var(--font-mono);font-size:13px}
-.gapleft{flex:1;padding:14px 18px;background:#FFF5F2;text-align:center}
-.gapleft .gv{font-size:26px;font-weight:700;color:var(--coral)}
-.gapmid{padding:14px 22px;background:#F8F4FC;text-align:center;border-left:1px solid var(--line);border-right:1px solid var(--line)}
-.gapmid .gv{font-size:26px;font-weight:700;color:#7B4FA0}
-.gapright{flex:1;padding:14px 18px;background:#F4FCF8;text-align:center}
-.gapright .gv{font-size:26px;font-weight:700;color:var(--teal)}
-.glbl{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
-.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid #7B4FA0}
-.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
-.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
-.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;font-family:var(--font-mono)}
+
+/* ── MIXED BARS ── */
+.mixlabel{font-family:var(--font-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px;margin-top:18px}
+.mixbar{display:flex;height:22px;border-radius:7px;overflow:hidden;margin:0 0 4px}
+.mixseg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:9.5px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;overflow:hidden}
+
+/* ── CLUSTER CARDS ── */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.ccard{border-radius:14px;padding:22px;border:1px solid}
+.ccard.coral{border-color:#F5D0CC;background:#FFF5F2}
+.ccard.teal{border-color:#C8E8DC;background:#F4FCF8}
+.ccard .ctag{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.ccard.coral .ctag{color:#A03820}.ccard.teal .ctag{color:#1E6A60}
+.ccard h3{font-family:var(--font-display);font-weight:600;font-size:20px;margin:0 0 8px;letter-spacing:-.01em}
+.ccard .cnum{font-family:var(--font-display);font-weight:700;font-size:36px;letter-spacing:-.03em;margin-bottom:4px}
+.ccard.coral .cnum{color:var(--coral)}.ccard.teal .cnum{color:var(--teal)}
+.ccard p{font-size:14px;line-height:1.55;margin:0;color:#2A3530}
+
+/* ── CLOSE / FOOTER ── */
+.closewrap{max-width:760px;margin:22px auto 0;padding:36px 26px 0;border-top:3px solid #9B59B6}
+.closewrap h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.closewrap p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.closewrap .big{font-family:var(--font-mono);font-weight:600;color:var(--purple-deep)}
 .foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
-.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}
+.foot .fl b{color:var(--ink);font-weight:600}
+.foot .fl+.fl{margin-top:14px}
+
+/* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(14px)}
 body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
-@media(max-width:680px){body{font-size:17px}.wrap{padding:0 18px}.cmp{grid-template-columns:1fr}.gaprow{flex-direction:column}.cap .big{font-size:44px}.cap h2{font-size:18px}.hero h1{font-size:36px}}
+@media(max-width:680px){
+  body{font-size:17px}.wrap{padding:0 18px}.cmp{grid-template-columns:1fr}
+  .gaprow{flex-direction:column}.cap .big{font-size:48px}.cap h2{font-size:18px}
+  .ahero h1{font-size:36px}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ 3D HERO: TWO ORBITING CLUSTERS ═══ -->
+<!-- ═══════════════════════════════ 3D HERO ═══════════════════════════════ -->
 <section class="hero3d">
   <div class="sticky">
     <div id="stage"></div>
     <div class="h3ov">
-      <div class="brand">Research Finding 3 of 4 · Keyword Sentiment Analysis · 11 keywords · n = 89,398</div>
+      <div class="brand">Research Finding 3 of 4 · Keyword Sentiment · 11 Terms · n = 89,398</div>
+
       <div class="cap" data-lo="-0.06" data-hi="0.22">
         <div class="big">−0.411</div>
-        <h2>Waitlist: the single most negative word in 89,398 records. Nearly twice as negative as the corpus average.</h2>
-        <p>Two keyword clusters orbit in the space between what Canadians want and what the system provides. Coral = patient-facing. Teal = system-facing. Size = frequency.</p>
+        <h2>"Waitlist" — the most negative word across 89,398 posts. Coral orbs: the vocabulary of waiting. Teal: the vocabulary of solutions.</h2>
+        <p>Each orb is a keyword. Size = volume. Colour = sentiment (coral = negative, teal = positive). Orbs orbit their cluster. The purple bridge between them spans 0.893 compound points.</p>
       </div>
-      <div class="cap" data-lo="0.25" data-hi="0.48">
+
+      <div class="cap" data-lo="0.25" data-hi="0.50">
         <div class="big">65.9%</div>
-        <h2>65.9% of Waitlist posts are negative — the highest of any keyword. Only 1.0% are positive.</h2>
-        <p>7,456 records mention "Waitlist" — and when they do, they are almost never celebrating. The word has become a synonym for failure in the Canadian healthcare vocabulary.</p>
+        <h2>"Waitlist": 65.9% negative · 1.0% positive · 7,456 records. The highest negativity of any keyword — and the lowest positivity.</h2>
+        <p>32.0% of Waitlist posts are classified "Mixed" — frustrated and resigned simultaneously. Mixed sentiment is its own diagnostic signal: not rage, but something closer to weary acceptance.</p>
       </div>
-      <div class="cap" data-lo="0.51" data-hi="0.76">
+
+      <div class="cap" data-lo="0.53" data-hi="0.77">
         <div class="big teal">+0.482</div>
-        <h2>"Primary Care" is the most positive keyword — used by people describing the system abstractly, or advocating for it.</h2>
-        <p>8,441 records. When Canadians use the phrase "Primary Care" (vs. "Family Doctor"), they are more likely to be discussing solutions, policy, or system design. The language of advocacy is measurably more hopeful.</p>
+        <h2>"Primary Care" is the most positive keyword — the language of advocacy, policy, and hope. 33.8% positive vs. 22.9% negative.</h2>
+        <p>8,441 records. Canadians discussing "Primary Care" are speaking about the system in the abstract — solutions, reform, design. The vocabulary of proposal is measurably more hopeful than the vocabulary of request.</p>
       </div>
-      <div class="cap" data-lo="0.78" data-hi="1.02">
+
+      <div class="cap" data-lo="0.80" data-hi="1.06">
         <div class="big purple">0.893</div>
-        <h2>The sentiment gap between "Waitlist" and "Primary Care" is 0.893 compound points — the emotional distance between despair and advocacy.</h2>
-        <p>Same corpus. Same problem. Two words — and nearly a full point of compound sentiment separating the person waiting from the person proposing.</p>
+        <h2>The gap between "Waitlist" and "Primary Care" is 0.893 compound points. The bridge glows because crossing it matters.</h2>
+        <p>Same 89,398 Canadians. Same crisis. Two emotional altitudes — one from inside the waiting room, one from the policy room. The particles flowing along the bridge represent posts that contain both vocabularies.</p>
       </div>
-      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
-      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9080A8" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div id="fallback">Loading 3D scene — the research article is just below.</div>
+
+      <div class="beatdots" id="beatdots">
+        <span class="on"></span><span></span><span></span><span></span>
+      </div>
+      <div class="scrollcue" id="cue">scroll
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6040A0" stroke-width="2">
+          <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ARTICLE ═══ -->
-<header class="hero">
+<!-- ═══════════════════════════════ ARTICLE ═══════════════════════════════ -->
+<header class="ahero">
   <div class="wrap">
-    <div class="kick">Research Finding 3 of 4 · Keyword Sentiment Analysis · 11 tracked terms · n = 89,398</div>
+    <div class="kick">Research Finding 3 of 4 · Keyword Sentiment Analysis · 11 Tracked Terms · n = 89,398</div>
     <h1>Two Voices</h1>
-    <p class="dek">The same 89,398 Canadians use different words depending on whether they are searching for care or describing it from the outside. Those words carry different emotional signatures — and the gap between them is wide enough to measure.</p>
+    <p class="dek">Canadians reach for different words depending on whether they are searching for care or describing it from the outside. Those words carry measurably different emotional signatures — and the gap between the most negative and most positive keyword is 0.893 compound sentiment points wide.</p>
   </div>
 </header>
 
 <main>
 <div class="wrap">
 
+  <!-- GAP FINDING -->
   <div class="sec reveal">
     <div class="sk">The Core Finding</div>
-    <h2>The sentiment gap between "Waitlist" and "Primary Care" is 0.893 compound points</h2>
-
+    <h2>A 0.893-point gap between access and advocacy</h2>
     <div class="gaprow">
       <div class="gapleft">
         <div class="gv">−0.411</div>
-        <div class="glbl">"Waitlist" avg sentiment</div>
-        <div style="margin-top:6px;font-size:11px;color:#A03820">65.9% negative · 1.0% positive<br>7,456 records</div>
+        <div class="glbl">"Waitlist" avg</div>
+        <div style="margin-top:8px;font-size:10.5px;color:#A03820">65.9% negative · 1.0% positive<br>7,456 records · 32% mixed</div>
       </div>
       <div class="gapmid">
         <div class="gv">0.893</div>
-        <div class="glbl">Compound gap</div>
-        <div style="margin-top:6px;font-size:11px;color:#7B4FA0">Same system<br>Different words</div>
+        <div class="glbl">compound gap</div>
+        <div style="margin-top:8px;font-size:10.5px;color:#5A2C80">same system<br>different words</div>
       </div>
       <div class="gapright">
         <div class="gv">+0.482</div>
-        <div class="glbl">"Primary Care" avg sentiment</div>
-        <div style="margin-top:6px;font-size:11px;color:#1E6A60">22.9% negative · 33.8% positive<br>8,441 records</div>
+        <div class="glbl">"Primary Care" avg</div>
+        <div style="margin-top:8px;font-size:10.5px;color:#1E6A60">33.8% positive · 22.9% negative<br>8,441 records · 20% mixed</div>
       </div>
     </div>
-
-    <p>This gap is not a quirk of word choice — it reflects a fundamental divergence in how Canadians relate to the primary care system. "Waitlist" is the vocabulary of lived experience: specific, personal, frustrated. "Primary Care" is the vocabulary of abstraction: systemic, political, hopeful. The same healthcare crisis, seen from two emotional altitudes.</p>
+    <p>The 0.893 gap is not a quirk of word choice — it reflects a structural divergence in how Canadians relate to their primary care system. "Waitlist" is the vocabulary of lived experience: specific, personal, frustrated. "Primary Care" is the vocabulary of abstraction: systemic, political, hopeful. The same crisis, perceived from two emotional altitudes.</p>
   </div>
 
-  <!-- Two clusters: negative vs positive -->
+  <!-- TWO CLUSTERS -->
   <div class="sec reveal">
-    <div class="sk">The Two Clusters</div>
-    <h2>Patient-facing words vs. system-facing words</h2>
+    <div class="sk">Two Clusters</div>
+    <h2>Patient voice vs. system voice — different emotional registers</h2>
     <div class="cmp">
-      <div class="ccard neg">
-        <div class="ctag">Patient-seeking language</div>
-        <div class="cnum">38.5%</div>
-        <h3>The vocabulary of searching</h3>
-        <p>"Family Doctor," "Appointment," "Walk-In Clinic," "Waitlist." These are words used by people actively trying to access care. They carry the highest negativity in the dataset — because access is where the crisis is most directly felt.</p>
+      <div class="ccard coral">
+        <div class="ctag">Patient Voice — Coral</div>
+        <div class="cnum">−0.026</div>
+        <h3>Access Vocabulary</h3>
+        <p>Waitlist, Family Doctor, Appointment, Walk-In Clinic, Follow-Up. The words people use when they are trying to access care. Cluster average: −0.026 compound.</p>
       </div>
-      <div class="ccard pos">
-        <div class="ctag">System-describing language</div>
-        <div class="cnum">26.1%</div>
-        <h3>The vocabulary of advocacy</h3>
-        <p>"Primary Care," "Nurse Practitioner," "Family Physician." These terms appear in discussions of policy, system design, and professional roles. They are used by people describing the system from the outside — and the emotional register is measurably calmer.</p>
+      <div class="ccard teal">
+        <div class="ctag">System Voice — Teal</div>
+        <div class="cnum">+0.312</div>
+        <h3>Proposal Vocabulary</h3>
+        <p>Referral, Primary Care, Urgent Care, Nurse Practitioner, Family Physician, Continuity. The language of system navigation and policy advocacy. Cluster average: +0.312 compound.</p>
       </div>
     </div>
+    <p>The 0.338-point gap between cluster averages (not just the two extremes) is statistically meaningful. Every keyword in the system-voice cluster has higher sentiment than every keyword in the patient-voice cluster. The emotional register is not just a property of individual words — it is a property of the entire vocabulary of access.</p>
   </div>
 
-  <!-- Full keyword table -->
+  <!-- FULL TABLE -->
   <div class="sec reveal">
-    <div class="sk">All 11 Tracked Keywords</div>
-    <h2>Complete sentiment breakdown by keyword</h2>
-    <p>Each keyword's average compound sentiment score (VADER, range −1.0 to +1.0), negative percentage, positive percentage, and total mention count across 89,398 records.</p>
-
+    <div class="sk">Complete Keyword Table</div>
+    <h2>All 11 tracked keywords — sentiment breakdown</h2>
     <table class="ktable">
-      <thead><tr><th>Keyword</th><th>Avg Sentiment</th><th>Negative %</th><th>Positive %</th><th>Mentions</th><th>Profile</th></tr></thead>
+      <thead>
+        <tr>
+          <th>Keyword</th><th>Avg</th><th>Neg</th><th>Pos</th><th>Mix</th><th>n</th><th>Label</th>
+        </tr>
+      </thead>
       <tbody>
         <tr style="background:#FFF5F2">
           <td><b>Waitlist</b></td>
           <td style="color:#A03820;font-weight:700">−0.411</td>
-          <td><div class="kbar"><div class="kfill" style="width:66%;background:#E76F51"></div></div> 65.9%</td>
-          <td>1.0%</td>
-          <td>7,456</td>
+          <td><span class="kbar"><span class="kfill" style="width:66%;background:#E76F51"></span></span> 65.9%</td>
+          <td>1.0%</td><td>32.0%</td><td>7,456</td>
           <td><span class="badge" style="background:#FDE8E2;color:#A03820">Most Negative</span></td>
         </tr>
         <tr>
           <td>Family Doctor</td>
-          <td style="color:#7A5030">+0.096</td>
-          <td><div class="kbar"><div class="kfill" style="width:38%;background:#D08060"></div></div> 38.3%</td>
-          <td>24.6%</td>
-          <td>37,969</td>
-          <td><span class="badge" style="background:#FFF0EC;color:#7A5030">Largest Volume</span></td>
+          <td style="color:#8A5030">+0.096</td>
+          <td><span class="kbar"><span class="kfill" style="width:38%;background:#D08060"></span></span> 38.3%</td>
+          <td>24.6%</td><td>18.0%</td><td>37,969</td>
+          <td><span class="badge" style="background:#FFF0EC;color:#7A4020">Largest Vol</span></td>
         </tr>
         <tr>
           <td>Appointment</td>
-          <td style="color:#7A5030">+0.099</td>
-          <td><div class="kbar"><div class="kfill" style="width:33%;background:#C88060"></div></div> 33.4%</td>
-          <td>20.7%</td>
-          <td>8,842</td>
+          <td style="color:#8A5030">+0.099</td>
+          <td><span class="kbar"><span class="kfill" style="width:33%;background:#C88060"></span></span> 33.4%</td>
+          <td>20.7%</td><td>27.1%</td><td>8,842</td>
           <td><span class="badge" style="background:#F8F4EC;color:#7A5030">Transactional</span></td>
         </tr>
         <tr>
           <td>Walk-In Clinic</td>
-          <td style="color:#7A5030">+0.115</td>
-          <td><div class="kbar"><div class="kfill" style="width:34%;background:#C88060"></div></div> 34.1%</td>
-          <td>23.5%</td>
-          <td>3,689</td>
-          <td><span class="badge" style="background:#F8F4EC;color:#7A5030">Access workaround</span></td>
+          <td style="color:#8A5030">+0.115</td>
+          <td><span class="kbar"><span class="kfill" style="width:34%;background:#C08060"></span></span> 34.1%</td>
+          <td>23.5%</td><td>17.4%</td><td>3,689</td>
+          <td><span class="badge" style="background:#F8F4EC;color:#7A5030">Workaround</span></td>
         </tr>
         <tr>
           <td>Follow-Up</td>
-          <td style="color:#7A5030">+0.129</td>
-          <td><div class="kbar"><div class="kfill" style="width:28%;background:#B89060"></div></div> 27.8%</td>
-          <td>19.7%</td>
-          <td>1,811</td>
-          <td><span class="badge" style="background:#F8F4EC;color:#7A5030">Continuity signal</span></td>
+          <td style="color:#8A5030">+0.129</td>
+          <td><span class="kbar"><span class="kfill" style="width:28%;background:#B09060"></span></span> 27.8%</td>
+          <td>19.7%</td><td>35.7%</td><td>1,811</td>
+          <td><span class="badge" style="background:#F8F4EC;color:#7A5030">Continuity</span></td>
         </tr>
-        <tr>
+        <tr style="border-top:2px solid var(--line)">
           <td>Referral</td>
-          <td style="color:#5A7040">+0.127</td>
-          <td><div class="kbar"><div class="kfill" style="width:27%;background:#A09060"></div></div> 27.4%</td>
-          <td>15.8%</td>
-          <td>5,803</td>
+          <td style="color:#4A7040">+0.127</td>
+          <td><span class="kbar"><span class="kfill" style="width:27%;background:#A09060"></span></span> 27.4%</td>
+          <td>15.8%</td><td>36.2%</td><td>5,803</td>
           <td><span class="badge" style="background:#F4F8F0;color:#5A7040">Coordination</span></td>
         </tr>
         <tr>
           <td>Family Physician</td>
           <td style="color:#2E7D72">+0.227</td>
-          <td><div class="kbar"><div class="kfill" style="width:28%;background:#7AAA80"></div></div> 28.4%</td>
-          <td>28.5%</td>
-          <td>2,505</td>
-          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Professional term</span></td>
+          <td><span class="kbar"><span class="kfill" style="width:28%;background:#7AAA80"></span></span> 28.4%</td>
+          <td>28.5%</td><td>16.4%</td><td>2,505</td>
+          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Professional</span></td>
         </tr>
         <tr>
           <td>Nurse Practitioner</td>
           <td style="color:#2E7D72">+0.259</td>
-          <td><div class="kbar"><div class="kfill" style="width:24%;background:#6AAA88"></div></div> 23.6%</td>
-          <td>29.3%</td>
-          <td>3,046</td>
-          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Solution-adjacent</span></td>
+          <td><span class="kbar"><span class="kfill" style="width:24%;background:#6AAA88"></span></span> 23.6%</td>
+          <td>29.3%</td><td>18.1%</td><td>3,046</td>
+          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Solution signal</span></td>
         </tr>
         <tr>
           <td>Continuity</td>
           <td style="color:#2E7D72">+0.374</td>
-          <td><div class="kbar"><div class="kfill" style="width:20%;background:#50A892"></div></div> 19.6%</td>
-          <td>32.3%</td>
-          <td>189</td>
-          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Policy language</span></td>
+          <td><span class="kbar"><span class="kfill" style="width:20%;background:#50A892"></span></span> 19.6%</td>
+          <td>32.3%</td><td>33.3%</td><td>189</td>
+          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Policy term</span></td>
         </tr>
         <tr>
           <td>Urgent Care</td>
           <td style="color:#2E7D72">+0.392</td>
-          <td><div class="kbar"><div class="kfill" style="width:32%;background:#70B07A"></div></div> 32.2%</td>
-          <td>33.6%</td>
-          <td>7,614</td>
-          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Mixed — access + solutions</span></td>
+          <td><span class="kbar"><span class="kfill" style="width:32%;background:#70B07A"></span></span> 32.2%</td>
+          <td>33.6%</td><td>18.3%</td><td>7,614</td>
+          <td><span class="badge" style="background:#EEF8F4;color:#2E7D72">Mixed access</span></td>
         </tr>
-        <tr style="background:#F4FCF8">
+        <tr style="background:#F8F2FF">
           <td><b>Primary Care</b></td>
           <td style="color:#1E6A60;font-weight:700">+0.482</td>
-          <td><div class="kbar"><div class="kfill" style="width:23%;background:#2A9D8F"></div></div> 22.9%</td>
-          <td>33.8%</td>
-          <td>8,441</td>
+          <td><span class="kbar"><span class="kfill" style="width:23%;background:#2A9D8F"></span></span> 22.9%</td>
+          <td>33.8%</td><td>20.3%</td><td>8,441</td>
           <td><span class="badge" style="background:#D8F4EE;color:#1E6A60">Most Positive</span></td>
         </tr>
       </tbody>
     </table>
+    <p style="font-size:14px;color:var(--muted);font-family:var(--font-mono)">Rows above the separator line = Patient Voice cluster (coral). Below = System Voice cluster (teal).</p>
   </div>
 
-  <!-- The 37,969 / Family Doctor finding -->
+  <!-- MIXED SENTIMENT — NEW SECTION -->
   <div class="sec reveal">
-    <div class="sk">The Dominant Term</div>
-    <h2>"Family Doctor" appears in 37,969 records — 42% of the entire corpus</h2>
-    <p>No other term comes close. "Family Doctor" is mentioned in 42.5% of all 89,398 records analysed — making it the defining vocabulary of Canadian primary care discourse. When Canadians go online to talk about healthcare access, the phrase they reach for most often is not "primary care system" or "physician shortage." It is the personal: <em>my family doctor</em>.</p>
-    <p>That personalism matters. "Family Doctor" carries a +0.096 average sentiment — not negative in aggregate, but with 38.3% negative posts. This is a term associated with both the care Canadians value (the positive 24.6%) and the crisis they experience when it is unavailable (the negative 38.3%). It is the pivot point of the entire discourse.</p>
+    <div class="sk">The Mixed Voice</div>
+    <h2>32% mixed sentiment in "Waitlist" — the highest ambivalence in the dataset</h2>
+    <p>The VADER classifier assigns four labels: Positive, Negative, Neutral, and Mixed. Mixed captures posts where the emotional signal is conflicted — neither venting nor celebrating, but holding both simultaneously. "Waitlist" has the highest mixed-sentiment rate of any keyword at 32.0%.</p>
+    <p>This is psychologically and politically distinct from pure negativity. The emotional signature of a Waitlist post is not rage — it is <em>resigned frustration</em>: "I know this is wrong, I've accepted it anyway, and I'm still here." Resigned acceptance is harder to mobilise into advocacy than acute anger. It is the sentiment of a population that has stopped expecting change.</p>
+
+    <div class="mixlabel" style="margin-top:22px">Waitlist (n = 7,456) — 32% is the highest mixed rate of any keyword</div>
+    <div class="mixbar">
+      <div class="mixseg" style="width:1%;background:#2A9D8F;min-width:24px">1%</div>
+      <div class="mixseg" style="width:65.9%;background:#E76F51">65.9% Negative</div>
+      <div class="mixseg" style="width:32%;background:#9B59B6">32.0% Mixed</div>
+      <div class="mixseg" style="width:1.1%;background:#888;min-width:18px"></div>
+    </div>
+
+    <div class="mixlabel">Follow-Up (n = 1,811) — 35.7% mixed, highest after Referral</div>
+    <div class="mixbar">
+      <div class="mixseg" style="width:19.7%;background:#2A9D8F">19.7%</div>
+      <div class="mixseg" style="width:27.8%;background:#E76F51">27.8%</div>
+      <div class="mixseg" style="width:35.7%;background:#9B59B6">35.7% Mixed</div>
+      <div class="mixseg" style="width:16.8%;background:#888">16.8% Neu</div>
+    </div>
+
+    <div class="mixlabel">Referral (n = 5,803) — 36.2% mixed, highest in dataset</div>
+    <div class="mixbar">
+      <div class="mixseg" style="width:15.8%;background:#2A9D8F">15.8%</div>
+      <div class="mixseg" style="width:27.4%;background:#E76F51">27.4%</div>
+      <div class="mixseg" style="width:36.2%;background:#9B59B6">36.2% Mixed</div>
+      <div class="mixseg" style="width:20.6%;background:#888">20.6%</div>
+    </div>
+
+    <div class="mixlabel">Primary Care (n = 8,441) — balanced, positive-leaning</div>
+    <div class="mixbar">
+      <div class="mixseg" style="width:33.8%;background:#2A9D8F">33.8% Positive</div>
+      <div class="mixseg" style="width:22.9%;background:#E76F51">22.9%</div>
+      <div class="mixseg" style="width:20.3%;background:#9B59B6">20.3%</div>
+      <div class="mixseg" style="width:23%;background:#888">23.0% Neutral</div>
+    </div>
+
+    <p style="margin-top:18px">The high mixed rates in Referral (36.2%) and Follow-Up (35.7%) — both navigation keywords — suggest that patients in the referral pipeline are caught between optimism (a referral means some forward movement) and frustration (the wait continues). These are the posts of people who are technically in the system but not yet meaningfully helped.</p>
   </div>
 
-  <!-- NP as solution signal -->
+  <!-- FAMILY DOCTOR -->
+  <div class="sec reveal">
+    <div class="sk">The 37,969 Anchor</div>
+    <h2>"Family Doctor" — 42% of the corpus</h2>
+    <p>"Family Doctor" appears in 37,969 records — 42.5% of the entire dataset. No other keyword comes close. When Canadians write about primary care, the phrase they reach for most is not "primary care system" or "physician shortage." It is the personal: <em>my family doctor</em>. Or, increasingly: <em>I don't have a family doctor</em>.</p>
+    <p>Its +0.096 average and 38.3% negativity reflect its universality. Family Doctor is used for everything: praising a good doctor, mourning a retired one, seeking advice on finding one. Its emotional range is the widest precisely because its usage is the broadest. But the 38.3% negativity baseline — in a keyword that should encompass many positive interactions — is a quiet signal of how often those interactions are strained.</p>
+  </div>
+
+  <!-- NP SOLUTION SIGNAL -->
   <div class="sec reveal">
     <div class="sk">The Solution Signal</div>
-    <h2>Nurse Practitioner: the most solution-oriented keyword in the dataset</h2>
-    <p>With only 3,046 mentions (3.4% of the corpus), "Nurse Practitioner" is a small but meaningful keyword — and one of the most positive. At +0.259 average compound sentiment and 29.3% positive vs. only 23.6% negative, it is one of three keywords where positive posts outnumber negative ones.</p>
-    <p>This is not accidental. When Canadians mention Nurse Practitioners, they are typically doing one of two things: celebrating a positive care experience ("my NP is wonderful"), or advocating for expanded NP scope as a policy solution ("NPs should be able to prescribe"). Both uses trend positive. It suggests that healthcare alternatives — when people actually encounter them — carry hope rather than frustration.</p>
-    <p>The contrast with "Waitlist" (65.9% negative) is stark: Canadians discussing what is blocking their access express despair; Canadians discussing what might improve access express cautious optimism. This is the emotional map of a system that is failing not because people have given up, but because the path forward remains unclear.</p>
+    <h2>Nurse Practitioner: where the hopeful data lives</h2>
+    <p>With +0.259 average sentiment and 29.3% positive vs. 23.6% negative, "Nurse Practitioner" is one of three keywords where positive posts outnumber negative ones. At 3,046 mentions it is small — but it is the only high-volume keyword in the dataset where people discussing an <em>alternative</em> access model report a measurably positive experience.</p>
+    <p>This has a direct policy implication: expanded NP scope and independent NP practices are not just theoretically appealing — they are already generating positive sentiment in the people who have encountered them. The 0.259 compound score is a signal that real-world NP access is working in ways that justify further investment.</p>
   </div>
 
 </div>
 </main>
 
-<div class="close">
-  <h2>Two words. One problem. One compound point of distance between them.</h2>
-  <p>"Waitlist" (−0.411) and "Primary Care" (+0.482) describe the same healthcare system — one from inside the waiting room, one from outside it. The 0.893-point gap between them is not just a statistical curiosity. It is <span class="big">the emotional architecture of a healthcare crisis</span>: the people most affected are the most frustrated, and the people discussing solutions are those who have not yet had to wait.</p>
+<div class="closewrap">
+  <h2>Two words. One system. 0.893 points apart.</h2>
+  <p>"Waitlist" (−0.411) and "Primary Care" (+0.482) describe the same healthcare crisis — one from inside the waiting room, one from the policy room. <span class="big">The gap is the distance between the person waiting and the person proposing.</span> Closing that gap requires more than language — it requires policy that makes the waiting room feel as hopeful as the proposal room.</p>
 </div>
 
 <footer class="foot">
   <div class="wrap">
-    <p class="fl"><b>Method.</b> Keyword sentiment derived from records in which each keyword appears (case-insensitive substring match). Average compound sentiment is the mean VADER compound score across all matching records. Negative/Positive percentages reflect the majority-label classification for each record. "Family Doctor" includes partial matches (e.g. "family doctors"). All 11 keywords are tracked independently; records may contain multiple keywords.</p>
-    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · 2021–2025.</p>
+    <p class="fl"><b>Method.</b> Keyword sentiment derived from records where each term appears (case-insensitive substring match). Avg compound = mean VADER compound score across matching records. Neg/Pos/Mix percentages reflect the VADER majority label per record. Records may match multiple keywords; groups are not mutually exclusive.</p>
+    <p class="fl"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · Jan 2021 – Aug 2025.</p>
   </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce)document.body.classList.add('go');
-  var io=('IntersectionObserver'in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
-  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
-  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if (!reduce) document.body.classList.add('go');
 
-  var fb=document.getElementById('fallback');
-  if(!window.THREE){if(fb)fb.style.display='block';return;}
+  // Scroll reveal
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es) {
+    es.forEach(function(en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold: 0.12}) : null;
+  if (io) document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  else document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in'); });
 
-  // ── KEYWORD DATA ─────────────────────────────────────────────────────────
-  var KWS=[
-    {kw:'Waitlist',     n:7456,  neg:65.9, pos:1.0,  avg:-0.411, side:'patient'},
-    {kw:'Family Doctor',n:37969, neg:38.3, pos:24.6, avg:0.096,  side:'patient'},
-    {kw:'Appointment',  n:8842,  neg:33.4, pos:20.7, avg:0.099,  side:'patient'},
-    {kw:'Walk-In Clinic',n:3689, neg:34.1, pos:23.5, avg:0.115,  side:'patient'},
-    {kw:'Follow-Up',    n:1811,  neg:27.8, pos:19.7, avg:0.129,  side:'patient'},
-    {kw:'Referral',     n:5803,  neg:27.4, pos:15.8, avg:0.127,  side:'system'},
-    {kw:'Primary Care', n:8441,  neg:22.9, pos:33.8, avg:0.482,  side:'system'},
-    {kw:'Urgent Care',  n:7614,  neg:32.2, pos:33.6, avg:0.392,  side:'system'},
-    {kw:'Nurse Practitioner',n:3046,neg:23.6,pos:29.3,avg:0.259,side:'system'},
-    {kw:'Family Physician',n:2505,neg:28.4,pos:28.5, avg:0.227,  side:'system'},
-    {kw:'Continuity',   n:189,   neg:19.6, pos:32.3, avg:0.374,  side:'system'},
+  if (!window.THREE) return;
+
+  // ── DATA ──────────────────────────────────────────────────────────────────
+  var KWS = [
+    {kw:'Waitlist',         n:7456,  neg:65.9, pos:1.0,  avg:-0.411, side:'patient'},
+    {kw:'Family Doctor',    n:37969, neg:38.3, pos:24.6, avg:0.096,  side:'patient'},
+    {kw:'Appointment',      n:8842,  neg:33.4, pos:20.7, avg:0.099,  side:'patient'},
+    {kw:'Walk-In Clinic',   n:3689,  neg:34.1, pos:23.5, avg:0.115,  side:'patient'},
+    {kw:'Follow-Up',        n:1811,  neg:27.8, pos:19.7, avg:0.129,  side:'patient'},
+    {kw:'Referral',         n:5803,  neg:27.4, pos:15.8, avg:0.127,  side:'system'},
+    {kw:'Primary Care',     n:8441,  neg:22.9, pos:33.8, avg:0.482,  side:'system'},
+    {kw:'Urgent Care',      n:7614,  neg:32.2, pos:33.6, avg:0.392,  side:'system'},
+    {kw:'Nurse Practitioner',n:3046, neg:23.6, pos:29.3, avg:0.259,  side:'system'},
+    {kw:'Family Physician', n:2505,  neg:28.4, pos:28.5, avg:0.227,  side:'system'},
+    {kw:'Continuity',       n:189,   neg:19.6, pos:32.3, avg:0.374,  side:'system'},
   ];
-  var maxN=37969;
+  var maxN = 37969;
+  var C_PAT = new THREE.Vector3(-14, 3, 0);
+  var C_SYS = new THREE.Vector3(14, 3, 0);
 
-  var hero=document.querySelector('.hero3d'),stage=document.getElementById('stage');
-  var W=stage.clientWidth,H=stage.clientHeight;
-  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x030204,0.010);
-  var camera=new THREE.PerspectiveCamera(48,W/H,0.1,800);
-  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  function orbCol(avg) {
+    // coral -0.411 → teal +0.482
+    var t = Math.max(0, Math.min(1, (avg + 0.45) / 0.95));
+    var r = Math.round(231 + (42 - 231) * t);
+    var g = Math.round(111 + (157 - 111) * t);
+    var b = Math.round(81  + (143 - 81)  * t);
+    return (r << 16) | (g << 8) | b;
+  }
+  function orbR(n) { return Math.sqrt(n / maxN) * 2.4 + 0.28; }
+
+  // ── THREE SETUP ───────────────────────────────────────────────────────────
+  var hero  = document.querySelector('.hero3d');
+  var stage = document.getElementById('stage');
+  var W = stage.clientWidth, H = stage.clientHeight;
+  var scene  = new THREE.Scene();
+  scene.fog  = new THREE.FogExp2(0x020008, 0.0085);
+  var camera = new THREE.PerspectiveCamera(48, W/H, 0.1, 600);
+  var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   stage.appendChild(renderer.domElement);
-  var world=new THREE.Group(); scene.add(world);
-  scene.add(new THREE.AmbientLight(0x18101C,1.1));
-  var keyL=new THREE.DirectionalLight(0xD0B0FF,0.7); keyL.position.set(10,20,15); scene.add(keyL);
-  var fillL=new THREE.DirectionalLight(0xFFB0A0,0.3); fillL.position.set(-10,10,-5); scene.add(fillL);
+
+  var world = new THREE.Group();
+  scene.add(world);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x120818, 1.4));
+  var keyL = new THREE.DirectionalLight(0xD0B0FF, 0.75); keyL.position.set(10, 20, 15); scene.add(keyL);
+  var ptL  = new THREE.PointLight(0x9060C0, 0.7, 55);   ptL.position.set(0, 8, 0);     scene.add(ptL);
 
   // Floor
-  var floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x08040C,roughness:0.9,metalness:0.2,transparent:true,opacity:0.85}));
-  floor.rotation.x=-Math.PI/2; floor.position.y=-0.1; world.add(floor);
+  var floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(140, 80),
+    new THREE.MeshStandardMaterial({color: 0x040210, roughness: 0.95, metalness: 0.1, transparent: true, opacity: 0.9})
+  );
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = -0.5;
+  world.add(floor);
 
-  // Two cluster centers: patient (left, -14,3,0) and system (right, +14,3,0)
-  var C_PAT=new THREE.Vector3(-14,3,0), C_SYS=new THREE.Vector3(14,3,0);
-  var allOrbs=[];
-
-  function orbColor(kw){
-    var t=Math.max(0,Math.min(1,(-kw.avg+0.42)/0.9));
-    var r=Math.round(42+(231-42)*t),g=Math.round(157+(111-157)*t),b=Math.round(143+(81-143)*t);
-    return (r<<16)|(g<<8)|b;
+  // ── LABEL SPRITES ─────────────────────────────────────────────────────────
+  function labSprite(txt, col, w) {
+    var cv = document.createElement('canvas'); cv.width = 512; cv.height = 80;
+    var x = cv.getContext('2d');
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = col || '#DDD0FF';
+    x.font = '600 28px "IBM Plex Mono",monospace';
+    x.fillText(txt, 256, 42);
+    var tex = new THREE.CanvasTexture(cv);
+    var sp = new THREE.Sprite(new THREE.SpriteMaterial({map: tex, transparent: true, depthTest: false}));
+    sp.scale.set(w, w * 80/512, 1);
+    return sp;
   }
-  function orbRadius(n){return Math.sqrt(n/maxN)*2.4+0.3;}
 
-  function labSprite(txt,col,w){var cv=document.createElement('canvas');cv.width=560;cv.height=92;var x=cv.getContext('2d');
-    x.textAlign='center';x.textBaseline='middle';x.fillStyle=col||'#DDD0FF';x.font='600 34px "IBM Plex Mono",monospace';x.fillText(txt,280,48);
-    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
-    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(w,w*92/560,1);return sp;}
+  // ── ORBS ─────────────────────────────────────────────────────────────────
+  var allOrbs = [];
+  function placeOrbs(kwList, center, baseAngle) {
+    kwList.forEach(function(kw, i) {
+      var angle   = baseAngle + (i / kwList.length) * 2 * Math.PI;
+      var orbitR  = 3.8 + Math.random() * 1.8;
+      var elev    = (Math.random() - 0.5) * 3.5;
+      var pos = new THREE.Vector3(
+        center.x + orbitR * Math.cos(angle),
+        center.y + elev,
+        center.z + orbitR * Math.sin(angle) * 0.62
+      );
+      var col = orbCol(kw.avg);
+      var r   = orbR(kw.n);
 
-  // Place keyword orbs around their cluster center with orbital offsets
-  var patKWS=KWS.filter(function(k){return k.side==='patient';});
-  var sysKWS=KWS.filter(function(k){return k.side==='system';});
+      var orb = new THREE.Mesh(
+        new THREE.SphereGeometry(r, 14, 12),
+        new THREE.MeshStandardMaterial({color: col, emissive: col, emissiveIntensity: 0.8, roughness: 0.22, metalness: 0.35})
+      );
+      orb.position.copy(pos);
+      world.add(orb);
 
-  function placeOrbs(kwList,center,baseAngleOff){
-    kwList.forEach(function(kw,i){
-      var angle=baseAngleOff+(i/kwList.length)*2*Math.PI;
-      var orbitR=3.8+Math.random()*2.2;
-      var elevation=(Math.random()-0.5)*4;
-      var pos=new THREE.Vector3(
-        center.x+orbitR*Math.cos(angle),
-        center.y+elevation,
-        center.z+orbitR*Math.sin(angle)*0.7
+      var glow = new THREE.Mesh(
+        new THREE.SphereGeometry(r * 2.4, 8, 6),
+        new THREE.MeshBasicMaterial({color: col, transparent: true, opacity: 0.08, depthWrite: false, blending: THREE.AdditiveBlending})
       );
-      var col=orbColor(kw);
-      var r=orbRadius(kw.n);
-      var orb=new THREE.Mesh(
-        new THREE.SphereGeometry(r,14,12),
-        new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.75,roughness:0.25,metalness:0.3})
-      );
-      orb.position.copy(pos); world.add(orb);
-      var glow=new THREE.Mesh(
-        new THREE.SphereGeometry(r*2.5,8,6),
-        new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.1,depthWrite:false,blending:THREE.AdditiveBlending})
-      );
-      glow.position.copy(pos); world.add(glow);
-      var words=kw.kw.split(' ');
-      var label=words.length>2?words[0]+'\n'+words.slice(1).join(' '):kw.kw;
-      var lsp=labSprite(kw.kw.replace(' ','\n'),col===orbColor({avg:kw.avg})?'#DDD0FF':null,Math.max(1.6,r*1.1));
-      lsp.position.set(pos.x,pos.y+r+0.6,pos.z); world.add(lsp);
-      allOrbs.push({orb,glow,lsp,pos:pos.clone(),ph:Math.random()*6.28,sp:0.3+Math.random()*0.5,kw});
+      glow.position.copy(pos);
+      world.add(glow);
+
+      var lsp = labSprite(kw.kw, null, Math.max(1.5, r * 1.1));
+      lsp.position.set(pos.x, pos.y + r + 0.45, pos.z);
+      world.add(lsp);
+
+      allOrbs.push({orb, glow, lsp, basePos: pos.clone(), center: center.clone(),
+        ph: Math.random() * 6.28, sp: 0.28 + Math.random() * 0.38, kw, r});
     });
   }
-  placeOrbs(patKWS,C_PAT,0);
-  placeOrbs(sysKWS,C_SYS,Math.PI/6);
+  placeOrbs(KWS.filter(function(k) { return k.side==='patient'; }), C_PAT, 0);
+  placeOrbs(KWS.filter(function(k) { return k.side==='system';  }), C_SYS, Math.PI/6);
 
-  // Cluster center orbs (large)
-  function centerOrb(pos,col,label,w){
-    var m=new THREE.Mesh(new THREE.SphereGeometry(1.2,16,14),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.5,roughness:0.2,metalness:0.5}));
+  // Cluster centers
+  function ctrOrb(pos, col, lbl) {
+    var m = new THREE.Mesh(
+      new THREE.SphereGeometry(1.1, 16, 14),
+      new THREE.MeshStandardMaterial({color: col, emissive: col, emissiveIntensity: 0.6, roughness: 0.18, metalness: 0.55})
+    );
     m.position.copy(pos); world.add(m);
-    var g=new THREE.Mesh(new THREE.SphereGeometry(3,10,8),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.07,depthWrite:false,blending:THREE.AdditiveBlending}));
+    var g = new THREE.Mesh(
+      new THREE.SphereGeometry(3.4, 10, 8),
+      new THREE.MeshBasicMaterial({color: col, transparent: true, opacity: 0.07, depthWrite: false, blending: THREE.AdditiveBlending})
+    );
     g.position.copy(pos); world.add(g);
-    var l=labSprite(label,null,w); l.position.set(pos.x,pos.y+2.4,pos.z); world.add(l);
-    return {m,g};
+    var l = labSprite(lbl, '#E0C8FF', 3.2);
+    l.position.set(pos.x, pos.y + 2.8, pos.z); world.add(l);
+    return {m, g};
   }
-  var cP=centerOrb(C_PAT,0xE76F51,'Patient Voice',3.2);
-  var cS=centerOrb(C_SYS,0x2A9D8F,'System Voice',3.2);
+  var cP = ctrOrb(C_PAT, 0xE76F51, 'Patient Voice');
+  var cS = ctrOrb(C_SYS, 0x2A9D8F, 'System Voice');
 
-  // The gap: a glowing line between clusters
-  var gapMat=new THREE.LineBasicMaterial({color:0x9B59B6,transparent:true,opacity:0.5});
-  var gapGeo=new THREE.BufferGeometry().setFromPoints([C_PAT,C_SYS]);
-  world.add(new THREE.Line(gapGeo,gapMat));
-  var gapOrb=new THREE.Mesh(new THREE.SphereGeometry(0.5,12,10),new THREE.MeshStandardMaterial({color:0x9B59B6,emissive:0x9B59B6,emissiveIntensity:1.2}));
-  gapOrb.position.set(0,3,0); world.add(gapOrb);
-  var gapLab=labSprite('gap = 0.893','#DCC8FF',2.8); gapLab.position.set(0,5.4,0); world.add(gapLab);
-
-  // Motes
-  var MC=280,mpArr=new Float32Array(MC*3);
-  for(var i=0;i<MC;i++){mpArr[i*3]=(Math.random()-0.5)*60;mpArr[i*3+1]=Math.random()*20;mpArr[i*3+2]=(Math.random()-0.5)*30;}
-  var mgeo=new THREE.BufferGeometry(); mgeo.setAttribute('position',new THREE.BufferAttribute(mpArr,3));
-  var ms=new Float32Array(MC); for(var i=0;i<MC;i++)ms[i]=0.003+Math.random()*0.007;
-  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0xC090E0,size:0.07,transparent:true,opacity:0.28,depthWrite:false,blending:THREE.AdditiveBlending})));
-
-  var prog=0;
-  function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
-  window.addEventListener('scroll',calc,{passive:true});calc();
-  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
-  function lp(a,b,t){return a+(b-a)*t;}
-
-  var KF=[
-    {p:0.00,pos:[0,10,34],look:[0,3,0]},       // overview: both clusters
-    {p:0.25,pos:[-18,6,18],look:[-14,3,0]},    // zoom into patient cluster
-    {p:0.55,pos:[18,6,18],look:[14,3,0]},      // zoom into system cluster
-    {p:1.00,pos:[0,22,30],look:[0,3,0]}         // zoom out: the gap
+  // ── GAP BRIDGE (aurora tube) ──────────────────────────────────────────────
+  var bridgePts = [
+    new THREE.Vector3(-14, 3, 0),
+    new THREE.Vector3(-7,  9, -4),
+    new THREE.Vector3( 0,  6,  0),
+    new THREE.Vector3( 7,  9,  4),
+    new THREE.Vector3(14,  3,  0),
   ];
-  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);
-    camera.position.set(lp(A.pos[0],B.pos[0],t),lp(A.pos[1],B.pos[1],t),lp(A.pos[2],B.pos[2],t));
-    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));}
+  var bridgeCurve = new THREE.CatmullRomCurve3(bridgePts);
 
-  var dragRot=0,dragging=false,lastX=0;
-  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
-  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
-  window.addEventListener('pointerup',function(){dragging=false;});
-  var capsEls=[].slice.call(document.querySelectorAll('.cap')),cue=document.getElementById('cue');
+  var bridgeTube = new THREE.Mesh(
+    new THREE.TubeGeometry(bridgeCurve, 80, 0.088, 8, false),
+    new THREE.MeshStandardMaterial({
+      color: 0xA060D0, emissive: 0xB070E0, emissiveIntensity: 1.6,
+      roughness: 0.15, metalness: 0.5, transparent: true, opacity: 0.72
+    })
+  );
+  world.add(bridgeTube);
 
-  function animate(){
-    requestAnimationFrame(animate);
-    var p=prog,time=Date.now()*.001;
-    camAt(p); world.rotation.y=dragRot;
-    // Orbit animation
-    allOrbs.forEach(function(o){
-      var center=o.kw.side==='patient'?C_PAT:C_SYS;
-      var angle=o.ph+time*o.sp*0.25;
-      var orbitR=o.pos.distanceTo(center);
-      o.orb.position.x=center.x+orbitR*Math.cos(angle);
-      o.orb.position.z=center.z+orbitR*Math.sin(angle)*0.65;
-      o.orb.position.y=o.pos.y+Math.sin(time*0.9+o.ph)*0.3;
-      o.glow.position.copy(o.orb.position);
-      o.lsp.position.set(o.orb.position.x,o.orb.position.y+orbRadius(o.kw.n)+0.5,o.orb.position.z);
-    });
-    cP.m.scale.setScalar(1+Math.sin(time*1.4)*.06);
-    cP.g.material.opacity=.06+.04*Math.sin(time*1.4);
-    cS.m.scale.setScalar(1+Math.sin(time*1.6)*.06);
-    cS.g.material.opacity=.06+.04*Math.sin(time*1.6);
-    gapOrb.scale.setScalar(1+Math.sin(time*2)*.12);
-    gapMat.opacity=0.3+0.3*Math.abs(Math.sin(time*1.2));
-    var ma=mgeo.attributes.position.array;
-    for(var i=0;i<MC;i++){ma[i*3+1]+=ms[i];if(ma[i*3+1]>20)ma[i*3+1]=0;}
-    mgeo.attributes.position.needsUpdate=true;
-    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o=Math.min(sm(p,lo,lo+.05),1-sm(p,hi-.05,hi));capsEls[i].style.opacity=Math.max(0,o);}
-    if(cue)cue.style.opacity=(p>.05?0:1);
-    var bd=document.getElementById('beatdots');if(bd){var bi=p<.24?0:p<.5?1:p<.77?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
-    renderer.render(scene,camera);
+  var bridgeGlow = new THREE.Mesh(
+    new THREE.TubeGeometry(bridgeCurve, 50, 0.42, 8, false),
+    new THREE.MeshBasicMaterial({
+      color: 0x9B59B6, transparent: true, opacity: 0.07,
+      depthWrite: false, blending: THREE.AdditiveBlending
+    })
+  );
+  world.add(bridgeGlow);
+
+  // Gap midpoint orb
+  var gapMid = bridgeCurve.getPointAt(0.5);
+  var gapOrb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 12, 10),
+    new THREE.MeshStandardMaterial({color: 0xD0A8FF, emissive: 0xD0A8FF, emissiveIntensity: 2.0})
+  );
+  gapOrb.position.copy(gapMid); world.add(gapOrb);
+
+  var gapGlow = new THREE.Mesh(
+    new THREE.SphereGeometry(1.6, 10, 8),
+    new THREE.MeshBasicMaterial({color: 0xC090F0, transparent: true, opacity: 0.18, depthWrite: false, blending: THREE.AdditiveBlending})
+  );
+  gapGlow.position.copy(gapMid); world.add(gapGlow);
+
+  var gapLab = labSprite('gap = 0.893', '#E8C8FF', 2.8);
+  gapLab.position.set(gapMid.x, gapMid.y + 1.8, gapMid.z); world.add(gapLab);
+
+  // ── BRIDGE PARTICLES ──────────────────────────────────────────────────────
+  var BPC = 72;
+  var bpArr = new Float32Array(BPC * 3);
+  var bpT   = new Float32Array(BPC);
+  for (var i = 0; i < BPC; i++) {
+    bpT[i] = Math.random();
+    var bp = bridgeCurve.getPointAt(bpT[i]);
+    bpArr[i*3] = bp.x; bpArr[i*3+1] = bp.y; bpArr[i*3+2] = bp.z;
   }
-  animate();if(fb)fb.style.display='none';
-  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+  var bpGeo = new THREE.BufferGeometry();
+  bpGeo.setAttribute('position', new THREE.BufferAttribute(bpArr, 3));
+  world.add(new THREE.Points(bpGeo, new THREE.PointsMaterial({
+    color: 0xD0B0FF, size: 0.14, transparent: true, opacity: 0.7,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  })));
+
+  // ── AMBIENT MOTES ─────────────────────────────────────────────────────────
+  var MC = 260, mpArr = new Float32Array(MC * 3), ms = new Float32Array(MC);
+  for (var i = 0; i < MC; i++) {
+    mpArr[i*3]   = (Math.random() - 0.5) * 62;
+    mpArr[i*3+1] = Math.random() * 18;
+    mpArr[i*3+2] = (Math.random() - 0.5) * 30;
+    ms[i] = 0.003 + Math.random() * 0.008;
+  }
+  var mgeo = new THREE.BufferGeometry();
+  mgeo.setAttribute('position', new THREE.BufferAttribute(mpArr, 3));
+  world.add(new THREE.Points(mgeo, new THREE.PointsMaterial({
+    color: 0xB090D8, size: 0.06, transparent: true, opacity: 0.24,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  })));
+
+  // ── SCROLL / CAMERA ───────────────────────────────────────────────────────
+  var prog = 0;
+  function calcProg() {
+    var rect  = hero.getBoundingClientRect();
+    var total = hero.offsetHeight - window.innerHeight;
+    prog = Math.max(0, Math.min(1, -rect.top / total));
+  }
+  window.addEventListener('scroll', calcProg, {passive: true}); calcProg();
+
+  function sm(p, a, b) { var t = Math.max(0, Math.min(1, (p-a)/(b-a))); return t*t*(3-2*t); }
+  function lp(a, b, t) { return a + (b - a) * t; }
+
+  var KF = [
+    {p: 0.00, pos: [0, 10, 40], look: [0, 3, 0]},
+    {p: 0.26, pos: [-24, 6, 22], look: [-14, 3, 0]},
+    {p: 0.55, pos: [24, 6, 22],  look: [14, 3, 0]},
+    {p: 1.00, pos: [0, 18, 34],  look: [0, 4, 0]},
+  ];
+  function camAt(p) {
+    var i = 0;
+    for (; i < KF.length - 1; i++) { if (p <= KF[i+1].p) break; }
+    var A = KF[Math.min(i, KF.length-1)], B = KF[Math.min(i+1, KF.length-1)];
+    var span = (B.p - A.p) || 1, t = Math.max(0, Math.min(1, (p - A.p) / span));
+    t = t*t*(3-2*t);
+    camera.position.set(lp(A.pos[0],B.pos[0],t), lp(A.pos[1],B.pos[1],t), lp(A.pos[2],B.pos[2],t));
+    camera.lookAt(lp(A.look[0],B.look[0],t), lp(A.look[1],B.look[1],t), lp(A.look[2],B.look[2],t));
+  }
+
+  // Drag rotation
+  var dragRot = 0, dragging = false, lastX = 0;
+  stage.addEventListener('pointerdown', function(e) { dragging = true; lastX = e.clientX; });
+  window.addEventListener('pointermove', function(e) { if (!dragging) return; dragRot += (e.clientX - lastX) * 0.005; lastX = e.clientX; });
+  window.addEventListener('pointerup',   function()  { dragging = false; });
+
+  var capsEls = [].slice.call(document.querySelectorAll('.cap'));
+  var cue     = document.getElementById('cue');
+  var beatdots = document.getElementById('beatdots');
+
+  // ── ANIMATE ───────────────────────────────────────────────────────────────
+  function animate() {
+    requestAnimationFrame(animate);
+    var p = prog, time = Date.now() * 0.001;
+
+    camAt(p);
+    world.rotation.y = dragRot;
+
+    // Bridge aurora pulse
+    var bridgeAlpha = 0.07 + 0.2 * sm(p, 0.7, 1.0);
+    bridgeGlow.material.opacity   = bridgeAlpha;
+    bridgeTube.material.opacity   = 0.62 + 0.32 * sm(p, 0.7, 1.0);
+    bridgeTube.material.emissiveIntensity = 1.4 + 0.8 * sm(p, 0.7, 1.0);
+
+    // Gap orb pulse
+    gapOrb.scale.setScalar(1 + 0.22 * Math.sin(time * 2.8));
+    gapGlow.material.opacity = 0.14 + 0.2 * Math.sin(time * 2.2) + 0.22 * sm(p, 0.7, 1.0);
+
+    ptL.position.set(Math.sin(time * 0.6) * 22, 6 + Math.sin(time * 0.4) * 4, Math.cos(time * 0.6) * 14);
+
+    // Orb orbits
+    allOrbs.forEach(function(o) {
+      var orbitR = o.basePos.distanceTo(o.center);
+      var angle  = o.ph + time * o.sp * 0.22;
+      o.orb.position.x = o.center.x + orbitR * Math.cos(angle);
+      o.orb.position.z = o.center.z + orbitR * Math.sin(angle) * 0.62;
+      o.orb.position.y = o.basePos.y + Math.sin(time * 0.9 + o.ph) * 0.28;
+      o.glow.position.copy(o.orb.position);
+      o.lsp.position.set(o.orb.position.x, o.orb.position.y + o.r + 0.42, o.orb.position.z);
+    });
+
+    cP.m.scale.setScalar(1 + Math.sin(time * 1.4) * 0.07);
+    cS.m.scale.setScalar(1 + Math.sin(time * 1.6) * 0.07);
+
+    // Bridge particles — flow from patient to system
+    var bpa = bpGeo.attributes.position.array;
+    for (var i = 0; i < BPC; i++) {
+      bpT[i] = (bpT[i] + 0.0042) % 1;
+      var bp = bridgeCurve.getPointAt(bpT[i]);
+      bpa[i*3] = bp.x; bpa[i*3+1] = bp.y; bpa[i*3+2] = bp.z;
+    }
+    bpGeo.attributes.position.needsUpdate = true;
+
+    // Rising motes
+    var ma = mgeo.attributes.position.array;
+    for (var i = 0; i < MC; i++) { ma[i*3+1] += ms[i]; if (ma[i*3+1] > 18) ma[i*3+1] = 0; }
+    mgeo.attributes.position.needsUpdate = true;
+
+    // Caption opacity
+    capsEls.forEach(function(el) {
+      var lo = parseFloat(el.dataset.lo), hi = parseFloat(el.dataset.hi);
+      var o  = Math.min(sm(p, lo, lo + 0.05), 1 - sm(p, hi - 0.05, hi));
+      el.style.opacity = Math.max(0, o);
+    });
+    if (cue) cue.style.opacity = (p > 0.05 ? 0 : 1);
+    if (beatdots) {
+      var bi = p < 0.24 ? 0 : p < 0.52 ? 1 : p < 0.78 ? 2 : 3;
+      for (var q = 0; q < beatdots.children.length; q++)
+        beatdots.children[q].className = (q === bi ? 'on' : '');
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    camera.aspect = W/H; camera.updateProjectionMatrix();
+    renderer.setSize(W, H); calcProg();
+  });
 })();
 </script>
 </body>

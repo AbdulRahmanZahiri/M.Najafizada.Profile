@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Drift — Longitudinal Sentiment Analysis · Canadian Primary Care</title>
+<title>The Drift — Longitudinal Sentiment · Canadian Primary Care</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -16,46 +16,42 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
 .wrap{max-width:760px;margin:0 auto;padding:0 26px}
-
-.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%,#131B2B 0%,#090F1C 48%,#040609 100%)}
+.hero3d{position:relative;height:400vh;background:radial-gradient(140% 70% at 50% 0%,#0A1828 0%,#040B14 50%,#01030A 100%)}
 .sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 #stage{position:absolute;inset:0;touch-action:pan-y}#stage canvas{display:block}
 .h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
-.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(4,6,9,.92),rgba(4,6,9,.5) 50%,transparent);pointer-events:none}
-.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#8FA8C0}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:50%;background:linear-gradient(to top,rgba(1,3,10,.96),rgba(1,3,10,.55) 55%,transparent);pointer-events:none}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#5A8AAA}
 .cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
-.cap .big{font-family:var(--font-display);font-weight:700;font-size:68px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#E8F4FF,#7BB8E0);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap .big.coral{background:linear-gradient(180deg,#FFD6C8,#E76F51);-webkit-background-clip:text;background-clip:text;color:transparent}
-.cap h2{font-family:var(--font-display);color:#F0F4F8;font-weight:500;font-size:25px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.7)}
-.cap p{font-family:var(--font-mono);font-size:12.5px;color:#9DC0D8;margin:12px auto 0;max-width:520px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.8)}
-.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7A9AB0;transition:opacity .3s}
-.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
-.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.24);transition:background .3s,transform .3s}
-.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.5)}
-#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#9DC0D8;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+.cap .big{font-family:var(--font-display);font-weight:700;font-size:72px;line-height:.88;letter-spacing:-.04em;background:linear-gradient(160deg,#A8D8F8 0%,#5AAAE0 40%,#3880C0 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.coral{background:linear-gradient(160deg,#FFD6C8 0%,#F08060 40%,#E04828 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.gold{background:linear-gradient(160deg,#FFF0C0 0%,#E9C46A 40%,#C8902B 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#E0EEF8;font-weight:500;font-size:24px;line-height:1.22;margin:14px auto 0;max-width:660px;letter-spacing:-.01em;text-shadow:0 2px 32px rgba(0,0,0,.9)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#7AAAC8;margin:12px auto 0;max-width:540px;line-height:1.65;text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.scrollcue{position:absolute;left:0;right:0;bottom:28px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#406080;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.beatdots{position:absolute;right:22px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s,transform .3s}
+.beatdots span.on{background:#5AAAE0;transform:scale(1.5);box-shadow:0 0 10px rgba(90,170,224,.7)}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#7AAAC8;max-width:380px;line-height:1.7;display:none;padding:0 24px}
 
+/* Article */
 .hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--teal);border-bottom:3px solid var(--teal);position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(42,157,143,.14),transparent 60%);pointer-events:none}
 .kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
-.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
-.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
-
-.sec{padding:46px 0 10px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:52px;line-height:1.00;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:20px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 28px}
+.sec{padding:48px 0 10px}
 .sec .sk{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
-.sec h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
+.sec h2{font-family:var(--font-display);font-weight:600;font-size:29px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
 .sec p{font-size:18px;line-height:1.72;margin:0 0 16px}
-
-/* Finding cards */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}
-.fcard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:20px 20px 18px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
-.fcard .num{font-family:var(--font-display);font-weight:700;font-size:36px;line-height:1;letter-spacing:-.03em;margin-bottom:6px;color:var(--coral)}
-.fcard .num.teal{color:var(--teal)}
-.fcard .lbl{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fcard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:20px 20px 18px}
+.fcard .num{font-family:var(--font-display);font-weight:700;font-size:37px;line-height:1;letter-spacing:-.03em;margin-bottom:6px;color:var(--coral)}
+.fcard .num.teal{color:var(--teal)}.fcard .num.gold{color:var(--gold)}
+.fcard .lbl{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .fcard p{font-size:14.5px;line-height:1.55;margin:0;color:#333}
-
-/* Year analysis */
 .yrow{display:flex;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);align-items:flex-start}
 .yrow:last-child{border:none}
 .ytag{flex:0 0 90px;font-family:var(--font-mono);font-size:12px;font-weight:600;color:#fff;background:var(--teal);padding:6px 12px;border-radius:999px;text-align:center;margin-top:2px}
@@ -64,8 +60,6 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-
 .ybody h3{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 6px;letter-spacing:-.01em}
 .ybody p{font-size:16.5px;line-height:1.6;margin:0 0 8px;color:#2A3530}
 .ybody .stat{font-family:var(--font-mono);font-size:12px;color:var(--coral-deep);background:#FCF0EB;border:1px solid #F5D8CC;border-radius:7px;padding:6px 12px;display:inline-block;margin-top:4px}
-
-/* Data table */
 .dtable{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12.5px;margin:16px 0}
 .dtable th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--line);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
 .dtable td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
@@ -74,20 +68,24 @@ body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-
 .dbar{height:7px;background:var(--track);border-radius:3px;overflow:hidden}
 .dfill{height:100%;border-radius:3px}
 .peak td{background:#FFF5F2}
-.yr-row td{background:#F8FAFE;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--teal)}
-
+.yr-row td{background:#F2F8FF;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--teal)}
+/* Floor comparison */
+.floorcomp{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0}
+.fcc{padding:14px 10px;text-align:center;border-right:1px solid var(--line)}
+.fcc:last-child{border:none}
+.fcc .fy{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.fcc .fv{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.02em}
+.fcc .fl2{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:3px}
 .close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--teal)}
 .close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
 .close p{font-size:19px;line-height:1.62;margin:0 0 16px}
 .close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
-
 .foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
 .foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
-
 .reveal{opacity:0;transform:translateY(14px)}
 body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
-@media(max-width:680px){body{font-size:17px}.wrap{padding:0 18px}.close{padding:24px 18px 0}.cap .big{font-size:44px}.cap h2{font-size:19px}.hero h1{font-size:36px}}
+@media(max-width:680px){body{font-size:17px}.wrap{padding:0 18px}.floorcomp{grid-template-columns:1fr 1fr}.cap .big{font-size:46px}.cap h2{font-size:19px}.hero h1{font-size:36px}}
 </style>
 </head>
 <body>
@@ -97,60 +95,59 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
   <div class="sticky">
     <div id="stage"></div>
     <div class="h3ov">
-      <div class="brand">Research Finding 1 of 4 · Longitudinal Analysis · n = 89,398 records · 2021–2025</div>
+      <div class="brand">Research Finding 1 of 4 · Longitudinal Sentiment Analysis · 55 months · n = 89,398</div>
       <div class="cap" data-lo="-0.06" data-hi="0.22">
         <div class="big">37.4%</div>
-        <h2>One in three posts was negative — in 2021, before anyone called it a crisis</h2>
-        <p>89,398 Reddit posts from 2021 to 2025 · Each bead is one month · Size = volume · Colour = sentiment</p>
+        <h2>January 2021. The bars are short. This is the landscape before the crisis reached the internet.</h2>
+        <p>Each spike is one month. Height = negativity. Colour = emotional temperature. The timeline runs left to right, 2021 to 2025.</p>
       </div>
       <div class="cap" data-lo="0.25" data-hi="0.48">
         <div class="big">2×</div>
-        <h2>In 2022, the conversation doubled — and got darker. 40.4% negative, the worst year yet.</h2>
-        <p>July 2022 alone: 1,577 records. COVID backlogs collide with a physician exodus and the internet fills with rage.</p>
+        <h2>2022: Volume doubles. The spikes grow taller. July 2022 — 1,577 records in one month.</h2>
+        <p>The landscape is changing. The warm teal of 2021 is giving way to gold and coral. Every month is more negative than the one before it a year ago.</p>
       </div>
       <div class="cap" data-lo="0.51" data-hi="0.76">
         <div class="big coral">44.6%</div>
-        <h2>Spring 2024: the peak. Nearly one in two posts expresses frustration or distress.</h2>
-        <p>April and June 2024 are the worst single months in the entire dataset. March 2024: 2,284 records in 31 days.</p>
+        <h2>April 2024. The tallest spike in the dataset. March had 2,284 records. The system is at its breaking point.</h2>
+        <p>Look up. These are the peaks of the crisis — two months in spring 2024 where nearly one in two posts expressed distress. No policy response visible in the data.</p>
       </div>
       <div class="cap" data-lo="0.78" data-hi="1.02">
-        <div class="big">5 years</div>
-        <h2>The drift is real — and it has not reversed. Every year is worse than the last.</h2>
-        <p>37.4% → 40.4% → 38.8% → 41.1% → 36.8% (partial 2025). The teal of 2021 is gone. What remains is coral.</p>
+        <div class="big gold">5 yrs</div>
+        <h2>The full landscape. The floor has risen. Even 2025's smallest spikes are taller than 2021's average.</h2>
+        <p>37.4% → 40.4% → 38.8% → 41.1% → 36.8% (partial). The teal of January 2021 is gone. What remains is a landscape permanently shifted toward coral.</p>
       </div>
       <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
-      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A9AB0" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div id="fallback">Loading 3D scene — the research article is just below.</div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#406080" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">3D scene loading — scroll down for the full research article.</div>
     </div>
   </div>
 </section>
 
-<!-- ═══ ARTICLE HEADER ═══ -->
+<!-- ═══ ARTICLE ═══ -->
 <header class="hero">
   <div class="wrap">
     <div class="kick">Research Finding 1 of 4 · Longitudinal Sentiment Analysis · 2021–2025</div>
     <h1>The Drift</h1>
-    <p class="dek">From 2021 to 2025, negative sentiment in Canadian primary care Reddit discourse climbed from 37.4% to an annual peak of 41.1%. This is the trajectory, month by month — and what it tells us about a system under sustained, growing stress.</p>
+    <p class="dek">From 2021 to 2025, negative sentiment in Canadian primary care Reddit discourse climbed from 37.4% to an annual peak of 41.1%. This is the trajectory — month by month — and what it tells us about a system under sustained, growing stress.</p>
   </div>
 </header>
 
 <main>
 <div class="wrap">
 
-  <!-- KEY FINDINGS -->
   <div class="sec reveal">
     <div class="sk">Key Findings</div>
-    <h2>Five numbers that define the drift</h2>
+    <h2>Six numbers that define the drift</h2>
     <div class="fgrid">
       <div class="fcard">
         <div class="lbl">2021 baseline</div>
         <div class="num teal">37.4%</div>
-        <p>Average annual negative sentiment in 2021 — already high before the crisis entered public consciousness.</p>
+        <p>Average annual negative sentiment in 2021 — already high before the crisis entered public consciousness. The floor, before it started rising.</p>
       </div>
       <div class="fcard">
         <div class="lbl">2024 annual peak</div>
         <div class="num">41.1%</div>
-        <p>The worst annual average in the dataset. A +3.7 percentage-point rise from 2021 that compresses four years of policy inaction.</p>
+        <p>The worst annual average in the dataset. A +3.7 percentage-point rise from 2021 that compresses four years of policy inaction into a single number.</p>
       </div>
       <div class="fcard">
         <div class="lbl">Single worst months</div>
@@ -165,77 +162,104 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
       <div class="fcard">
         <div class="lbl">Single biggest month</div>
         <div class="num">2,284</div>
-        <p>Records in March 2024 — the most discussion about Canadian primary care captured in any single month.</p>
+        <p>Records in March 2024 — the most discussion about Canadian primary care captured in any single month of the study period.</p>
       </div>
       <div class="fcard">
-        <div class="lbl">Spring 2025 signal</div>
-        <div class="num teal">32.1%</div>
-        <p>May 2025's negativity rate — the lowest in three years. The first tentative sign that the drift may be stabilising. Too early to call a trend.</p>
+        <div class="lbl">Rising floor</div>
+        <div class="num gold">+11.2pp</div>
+        <p>The best month of 2021 (February, 25.0%) vs the best month of 2024 (December, 36.2%). The floor has risen 11.2 points in four years.</p>
       </div>
     </div>
   </div>
 
-  <!-- YEAR-BY-YEAR -->
   <div class="sec reveal">
     <div class="sk">Year-by-Year Analysis</div>
     <h2>A slow-motion story of a system under pressure</h2>
-
     <div class="yrow">
       <div class="ytag teal">2021</div>
       <div class="ybody">
         <h3>The quiet beginning</h3>
-        <p>With 7,596 total records averaging 633 per month, 2021 is the dataset's baseline — but "baseline" is a relative term. A 37.4% average negativity rate means that even in the year when COVID vaccines were rolling out and systemic optimism peaked, more than one in three primary care conversations expressed frustration. The outlier: April 2021, when negativity surges to 44.2% — a glimpse of what is coming.</p>
-        <div class="stat">37.4% avg neg · 7,596 total records · 633/month avg · Best: Feb at 25.0% · Worst: Apr at 44.2%</div>
+        <p>7,596 records, 633 per month average. 37.4% negativity — already elevated, but the floor is visible. February 2021 is the single best month in five years: 25.0% negative. By April, that same year spikes to 44.2%, a warning that most ignored.</p>
+        <div class="stat">37.4% avg neg · 7,596 records · Best: Feb 25.0% · Worst: Apr 44.2%</div>
       </div>
     </div>
-
     <div class="yrow">
       <div class="ytag coral">2022</div>
       <div class="ybody">
         <h3>The rupture year</h3>
-        <p>Everything changes in 2022. Monthly volume nearly doubles to 951 records on average, and the emotional register shifts sharply: 40.4% negative, up 3.0 points from 2021. July 2022 becomes the dataset's first major spike — 1,577 records in a single month, as pandemic-deferred care collides with accelerating physician retirements and subreddit growth. November 2022 sets a new negativity ceiling at 44.3%. This is the year the conversation stops being fringe and becomes mainstream.</p>
-        <div class="stat">40.4% avg neg · 11,415 total records · 951/month avg · Volume peak: Jul at 1,577 · Sentiment peak: Nov at 44.3%</div>
+        <p>Everything changes in 2022. Volume nearly doubles to 951 records per month. Negativity hits 40.4%. July 2022 produces 1,577 records — the first major volume spike. November 2022 reaches 44.3%, a new ceiling. The conversation is no longer fringe.</p>
+        <div class="stat">40.4% avg neg · 11,415 records · Volume peak: Jul 1,577 · Sentiment peak: Nov 44.3%</div>
       </div>
     </div>
-
     <div class="yrow">
       <div class="ytag">2023</div>
       <div class="ybody">
         <h3>Resignation becomes the baseline</h3>
-        <p>2023 offers no recovery. At 38.8% average negativity, it sits almost exactly between 2021 and 2022 — but the character of the conversation shifts. Where 2022 posts were shocked and angry, 2023 posts are tired. The monthly range barely varies: from May's relative low of 34.4% to December's 44.1%. Every month of 2023 is more negative than the first month of 2021. Chronic frustration has replaced acute crisis as the dominant tone.</p>
-        <div class="stat">38.8% avg neg · 12,309 total records · 1,025/month avg · Steadiest year — 9.7pp spread across 12 months</div>
+        <p>At 38.8% average, 2023 sits between 2021 and 2022 — but the character has changed. Where 2022 posts were shocked and angry, 2023 posts are tired. The monthly range barely varies. Chronic frustration has replaced acute crisis as the dominant tone. December 2023 reaches 44.1%.</p>
+        <div class="stat">38.8% avg neg · 12,309 records · Steadiest year — 9.7pp spread · Dec 44.1% closes the year dark</div>
       </div>
     </div>
-
     <div class="yrow">
       <div class="ytag coral">2024</div>
       <div class="ybody">
         <h3>The peak — and no one notices</h3>
-        <p>2024 is the worst year in the dataset by every measure. Annual average negativity hits 41.1%. Monthly volume averages 1,446 records, with March reaching an all-time high of 2,284. The spring peak is extraordinary: April and June both hit 44.6% — the highest single-month figures in five years. What is most striking is the absence of a corresponding policy response. There is no announcement that follows the peak, no month where the conversation noticeably brightens. The system breaks a record and the record is not acknowledged.</p>
-        <div class="stat">41.1% avg neg · 17,358 total records · 1,446/month avg · Record month: Mar 2024 (2,284) · Peak neg: Apr &amp; Jun at 44.6%</div>
+        <p>2024 is the worst year by every measure. 41.1% annual average. 1,446 records per month, with March reaching 2,284. The spring peak is extraordinary: April and June both hit 44.6%. What is most striking is the absence of any corresponding policy announcement that the data can detect. The system breaks a record and the record is not acknowledged.</p>
+        <div class="stat">41.1% avg neg · 17,358 records · March 2024: 2,284 records · April &amp; June 2024: 44.6% — the highest in 55 months</div>
       </div>
     </div>
-
     <div class="yrow">
       <div class="ytag teal">2025</div>
       <div class="ybody">
         <h3>A cautious dip</h3>
-        <p>January to August 2025 shows the first sustained stretch of lower negativity since mid-2021. At 36.8% average for the partial year, with April (32.6%) and May (32.1%) falling to three-year lows, there is — for the first time — a plausible case for improvement. But the volume remains high (1,085 records/month), and the pattern of alternating high and low months makes a definitive conclusion impossible. The drift may have paused. It has not reversed.</p>
-        <div class="stat">36.8% avg neg · 8,682 records (Jan–Aug) · 1,085/month avg · Lowest recent months: Apr 32.6%, May 32.1%</div>
+        <p>January–August 2025 shows the first sustained stretch of lower negativity since mid-2021. April (32.6%) and May (32.1%) fall to three-year lows. At 36.8% partial-year average, there is a plausible case for stabilisation. But the volume remains high (1,085/month) and alternating high/low months make a definitive conclusion impossible. The drift may have paused. It has not reversed.</p>
+        <div class="stat">36.8% avg neg (Jan–Aug) · April 32.6% &amp; May 32.1% — lowest since 2021 · n = 8,682 records</div>
       </div>
     </div>
   </div>
 
-  <!-- DATA TABLE: QUARTERLY HIGHLIGHTS -->
+  <!-- RISING FLOOR VISUALIZATION -->
+  <div class="sec reveal">
+    <div class="sk">The Rising Floor</div>
+    <h2>The best month of each year, compared</h2>
+    <p>The most damning metric in the dataset is not any single peak — it is the floor. When the "best" month of a year gets consistently worse, the system's resting state of frustration is structurally worsening, not just spiking.</p>
+    <div class="floorcomp">
+      <div class="fcc">
+        <div class="fy">2021</div>
+        <div class="fv" style="color:#2A9D8F">25.0%</div>
+        <div class="fl2">Feb 2021<br>Best ever</div>
+      </div>
+      <div class="fcc">
+        <div class="fy">2022</div>
+        <div class="fv" style="color:#7A9060">33.5%</div>
+        <div class="fl2">Jan 2022<br>+8.5pp floor</div>
+      </div>
+      <div class="fcc">
+        <div class="fy">2023</div>
+        <div class="fv" style="color:#8A9050">34.4%</div>
+        <div class="fl2">May 2023<br>+9.4pp floor</div>
+      </div>
+      <div class="fcc">
+        <div class="fy">2024</div>
+        <div class="fv" style="color:#A07040">36.2%</div>
+        <div class="fl2">Dec 2024<br>+11.2pp floor</div>
+      </div>
+      <div class="fcc">
+        <div class="fy">2025</div>
+        <div class="fv" style="color:#2A9D8F">32.1%</div>
+        <div class="fl2">May 2025<br>First drop</div>
+      </div>
+    </div>
+    <p>May 2025's 32.1% is the first time the floor has genuinely fallen since the study began. Whether it holds into the autumn, or whether the fall season restores the familiar pattern, will determine whether 2025 is a turning point or a pause.</p>
+  </div>
+
+  <!-- DATA TABLE -->
   <div class="sec reveal">
     <div class="sk">Monthly Record</div>
-    <h2>The complete 55-month data table</h2>
-    <p>Every month from January 2021 to August 2025 — negative sentiment percentage and total discussion volume. Months with negative sentiment ≥ 43% are highlighted.</p>
-
+    <h2>All 55 months — January 2021 to August 2025</h2>
     <table class="dtable">
       <thead><tr><th>Month</th><th>Neg %</th><th>Volume</th><th class="bar-cell">Sentiment bar</th></tr></thead>
       <tbody>
-        <tr class="yr-row"><td colspan="4">2021 · Annual avg neg: 37.4% · Total: 7,596 records</td></tr>
+        <tr class="yr-row"><td colspan="4">2021 · avg 37.4% · 7,596 records · Floor: Feb 25.0%</td></tr>
         <tr><td>Jan 2021</td><td>33.5%</td><td>260</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:67%;background:#2A9D8F"></div></div></td></tr>
         <tr><td>Feb 2021</td><td>25.0%</td><td>272</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:50%;background:#2A9D8F"></div></div></td></tr>
         <tr><td>Mar 2021</td><td>36.1%</td><td>427</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:72%;background:#52B89E"></div></div></td></tr>
@@ -248,8 +272,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
         <tr><td>Oct 2021</td><td>35.3%</td><td>556</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:71%;background:#6AA090"></div></div></td></tr>
         <tr><td>Nov 2021</td><td>39.5%</td><td>907</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:79%;background:#C08C5C"></div></div></td></tr>
         <tr><td>Dec 2021</td><td>34.9%</td><td>832</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:70%;background:#52A892"></div></div></td></tr>
-
-        <tr class="yr-row"><td colspan="4">2022 · Annual avg neg: 40.4% · Total: 11,415 records · Volume nearly doubled</td></tr>
+        <tr class="yr-row"><td colspan="4">2022 · avg 40.4% · 11,415 records · Volume nearly doubled</td></tr>
         <tr><td>Jan 2022</td><td>33.5%</td><td>1,067</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:67%;background:#2A9D8F"></div></div></td></tr>
         <tr><td>Feb 2022</td><td>38.7%</td><td>522</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:77%;background:#B9A062"></div></div></td></tr>
         <tr><td>Mar 2022</td><td>34.9%</td><td>573</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:70%;background:#52A892"></div></div></td></tr>
@@ -262,8 +285,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
         <tr><td>Oct 2022</td><td>42.7%</td><td>1,623</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:85%;background:#DC7252"></div></div></td></tr>
         <tr class="peak"><td>Nov 2022</td><td>44.3%</td><td>1,633</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:89%;background:#E76F51"></div></div></td></tr>
         <tr><td>Dec 2022</td><td>37.9%</td><td>1,000</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:76%;background:#AEA264"></div></div></td></tr>
-
-        <tr class="yr-row"><td colspan="4">2023 · Annual avg neg: 38.8% · Total: 12,309 records · No recovery, only resignation</td></tr>
+        <tr class="yr-row"><td colspan="4">2023 · avg 38.8% · 12,309 records · No recovery, only resignation</td></tr>
         <tr><td>Jan 2023</td><td>39.8%</td><td>1,075</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:80%;background:#C68E5E"></div></div></td></tr>
         <tr><td>Feb 2023</td><td>36.5%</td><td>1,272</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:73%;background:#80A87C"></div></div></td></tr>
         <tr><td>Mar 2023</td><td>38.5%</td><td>1,223</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:77%;background:#B5A464"></div></div></td></tr>
@@ -276,8 +298,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
         <tr><td>Oct 2023</td><td>38.5%</td><td>1,197</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:77%;background:#B5A464"></div></div></td></tr>
         <tr><td>Nov 2023</td><td>40.2%</td><td>1,342</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:80%;background:#C88A5E"></div></div></td></tr>
         <tr class="peak"><td>Dec 2023</td><td>44.1%</td><td>1,167</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:88%;background:#E57053"></div></div></td></tr>
-
-        <tr class="yr-row"><td colspan="4">2024 · Annual avg neg: 41.1% · Total: 17,358 records · The peak year — highest volume, highest frustration</td></tr>
+        <tr class="yr-row"><td colspan="4">2024 · avg 41.1% · 17,358 records · Peak year — highest volume, highest frustration</td></tr>
         <tr><td>Jan 2024</td><td>39.9%</td><td>1,420</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:80%;background:#C68E5E"></div></div></td></tr>
         <tr><td>Feb 2024</td><td>42.2%</td><td>1,807</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:84%;background:#DA7255"></div></div></td></tr>
         <tr><td>Mar 2024</td><td>41.6%</td><td>2,284</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:83%;background:#D57658"></div></div></td></tr>
@@ -290,8 +311,7 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
         <tr><td>Oct 2024</td><td>39.1%</td><td>1,773</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:78%;background:#BE9E62"></div></div></td></tr>
         <tr><td>Nov 2024</td><td>39.9%</td><td>1,179</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:80%;background:#C68E5E"></div></div></td></tr>
         <tr><td>Dec 2024</td><td>36.2%</td><td>981</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:72%;background:#78A884"></div></div></td></tr>
-
-        <tr class="yr-row"><td colspan="4">2025 (Jan–Aug) · Partial avg neg: 36.8% · 8,682 records · First sign of stabilisation</td></tr>
+        <tr class="yr-row"><td colspan="4">2025 (Jan–Aug) · avg 36.8% · 8,682 records · First sign of stabilisation</td></tr>
         <tr><td>Jan 2025</td><td>40.3%</td><td>1,904</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:81%;background:#CA8C5E"></div></div></td></tr>
         <tr><td>Feb 2025</td><td>36.5%</td><td>860</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:73%;background:#80A87C"></div></div></td></tr>
         <tr><td>Mar 2025</td><td>40.4%</td><td>1,079</td><td class="bar-cell"><div class="dbar"><div class="dfill" style="width:81%;background:#CB8A5E"></div></div></td></tr>
@@ -304,26 +324,32 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
     </table>
   </div>
 
-  <!-- WHAT THIS MEANS -->
   <div class="sec reveal">
     <div class="sk">Interpretation</div>
     <h2>What the drift tells a health policy researcher</h2>
     <p>The most important feature of this dataset is not any individual peak — it is the floor. In 2021, the best month (February) saw 25.0% negative sentiment. By 2024, the best month (December) was 36.2%. The floor has risen 11.2 percentage points in four years. This is not a crisis that spikes and recovers; it is a system whose resting state of frustration is continuously worsening.</p>
-    <p>The volume surge is equally significant. In 2021, 633 Canadians per month were posting about primary care. By 2024, that had grown to 1,446 — not because more people use Reddit, but because more people have something urgent to say. High-volume negative months are self-reinforcing: frustrated posts attract replies, which attract more posts, which makes the problem more visible, which frustrates more people.</p>
-    <p>The spring 2025 data is the first reason for cautious optimism. Whether the dip in April and May 2025 represents a genuine systemic improvement, a seasonal effect, or simply noise in a dataset that has not yet been fully captured — that is the question this study cannot yet answer. What it can answer is this: as of August 2025, the conversation is still 3.4 percentage points more negative than it was in the first month we measured it.</p>
+    <p>The volume surge is equally significant. In 2021, 633 Canadians per month were posting about primary care. By 2024, that had grown to 1,446 per month — not because more people use Reddit, but because more people have something urgent to say. High-volume negative months are self-reinforcing: frustrated posts attract replies, which attract more posts, which makes the problem more visible, which frustrates more people.</p>
   </div>
 
-</div><!-- /wrap -->
+  <div class="sec reveal">
+    <div class="sk">What 2025 Cannot Yet Tell Us</div>
+    <h2>The cautious case for stabilisation</h2>
+    <p>April and May 2025 are the lowest-negativity months since 2021. There are three possible explanations: genuine systemic improvement (new doctors entering practice, NP scope expansions), a seasonal effect that will reverse in autumn, or simply noise in data that has not yet been fully captured for recent months.</p>
+    <p>The data cannot distinguish between these scenarios. What it can say is this: as of August 2025, the conversation is still 3.4 percentage points more negative than January 2021 — the very first month we measured. The drift has paused. Whether that pause becomes a reversal will be visible in the autumn 2025 data.</p>
+    <p>The policy implication is direct: if provincial health ministries are tracking Reddit sentiment as a real-time signal, the spring 2025 dip should not be read as success. It should be read as a question mark — one that October and November 2025 will answer.</p>
+  </div>
+
+</div>
 </main>
 
 <div class="close">
-  <h2>89,398 posts. Four years. The drift is not a spike — it is a floor that keeps rising.</h2>
-  <p>Every year in this dataset has a worse annual average than the one before it — until 2025, which is trending better but remains above any 2021 level. <span class="big">The question is not whether the system is struggling</span>. The data answered that in January 2021. The question is whether the policies launched in 2022, 2023, and 2024 are actually reaching Canadians — and whether they can see it in the months that remain to be measured.</p>
+  <h2>The question is not whether the system is struggling. The data answered that in January 2021.</h2>
+  <p>Every year in this dataset has a worse annual average than 2021 — until 2025, which is trending better but remains above any 2021 month except February and July. <span class="big">The floor has risen 11 points</span>. The question is whether the policies launched in 2022, 2023, and 2024 are actually reaching Canadians — and whether they can see it in the months that remain to be measured.</p>
 </div>
 
 <footer class="foot">
   <div class="wrap">
-    <p class="fl"><b>Method.</b> Sentiment classification using a four-label VADER ML ensemble (Positive / Negative / Neutral / Mixed) applied to 89,398 Reddit records from primary care subreddits across Canada, January 2021 – August 2025. The negative sentiment percentage reported is neg / (pos + neg + neu + mix) per month, excluding records tagged as geo = "Unknown." September 2022 is interpolated from adjacent months (missing from source data). Annual averages weight all months equally; 2025 is partial (January–August only).</p>
+    <p class="fl"><b>Method.</b> Sentiment classification using a four-label VADER ML ensemble (Positive / Negative / Neutral / Mixed) applied to 89,398 Reddit records from primary care subreddits, January 2021 – August 2025. Negative sentiment percentage = neg / (pos + neg + neu + mix) per month. September 2022 is interpolated from adjacent months. Annual averages weight all months equally; 2025 is partial (January–August).</p>
     <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · 2021–2025.</p>
   </div>
 </footer>
@@ -334,13 +360,13 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduce)document.body.classList.add('go');
   var io=('IntersectionObserver'in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
-  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
-  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+  if(io)document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  else document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});
 
   var fb=document.getElementById('fallback');
   if(!window.THREE){if(fb)fb.style.display='block';return;}
 
-  // ── DATA: [neg_pct, total_volume] ─────────────────────────────────────────
+  // ── DATA: [neg_pct, total_volume] per month Jan 2021 → Aug 2025 ──────────
   var MONTHLY=[
     [33.5,260],[25.0,272],[36.1,427],[44.2,908],[40.5,595],[38.1,734],
     [31.7,618],[33.5,629],[42.1,858],[35.3,556],[39.5,907],[34.9,832],
@@ -362,87 +388,146 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
     else{var t2=(t-.5)*2;r=Math.round(233+(231-233)*t2);g=Math.round(196+(111-196)*t2);b=Math.round(106+(81-106)*t2);}
     return (r<<16)|(g<<8)|b;
   }
+  function spikeH(pct){return Math.max(0.08,(pct-24)/(46-24)*5.6);}
 
   var hero=document.querySelector('.hero3d'),stage=document.getElementById('stage');
   var W=stage.clientWidth,H=stage.clientHeight;
-  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x040609,0.008);
-  var camera=new THREE.PerspectiveCamera(48,W/H,0.1,800);
+  var scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x01030A,0.007);
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,600);
   var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
   renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
   stage.appendChild(renderer.domElement);
 
   var world=new THREE.Group(); scene.add(world);
-  scene.add(new THREE.AmbientLight(0x253040,1.0));
-  var key=new THREE.DirectionalLight(0xC0D8F0,0.5); key.position.set(10,30,20); scene.add(key);
+  scene.add(new THREE.AmbientLight(0x162030,1.2));
+  var keyL=new THREE.DirectionalLight(0xB0CCEE,0.7); keyL.position.set(8,24,18); scene.add(keyL);
+  var fillL=new THREE.PointLight(0x4488AA,0.4,60); fillL.position.set(0,10,0); scene.add(fillL);
 
-  // Floor plane (subtle grid)
-  var floor=new THREE.Mesh(new THREE.PlaneGeometry(200,120),new THREE.MeshStandardMaterial({color:0x08101E,roughness:0.8,metalness:0.3,transparent:true,opacity:0.9}));
-  floor.rotation.x=-Math.PI/2; floor.position.y=-0.1; world.add(floor);
+  // Glowing floor grid
+  var gHelper=new THREE.GridHelper(120,40,0x0A2040,0x061428);
+  gHelper.material.transparent=true; gHelper.material.opacity=0.45;
+  world.add(gHelper);
 
-  // Timeline curve: 55 months from x=-32 to x=+32
+  // ── TIMELINE CURVE ─────────────────────────────────────────────────────────
   var cpts=[];
-  for(var i=0;i<=13;i++){var x=-32+i*(64/13);cpts.push(new THREE.Vector3(x,2.5+Math.sin(i*0.75)*1.4,Math.cos(i*0.55)*2.2));}
+  for(var i=0;i<=13;i++){
+    var x=-34+i*(68/13);
+    cpts.push(new THREE.Vector3(x, 2.5+Math.sin(i*0.65)*1.2, Math.cos(i*0.5)*1.8));
+  }
   var curve=new THREE.CatmullRomCurve3(cpts);
 
-  // Thin connecting tube (gradient manually via segments)
-  var tubeSegs=[];
-  for(var i=0;i<55;i++){
-    var t0=i/54,t1=(i+1)/54;
-    if(i>=54)break;
-    var midT=(t0+t1)/2;
-    var midPt=curve.getPointAt(midT);
-    var p0=curve.getPointAt(t0),p1=curve.getPointAt(t1);
-    var len=p0.distanceTo(p1);
-    var c=new THREE.CatmullRomCurve3([p0,p1]);
-    var tMesh=new THREE.Mesh(
-      new THREE.TubeGeometry(c,4,0.04,6,false),
-      new THREE.MeshStandardMaterial({color:negColor(MONTHLY[i][0]),emissive:negColor(MONTHLY[i][0]),emissiveIntensity:0.5,roughness:0.4,metalness:0.3})
-    );
-    world.add(tMesh);
-  }
+  // ── BACKBONE TUBE (single — the fix) ─────────────────────────────────────
+  var tube=new THREE.Mesh(
+    new THREE.TubeGeometry(curve,400,0.055,8,false),
+    new THREE.MeshStandardMaterial({color:0x2A4868,emissive:0x0D1C30,emissiveIntensity:0.8,roughness:0.5,metalness:0.4,transparent:true,opacity:0.65})
+  );
+  world.add(tube);
 
-  // Month beads
+  // ── BEADS + SPIKE BARS ───────────────────────────────────────────────────
   var beads=[];
   MONTHLY.forEach(function(m,i){
     var t=i/54;
     var pt=curve.getPointAt(t);
     var col=negColor(m[0]);
-    var r=Math.sqrt(m[1]/maxVol)*0.55+0.14;
+    var beadR=Math.sqrt(m[1]/maxVol)*0.42+0.11;
+
+    // Bead
     var bead=new THREE.Mesh(
-      new THREE.SphereGeometry(r,14,12),
-      new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.75,roughness:0.3,metalness:0.4})
+      new THREE.SphereGeometry(beadR,14,12),
+      new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.9,roughness:0.25,metalness:0.4})
     );
-    bead.position.copy(pt);
-    world.add(bead);
-    // glow halo
-    var glow=new THREE.Mesh(
-      new THREE.SphereGeometry(r*2.8,8,6),
-      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.07,depthWrite:false,blending:THREE.AdditiveBlending})
+    bead.position.copy(pt); world.add(bead);
+
+    // Bead glow
+    var beadGlow=new THREE.Mesh(
+      new THREE.SphereGeometry(beadR*3.0,8,6),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.06,depthWrite:false,blending:THREE.AdditiveBlending})
     );
-    glow.position.copy(pt); world.add(glow);
-    beads.push({mesh:bead,glow:glow,pt:pt.clone(),neg:m[0],vol:m[1]});
+    beadGlow.position.copy(pt); world.add(beadGlow);
+
+    // Sentiment spike bar
+    var sh=spikeH(m[0]);
+    var spikeMesh=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.055,0.075,sh,8),
+      new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.85,roughness:0.3,metalness:0.35,transparent:true,opacity:0.88})
+    );
+    spikeMesh.position.set(pt.x, pt.y+sh/2+beadR, pt.z);
+    world.add(spikeMesh);
+
+    // Spike tip glow cap
+    var capGlow=new THREE.Mesh(
+      new THREE.SphereGeometry(0.18+sh*0.03,7,5),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.6+sh*0.06,depthWrite:false,blending:THREE.AdditiveBlending})
+    );
+    capGlow.position.set(pt.x, pt.y+sh+beadR, pt.z); world.add(capGlow);
+
+    // Extra corona for extreme months (>43%)
+    if(m[0]>43){
+      var corona=new THREE.Mesh(
+        new THREE.SphereGeometry(0.35,8,6),
+        new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.35,depthWrite:false,blending:THREE.AdditiveBlending})
+      );
+      corona.position.set(pt.x, pt.y+sh+beadR, pt.z); world.add(corona);
+    }
+    beads.push({bead,beadGlow,pt:pt.clone(),neg:m[0],vol:m[1],sh,beadR});
   });
 
-  // Year labels
-  function labSprite(txt,hex,w){var cv=document.createElement('canvas');cv.width=540;cv.height=92;var x=cv.getContext('2d');
-    if(hex){x.fillStyle=hex;x.fillRect(0,0,540,92);x.strokeStyle='rgba(255,255,255,.3)';x.lineWidth=4;x.strokeRect(4,4,532,84);}
-    x.textAlign='center';x.textBaseline='middle';x.fillStyle=hex?'#fff':'#BDD8F0';x.font='600 38px "IBM Plex Mono",monospace';x.fillText(txt,270,50);
+  // ── YEAR PORTAL RINGS ─────────────────────────────────────────────────────
+  var YEAR_DATA=[[0,'2021',0x2A9D8F],[12,'2022',0xB07830],[24,'2023',0xA06840],[36,'2024',0xC03820],[48,'2025',0x2A9D8F]];
+  function labSprite(txt,col,w){
+    var cv=document.createElement('canvas');cv.width=580;cv.height=100;
+    var x=cv.getContext('2d');
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillStyle=col||'#A0C8E8';
+    x.font='700 44px "IBM Plex Mono",monospace';
+    x.fillText(txt,290,54);
     var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
-    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(w,w*92/540,1);return sp;}
-
-  [[0,'2021','#2A7D72'],[12,'2022','#8A6030'],[24,'2023','#7A6040'],[36,'2024','#A03820'],[48,'2025','#2A7D72']].forEach(function(d){
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));
+    sp.scale.set(w,w*100/580,1);return sp;
+  }
+  YEAR_DATA.forEach(function(d){
     var pt=curve.getPointAt(d[0]/54);
-    var l=labSprite(d[1],d[2],2.4); l.position.set(pt.x,pt.y+1.8,pt.z); world.add(l);
-    var beam=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,12,6),new THREE.MeshBasicMaterial({color:parseInt(d[2].replace('#','0x')),transparent:true,opacity:0.25}));
-    beam.position.set(pt.x,pt.y+5,pt.z); world.add(beam);
+    var col=d[2];
+    // Ring
+    var ring=new THREE.Mesh(
+      new THREE.TorusGeometry(1.6,0.055,8,28),
+      new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:1.0,roughness:0.3,metalness:0.5,transparent:true,opacity:0.7})
+    );
+    ring.position.copy(pt);
+    ring.rotation.y=Math.PI/2;
+    world.add(ring);
+    // Outer glow ring
+    var ringGlow=new THREE.Mesh(
+      new THREE.TorusGeometry(1.6,0.22,6,24),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.1,depthWrite:false,blending:THREE.AdditiveBlending})
+    );
+    ringGlow.position.copy(pt);
+    ringGlow.rotation.y=Math.PI/2;
+    world.add(ringGlow);
+    // Label
+    var lbl=labSprite(d[1],null,2.6);
+    lbl.position.set(pt.x,pt.y+2.6,pt.z);
+    world.add(lbl);
+    // Vertical beam
+    var beam=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.02,0.02,14,6),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.18,blending:THREE.AdditiveBlending})
+    );
+    beam.position.set(pt.x,pt.y+5,pt.z);
+    world.add(beam);
   });
 
-  // Motes
-  var MC=300,mpArr=new Float32Array(MC*3);
-  for(var i=0;i<MC;i++){mpArr[i*3]=-34+Math.random()*70;mpArr[i*3+1]=Math.random()*18;mpArr[i*3+2]=(Math.random()-0.5)*20;}
+  // ── PARTICLE MOTES ────────────────────────────────────────────────────────
+  var MC=380, mpArr=new Float32Array(MC*3);
+  for(var i=0;i<MC;i++){
+    mpArr[i*3]=-36+Math.random()*74;
+    mpArr[i*3+1]=Math.random()*22;
+    mpArr[i*3+2]=(Math.random()-0.5)*18;
+  }
   var mgeo=new THREE.BufferGeometry(); mgeo.setAttribute('position',new THREE.BufferAttribute(mpArr,3));
-  var ms=new Float32Array(MC); for(var i=0;i<MC;i++)ms[i]=0.003+Math.random()*0.007;
-  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0x80B0D0,size:0.08,transparent:true,opacity:0.35,depthWrite:false,blending:THREE.AdditiveBlending})));
+  var mspd=new Float32Array(MC); for(var i=0;i<MC;i++)mspd[i]=0.003+Math.random()*0.009;
+  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0x5088B8,size:0.07,transparent:true,opacity:0.32,depthWrite:false,blending:THREE.AdditiveBlending})));
 
   var prog=0;
   function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
@@ -450,42 +535,62 @@ body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transfor
   function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
   function lp(a,b,t){return a+(b-a)*t;}
 
+  // Camera flies left→right, then pulls back for panorama
   var KF=[
-    {p:0.00,pos:[-34,5,13],look:[-28,2.5,0]},
-    {p:0.25,pos:[-14,5,13],look:[-8,2.5,0]},
-    {p:0.55,pos:[12,5,13],look:[16,2.5,0]},
-    {p:1.00,pos:[0,28,42],look:[0,2.5,0]}
+    {p:0.00,pos:[-38,4,17],look:[-26,4,0]},   // 2021 section: short spikes
+    {p:0.28,pos:[-6,5,16],look:[1,3.5,0]},    // 2022-23 section: spikes growing
+    {p:0.58,pos:[24,10,13],look:[16,4.5,0]},  // 2024 peak: tall coral spikes
+    {p:1.00,pos:[0,26,52],look:[0,3,0]}        // full landscape panorama
   ];
-  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);
+  function camAt(p){
+    var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}
+    var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];
+    var span=(B.p-A.p)||1,t=(p-A.p)/span;
+    t=Math.max(0,Math.min(1,t)); t=t*t*(3-2*t);
     camera.position.set(lp(A.pos[0],B.pos[0],t),lp(A.pos[1],B.pos[1],t),lp(A.pos[2],B.pos[2],t));
-    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));}
+    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));
+  }
 
   var dragRot=0,dragging=false,lastX=0;
   stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
   window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.004;lastX=e.clientX;});
   window.addEventListener('pointerup',function(){dragging=false;});
-
   var capsEls=[].slice.call(document.querySelectorAll('.cap')),cue=document.getElementById('cue');
 
   function animate(){
     requestAnimationFrame(animate);
     var p=prog,time=Date.now()*.001;
     camAt(p); world.rotation.y=dragRot;
-    // pulse: bead nearest camera glows
-    var camP=camera.position;
-    beads.forEach(function(b){var d=b.pt.distanceTo(camP);var s=1+Math.sin(time*2+b.neg*.1)*.08;b.mesh.scale.setScalar(s);b.glow.material.opacity=Math.max(.05,.12-d*.002);});
-    // drift motes
+    // Subtle bead pulse
+    beads.forEach(function(b){
+      var s=1+Math.sin(time*2.2+b.neg*.08)*.07;
+      b.bead.scale.setScalar(s);
+      b.beadGlow.material.opacity=.04+.04*s;
+    });
+    // Moving light
+    fillL.position.set(Math.sin(time*.4)*20,8+Math.sin(time*.3)*4,Math.cos(time*.4)*12);
+    // Mote drift
     var ma=mgeo.attributes.position.array;
-    for(var i=0;i<MC;i++){ma[i*3+1]+=ms[i];if(ma[i*3+1]>18)ma[i*3+1]=0;}
+    for(var i=0;i<MC;i++){ma[i*3+1]+=mspd[i];if(ma[i*3+1]>22)ma[i*3+1]=0;}
     mgeo.attributes.position.needsUpdate=true;
-    // captions
-    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o=Math.min(sm(p,lo,lo+.05),1-sm(p,hi-.05,hi));capsEls[i].style.opacity=Math.max(0,o);}
+    // Captions
+    for(var i=0;i<capsEls.length;i++){
+      var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);
+      var o=Math.min(sm(p,lo,lo+.05),1-sm(p,hi-.05,hi));
+      capsEls[i].style.opacity=Math.max(0,o);
+    }
     if(cue)cue.style.opacity=(p>.05?0:1);
-    var bd=document.getElementById('beatdots');if(bd){var bi=p<.24?0:p<.5?1:p<.77?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    var bd=document.getElementById('beatdots');
+    if(bd){var bi=p<.24?0:p<.5?1:p<.77?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
     renderer.render(scene,camera);
   }
-  animate();if(fb)fb.style.display='none';
-  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+  animate();
+  if(fb)fb.style.display='none';
+  window.addEventListener('resize',function(){
+    W=stage.clientWidth;H=stage.clientHeight;
+    camera.aspect=W/H;camera.updateProjectionMatrix();
+    renderer.setSize(W,H);calc();
+  });
 })();
 </script>
 </body>
