@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Calendar of Care — Seasonal Patterns · Canadian Primary Care</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#060F1E;font-family:'Georgia',serif;color:#E8EFF7;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden
+}
+#wrap{height:550vh}
+#stage{
+  position:sticky;top:0;width:100vw;height:100vh;
+  display:flex;align-items:center;justify-content:center;overflow:hidden
+}
+#stage svg{overflow:visible}
+/* Caption panel */
+#panel{
+  position:absolute;right:5vw;top:50%;transform:translateY(-50%);
+  width:clamp(210px,22vw,280px);
+  background:rgba(6,15,30,.88);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px 22px
+}
+#panel .yr-tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#E9C46A;margin-bottom:6px}
+#panel h2{font-size:16px;font-style:italic;line-height:1.35;margin-bottom:10px}
+#panel .stat{font-size:26px;font-weight:800;font-family:sans-serif;color:#E76F51;margin-bottom:4px;font-style:normal}
+#panel p{font-size:11.5px;line-height:1.65;color:#94A3B8}
+#panel .worst{
+  margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);
+  font-size:11px;color:#94A3B8
+}
+#panel .worst span{color:#E76F51;font-weight:700}
+
+/* Title */
+#title{position:absolute;top:32px;left:0;right:0;text-align:center;pointer-events:none}
+#title h1{font-size:clamp(16px,2.5vw,26px);font-style:italic;letter-spacing:.04em}
+#title p{font-size:11px;color:#52C5B6;letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+
+/* Legend */
+#leg{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;align-items:center;
+  background:rgba(6,15,30,.75);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 16px
+}
+.lg{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#94A3B8}
+.lc{width:48px;height:8px;border-radius:4px}
+
+/* Hint */
+#hint{
+  position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(148,163,184,.55);display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:opacity .4s
+}
+.arr{animation:bo 1.6s ease-in-out infinite}
+@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* Tooltip */
+#tip{
+  position:absolute;background:rgba(6,15,30,.92);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;padding:10px 14px;font-size:11px;pointer-events:none;
+  opacity:0;transition:opacity .2s;z-index:10;white-space:nowrap
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <svg id="svg" viewBox="-300 -300 600 600" style="width:min(54vh,54vw);height:min(54vh,54vw)"></svg>
+
+    <div id="title">
+      <h1>The Calendar of Care</h1>
+      <p>Seasonal Patterns in Primary Care Frustration · 2021–2025</p>
+    </div>
+
+    <div id="panel">
+      <div class="yr-tag" id="p-yr">Overview</div>
+      <h2 id="p-head">Five years of seasonal rhythm</h2>
+      <div class="stat" id="p-stat">89,398</div>
+      <p id="p-body">Each ring represents one year. Each segment is a month. The outer radius encodes the percentage of negative sentiment — the further it extends, the darker the mood.</p>
+      <div class="worst">Worst month overall: <span id="p-worst">—</span></div>
+    </div>
+
+    <div id="leg">
+      <div class="lg">Low frustration</div>
+      <div class="lg"><div class="lc" id="grad-bar"></div></div>
+      <div class="lg">High frustration</div>
+    </div>
+
+    <div id="hint"><span>Scroll to reveal each year</span><span class="arr">↓</span></div>
+    <div id="tip"></div>
+  </div>
+</div>
+
+<script>
+// ── DATA: monthly neg% by year ─────────────────────────────────────────────
+// Months Jan-Dec, neg_pct = neg/(pos+neg+neu+mix)*100
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const DATA={
+  2021:[33.5,25.0,36.1,44.2,40.5,38.1,31.7,33.5,42.1,35.3,39.5,34.9],
+  2022:[33.5,38.7,34.9,37.8,40.9,40.8,42.2,43.5,42.7,42.7,44.3,37.9],
+  2023:[39.8,36.5,38.5,37.9,34.4,38.2,36.7,39.9,40.9,38.5,40.2,44.1],
+  2024:[39.9,42.2,41.6,44.6,43.5,44.6,42.0,38.9,39.2,39.1,39.9,36.2],
+  2025:[40.3,36.5,40.4,32.6,32.1,35.7,37.6,36.3,null,null,null,null]
+};
+
+const YEARS=[2021,2022,2023,2024,2025];
+const N_YEARS=YEARS.length;
+
+// Find worst month per year for panel
+function worstMonth(yr){
+  const d=DATA[yr].map((v,i)=>({m:MONTHS[i],v})).filter(x=>x.v!=null);
+  return d.reduce((a,b)=>a.v>b.v?a:b,d[0]);
+}
+
+// Color scale: from teal (#2A9D8F) at ~25% to coral (#E76F51) at ~50%
+function negColor(pct){
+  // Map 25%→0, 50%→1
+  const t=Math.max(0,Math.min(1,(pct-24)/22));
+  // Interpolate teal→gold→coral
+  const r1=42,g1=157,b1=143;  // #2A9D8F
+  const r2=231,g2=111,b2=81;  // #E76F51
+  const r=Math.round(r1+(r2-r1)*t);
+  const g=Math.round(g1+(g2-g1)*t);
+  const b=Math.round(b1+(b2-b1)*t);
+  return `rgb(${r},${g},${b})`;
+}
+
+// ── SVG BUILD ────────────────────────────────────────────────────────────────
+const svg=document.getElementById('svg');
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs){
+  const e=document.createElementNS(NS,tag);
+  for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);
+  return e;
+}
+function polar(r,deg){
+  const rad=(deg-90)*Math.PI/180;
+  return {x:r*Math.cos(rad),y:r*Math.sin(rad)};
+}
+function arcPath(r1,r2,startDeg,endDeg){
+  const s1=polar(r1,startDeg),e1=polar(r1,endDeg);
+  const s2=polar(r2,startDeg),e2=polar(r2,endDeg);
+  const la=endDeg-startDeg>180?1:0;
+  return `M${s1.x},${s1.y} A${r1},${r1},0,${la},1,${e1.x},${e1.y} L${e2.x},${e2.y} A${r2},${r2},0,${la},0,${s2.x},${s2.y} Z`;
+}
+
+// Ring layout
+const INNER=60;  // inner hub radius
+const RING_W=34; // width of each ring
+const GAP=4;     // gap between rings
+const SEG_DEG=360/12; // 30° per month
+const SEG_PAD=1.5;    // gap between segments (degrees)
+
+// Base radius for each year ring (innermost=2021)
+function ringR(yi){ return INNER+(yi*(RING_W+GAP)); }
+
+// Draw gradient bar for legend
+const defs=el('defs',{});
+const grad=el('linearGradient',{id:'lg1',x1:'0%',y1:'0%',x2:'100%',y2:'0%'});
+[0,0.5,1].forEach((o,i)=>{ const s=el('stop',{'offset':o*100+'%','stop-color':negColor(24+i*22)}); grad.appendChild(s); });
+defs.appendChild(grad); svg.appendChild(defs);
+
+// Draw legend bar via CSS
+const gb=document.getElementById('grad-bar');
+gb.style.background='linear-gradient(90deg,'+negColor(24)+','+negColor(35)+','+negColor(46)+')';
+
+// Month labels (outermost ring edge + margin)
+const labelR=ringR(N_YEARS)+14;
+MONTHS.forEach((m,mi)=>{
+  const deg=mi*SEG_DEG+(SEG_DEG/2);
+  const pos=polar(labelR,deg);
+  const t=el('text',{
+    x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle',
+    'font-size':'11','font-family':'sans-serif','fill':'rgba(148,163,184,0.6)',
+    transform:`rotate(${deg>180?deg+180:deg},-100,0)` // keep readable
+  });
+  // Just center text, no rotation needed for short labels
+  const t2=el('text',{
+    x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle',
+    'font-size':'10','font-family':'sans-serif','fill':'rgba(148,163,184,0.55)'
+  });
+  t2.textContent=m;
+  svg.appendChild(t2);
+});
+
+// Spoke lines (month dividers)
+for(let mi=0;mi<12;mi++){
+  const deg=mi*SEG_DEG;
+  const s=polar(INNER,deg),e=polar(ringR(N_YEARS)+6,deg);
+  const line=el('line',{x1:s.x,y1:s.y,x2:e.x,y2:e.y,stroke:'rgba(255,255,255,.08)','stroke-width':'1'});
+  svg.appendChild(line);
+}
+
+// Hub circle
+const hub=el('circle',{cx:0,cy:0,r:INNER-2,fill:'#0B1F3A',stroke:'rgba(255,255,255,.1)','stroke-width':'1'});
+svg.appendChild(hub);
+
+// Hub text
+const hubT=el('text',{'text-anchor':'middle','dominant-baseline':'middle','font-size':'10',
+  'font-family':'sans-serif','fill':'rgba(148,163,184,.5)','y':'-6'});
+hubT.textContent='2021–2025';
+svg.appendChild(hubT);
+const hubT2=el('text',{'text-anchor':'middle','dominant-baseline':'middle','font-size':'9',
+  'font-family':'sans-serif','fill':'rgba(148,163,184,.35)','y':'8'});
+hubT2.textContent='neg %';
+svg.appendChild(hubT2);
+
+// Build segments (stored for animation)
+const SEGS=[];
+YEARS.forEach((yr,yi)=>{
+  const r1=ringR(yi); const r2=r1+RING_W;
+  MONTHS.forEach((m,mi)=>{
+    const pct=DATA[yr][mi];
+    if(pct==null)return;
+    const startDeg=mi*SEG_DEG+SEG_PAD;
+    const endDeg=(mi+1)*SEG_DEG-SEG_PAD;
+    // Each segment has TWO arcs: a base (full ring, gray) and a "fill" (scaled by neg%)
+    // Base arc (background ring track)
+    const base=el('path',{d:arcPath(r1,r2,startDeg,endDeg),fill:'rgba(255,255,255,.04)',stroke:'none'});
+    svg.appendChild(base);
+    // Neg% fill — scale RING_W by how intense
+    const fillW=RING_W*(pct/50); // 50% = max scale
+    const fill=el('path',{
+      d:arcPath(r1,r1+fillW,startDeg,endDeg),
+      fill:negColor(pct),stroke:'none',opacity:'0',
+      'data-yr':yr,'data-m':m,'data-pct':pct
+    });
+    // Hover
+    const hitArea=el('path',{d:arcPath(r1,r2,startDeg,endDeg),fill:'transparent',cursor:'pointer'});
+    hitArea.addEventListener('mouseenter',e=>{
+      fill.setAttribute('opacity','1');
+      fill.setAttribute('filter','url(#glow)');
+      showTip(e,yr,m,pct);
+    });
+    hitArea.addEventListener('mousemove',e=>moveTip(e));
+    hitArea.addEventListener('mouseleave',()=>{
+      fill.setAttribute('filter','none');
+      hideTip();
+    });
+    svg.appendChild(fill);
+    svg.appendChild(hitArea);
+    SEGS.push({fill,yr,yi,mi,pct});
+  });
+
+  // Year ring label (inner edge)
+  const labelPos=polar(r1+RING_W/2, -80);
+  const yt=el('text',{
+    x:labelPos.x,y:labelPos.y,'text-anchor':'middle','dominant-baseline':'middle',
+    'font-size':'9','font-family':'sans-serif','fill':'rgba(148,163,184,0)',
+    'data-yr-label':yr
+  });
+  yt.textContent=yr;
+  svg.appendChild(yt);
+});
+
+// Glow filter
+const gf=el('filter',{id:'glow',x:'-30%',y:'-30%',width:'160%',height:'160%'});
+const fe=el('feGaussianBlur',{in:'SourceGraphic',stdDeviation:'3',result:'blur'});
+const fec=el('feComposite',{in:'SourceGraphic',in2:'blur',operator:'over'});
+gf.appendChild(fe); gf.appendChild(fec); defs.appendChild(gf);
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
+const tip=document.getElementById('tip');
+function showTip(e,yr,m,pct){
+  tip.innerHTML=`<b style="color:#E8EFF7">${m} ${yr}</b><br><span style="color:#E76F51">${pct}%</span> <span style="color:#94A3B8">negative sentiment</span>`;
+  tip.style.opacity='1';
+  moveTip(e);
+}
+function moveTip(e){
+  tip.style.left=(e.clientX+14)+'px';
+  tip.style.top=(e.clientY-30)+'px';
+}
+function hideTip(){ tip.style.opacity='0'; }
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+// Each year reveals at prog = yi/N_YEARS, fully shown by (yi+1)/N_YEARS
+const YEAR_DATA=[
+  {yr:2021,head:'"The quiet beginning."',body:'2021 sees moderate frustration. The darkest months are April (44.2%) and September (42.1%), but overall the system is managing.'},
+  {yr:2022,head:'"Volume explodes, patience collapses."',body:'2022 introduces sustained high-negativity months. July peaks at 42.2% but November is the worst at 44.3% — 1,633 records of frustration.'},
+  {yr:2023,head:'"No longer surprised, just tired."',body:'Every month of 2023 stays above 34%. December hits 44.1%. The seasonal cycle has flattened into a baseline of chronic frustration.'},
+  {yr:2024,head:'"Peak of the drift."',body:'April and June 2024 are the hardest months in the entire dataset at 44.6%. The fall of 2024 offers slight relief — but still no recovery.'},
+  {yr:2025,head:'"Spring of cautious hope?"',body:'Early 2025 shows the first sustained dip below 37% since mid-2021. April (32.6%) and May (32.1%) are the most positive months in years — but it\'s too early to call a trend.'}
+];
+
+let revealedYears=new Set();
+let prog=0;
+
+function sm(p,a,b){const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+
+function updateScene(p){
+  prog=p;
+  // Each year: fully revealed at prog = (yi+0.9)/(N_YEARS+0.5)
+  let activeYr=null;
+  YEARS.forEach((yr,yi)=>{
+    const lo=yi/(N_YEARS+0.5), hi=(yi+0.9)/(N_YEARS+0.5);
+    const a=sm(p,lo,hi);
+    if(a>0.01) activeYr=yr;
+    // Animate segments for this year
+    SEGS.filter(s=>s.yr===yr).forEach(s=>{
+      s.fill.setAttribute('opacity', a*0.88);
+    });
+    // Year label
+    const yl=svg.querySelector(`[data-yr-label="${yr}"]`);
+    if(yl) yl.setAttribute('fill',`rgba(232,239,247,${a*.6})`);
+  });
+
+  // Update panel
+  if(activeYr){
+    const yd=YEAR_DATA.find(d=>d.yr===activeYr);
+    if(yd){
+      document.getElementById('p-yr').textContent=activeYr+' — Active Year';
+      document.getElementById('p-head').textContent=yd.head;
+      document.getElementById('p-stat').textContent=worstMonth(activeYr).v.toFixed(1)+'%';
+      document.getElementById('p-body').textContent=yd.body;
+      document.getElementById('p-worst').textContent=worstMonth(activeYr).m+' '+activeYr;
+    }
+  } else {
+    document.getElementById('p-yr').textContent='Overview';
+    document.getElementById('p-head').textContent='Five years of seasonal rhythm';
+    document.getElementById('p-stat').textContent='89,398';
+    document.getElementById('p-body').textContent='Each ring = one year. Each segment = one month. Outer radius encodes % negative — the further it extends, the darker the public mood.';
+    document.getElementById('p-worst').textContent='—';
+  }
+}
+
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  updateScene(p);
+  if(p>0.03) document.getElementById('hint').style.opacity='0';
+});
+
+updateScene(0);
+</script>
+</body>
+</html>

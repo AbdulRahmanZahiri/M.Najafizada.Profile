@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Hidden Crisis — Per-Capita Normalization · Canadian Primary Care</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#060F1E;font-family:Georgia,serif;color:#E8EFF7}
+#wrap{height:400vh}
+#stage{position:sticky;top:0;width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* Top bar */
+#topbar{
+  flex-shrink:0;padding:16px 32px;
+  background:rgba(6,15,30,.7);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap
+}
+#topbar h1{font-size:clamp(14px,2vw,22px);font-style:italic;letter-spacing:.04em}
+#topbar p{font-size:11px;color:#52C5B6;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+#toggle-row{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.tog-btn{
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.2);background:transparent;color:#94A3B8;cursor:pointer;
+  transition:all .25s;font-family:sans-serif
+}
+.tog-btn.active{background:#2A9D8F;border-color:#2A9D8F;color:white}
+
+/* Insight banner */
+#banner{
+  flex-shrink:0;
+  background:rgba(231,111,81,.1);border-bottom:1px solid rgba(231,111,81,.2);
+  padding:10px 32px;font-size:12px;color:#94A3B8;text-align:center;
+  transition:opacity .5s;opacity:0
+}
+#banner b{color:#E76F51}
+
+/* Card grid */
+#grid{
+  flex:1;padding:20px 32px 16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;align-content:start;overflow:hidden
+}
+
+/* Province card */
+.card{
+  background:rgba(11,31,58,.7);border:1px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:16px 14px;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;cursor:default
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.card .top-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;transition:background .8s}
+.card .abbr{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:6px}
+.card .name{font-size:13px;font-style:italic;margin-bottom:10px;line-height:1.3}
+.card .value{font-size:28px;font-weight:800;font-family:sans-serif;font-style:normal;line-height:1;transition:color .8s}
+.card .unit{font-size:10px;color:#94A3B8;margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
+.card .neg-bar{height:3px;border-radius:2px;margin-top:10px;background:rgba(255,255,255,.08);overflow:hidden}
+.card .neg-fill{height:100%;border-radius:2px;transition:width .8s ease,background .8s}
+.card .neg-label{font-size:9.5px;color:#94A3B8;margin-top:4px}
+.card .rank{
+  position:absolute;top:10px;right:12px;font-size:11px;font-weight:700;
+  font-family:sans-serif;width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.08);color:#94A3B8;
+  transition:background .6s,color .6s
+}
+.card .rank.top{background:rgba(231,111,81,.2);color:#E76F51}
+
+/* Bottom insight */
+#bottom{
+  flex-shrink:0;padding:10px 32px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;gap:32px;align-items:center;justify-content:center;flex-wrap:wrap;
+  font-size:11px;color:#94A3B8
+}
+.bi{display:flex;align-items:center;gap:6px}
+.bi .dot{width:8px;height:8px;border-radius:50%}
+.bi b{color:#E8EFF7}
+
+/* Scroll hint */
+#hint{
+  position:absolute;bottom:90px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(148,163,184,.5);display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:opacity .4s
+}
+.arr{animation:bo 1.6s ease-in-out infinite}
+@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* Tooltip */
+#tip{
+  position:fixed;background:rgba(6,15,30,.95);border:1px solid rgba(255,255,255,.15);
+  border-radius:9px;padding:11px 16px;font-size:11.5px;pointer-events:none;
+  opacity:0;transition:opacity .18s;z-index:20;line-height:1.7
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="stage">
+  <div id="topbar">
+    <div>
+      <h1>The Hidden Crisis</h1>
+      <p>Per-Capita Normalization by Province · Scroll or click to reveal</p>
+    </div>
+    <div id="toggle-row">
+      <button class="tog-btn active" id="btn-raw" onclick="setMode('raw')">Raw Count</button>
+      <button class="tog-btn" id="btn-cap" onclick="setMode('capita')">Per 100k Population</button>
+    </div>
+  </div>
+
+  <div id="banner">
+    After adjusting for population: <b>Newfoundland & Labrador</b> leads with <b>164 posts per 100,000 people</b> — nearly <b>1.7× more</b> than Ontario (95/100k).
+  </div>
+
+  <div id="grid"></div>
+
+  <div id="bottom">
+    <div class="bi"><div class="dot" style="background:#E76F51"></div><b>Coral:</b> High negative sentiment (≥40%)</div>
+    <div class="bi"><div class="dot" style="background:#2A9D8F"></div><b>Teal:</b> Moderate negative sentiment (&lt;38%)</div>
+    <div class="bi"><div class="dot" style="background:#E9C46A"></div><b>Gold:</b> Population adjusted per 100,000 residents</div>
+    <div class="bi">Source: StatsCan 2021 Census · Reddit 2021–2025 · n=89,398</div>
+  </div>
+
+  <div id="hint"><span>Scroll to reveal per-capita</span><span class="arr">↓</span></div>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const PROVINCES=[
+  {abbr:'ON', name:'Ontario',                      raw:14141, pop:14826276, per100k:95,  neg_pct:41.2},
+  {abbr:'AB', name:'Alberta',                      raw:4051,  pop:4395586,  per100k:92,  neg_pct:43.8},
+  {abbr:'BC', name:'British Columbia',             raw:3344,  pop:5214805,  per100k:64,  neg_pct:35.3},
+  {abbr:'NS', name:'Nova Scotia',                  raw:1485,  pop:979449,   per100k:152, neg_pct:34.9},
+  {abbr:'NL', name:'Newfoundland & Labrador',      raw:855,   pop:521922,   per100k:164, neg_pct:35.1},
+  {abbr:'SK', name:'Saskatchewan',                 raw:767,   pop:1177884,  per100k:65,  neg_pct:40.9},
+  {abbr:'MB', name:'Manitoba',                     raw:245,   pop:1395602,  per100k:18,  neg_pct:36.3},
+  {abbr:'NB', name:'New Brunswick',                raw:2,     pop:794300,   per100k:0,   neg_pct:0},
+];
+
+// Sort orders
+function rankRaw(){ return [...PROVINCES].sort((a,b)=>b.raw-a.raw); }
+function rankCap(){ return [...PROVINCES].sort((a,b)=>b.per100k-a.per100k); }
+
+let mode='raw'; // 'raw' | 'capita'
+let triggered=false;
+
+// ── BUILD CARDS ───────────────────────────────────────────────────────────────
+function negColor(pct){
+  if(pct===0)return'#334155';
+  const t=Math.max(0,Math.min(1,(pct-30)/20));
+  const r=Math.round(82+(231-82)*t);
+  const g=Math.round(197+(111-197)*t);
+  const b=Math.round(182+(81-182)*t);
+  return`rgb(${r},${g},${b})`;
+}
+
+const grid=document.getElementById('grid');
+const tip=document.getElementById('tip');
+
+function buildCards(){
+  grid.innerHTML='';
+  PROVINCES.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.id='card-'+p.abbr;
+    card.innerHTML=`
+      <div class="top-bar" id="bar-${p.abbr}"></div>
+      <div class="abbr">${p.abbr}</div>
+      <div class="name">${p.name}</div>
+      <div class="value" id="val-${p.abbr}">—</div>
+      <div class="unit" id="unit-${p.abbr}">records</div>
+      <div class="neg-bar"><div class="neg-fill" id="nf-${p.abbr}" style="width:0%;background:#334155"></div></div>
+      <div class="neg-label" id="nl-${p.abbr}">${p.neg_pct>0?p.neg_pct+'% negative':''}</div>
+      <div class="rank" id="rank-${p.abbr}">—</div>
+    `;
+    card.addEventListener('mouseenter',e=>showTip(e,p));
+    card.addEventListener('mousemove',e=>moveTip(e));
+    card.addEventListener('mouseleave',()=>tip.style.opacity='0');
+    grid.appendChild(card);
+  });
+}
+
+function updateCards(m){
+  mode=m;
+  const ranked=m==='raw'?rankRaw():rankCap();
+  const maxVal=ranked[0][m==='raw'?'raw':'per100k'];
+
+  PROVINCES.forEach(p=>{
+    const val=m==='raw'?p.raw:p.per100k;
+    const rank=ranked.findIndex(x=>x.abbr===p.abbr)+1;
+    const color=negColor(p.neg_pct);
+    const negW=p.neg_pct>0?Math.min(100,p.neg_pct*1.8):0;
+
+    document.getElementById('val-'+p.abbr).textContent=val>0?val.toLocaleString():'—';
+    document.getElementById('val-'+p.abbr).style.color=rank<=2?'#E76F51':rank===3?'#E9C46A':'#E8EFF7';
+    document.getElementById('unit-'+p.abbr).textContent=m==='raw'?'total records':'posts per 100k people';
+    document.getElementById('bar-'+p.abbr).style.background=color;
+    document.getElementById('nf-'+p.abbr).style.width=negW+'%';
+    document.getElementById('nf-'+p.abbr).style.background=color;
+    const rankEl=document.getElementById('rank-'+p.abbr);
+    rankEl.textContent='#'+rank;
+    rankEl.classList.toggle('top',rank<=2);
+
+    // Highlight card border for top 2
+    const cardEl=document.getElementById('card-'+p.abbr);
+    cardEl.style.borderColor=rank<=2?color+'55':'rgba(255,255,255,.1)';
+  });
+
+  document.getElementById('btn-raw').classList.toggle('active',m==='raw');
+  document.getElementById('btn-cap').classList.toggle('active',m==='capita');
+  document.getElementById('banner').style.opacity=m==='capita'?'1':'0';
+}
+
+function setMode(m){
+  updateCards(m);
+}
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
+function showTip(e,p){
+  tip.style.opacity='1';
+  moveTip(e);
+  const perCapDesc=p.per100k>0?`<br><span style="color:#E9C46A">${p.per100k} posts per 100,000 people</span>`:'<br><span style="color:#94A3B8">Insufficient data</span>';
+  tip.innerHTML=`
+    <b style="color:#E8EFF7;font-size:12.5px">${p.name}</b><br>
+    <span style="color:#E8EFF7">${p.raw.toLocaleString()}</span> <span style="color:#94A3B8">total Reddit records</span>
+    ${perCapDesc}<br>
+    <span style="color:#94A3B8">Population: </span><span style="color:#E8EFF7">${(p.pop/1e6).toFixed(2)}M</span><br>
+    <span style="color:${negColor(p.neg_pct)}">${p.neg_pct>0?p.neg_pct+'% negative sentiment':'No data'}</span>
+  `;
+}
+function moveTip(e){ tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-40)+'px'; }
+
+// ── SCROLL TRIGGER ────────────────────────────────────────────────────────────
+function sm(p,a,b){const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  if(p>0.02)document.getElementById('hint').style.opacity='0';
+  if(p>0.4&&!triggered){triggered=true;updateCards('capita');}
+  if(p<0.15&&triggered){triggered=false;updateCards('raw');}
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildCards();
+updateCards('raw');
+</script>
+</body>
+</html>

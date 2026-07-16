@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Two Voices — Healthcare Worker vs. Patient Language</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#060F1E;font-family:Georgia,serif;color:#E8EFF7;overflow:hidden}
+#stage{position:relative;width:100vw;height:100vh;display:flex}
+
+/* Two halves */
+#left,#right{
+  position:relative;flex:1;display:flex;flex-direction:column;
+  align-items:center;overflow:hidden;padding-top:100px
+}
+#left{border-right:1px solid rgba(255,255,255,.06)}
+
+/* Section labels */
+.section-label{
+  position:absolute;top:36px;left:0;right:0;text-align:center;pointer-events:none
+}
+.section-label .badge{
+  display:inline-block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  padding:4px 14px;border-radius:20px;margin-bottom:8px
+}
+.section-label h2{font-size:clamp(14px,1.8vw,20px);font-style:italic}
+.section-label p{font-size:11px;color:#94A3B8;margin-top:4px;letter-spacing:.05em}
+
+/* Bubbles */
+.bubble{
+  position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  cursor:default;transition:transform .25s ease;user-select:none
+}
+.bubble:hover{transform:scale(1.12)!important;z-index:10}
+.bubble span{
+  font-family:sans-serif;font-weight:700;text-align:center;line-height:1.15;
+  pointer-events:none;padding:4px
+}
+
+/* Center divider info */
+#divider{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0;pointer-events:none;z-index:5
+}
+#divider .line{width:1px;height:30vh;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.18),transparent)}
+#divider .badge-mid{
+  background:rgba(11,31,58,.9);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;padding:12px 16px;text-align:center;margin:8px 0
+}
+#divider .badge-mid .num{font-size:22px;font-weight:800;font-family:sans-serif;font-style:normal}
+#divider .badge-mid .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#94A3B8;margin-top:2px}
+
+/* Bottom insight bar */
+#insight{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(6,15,30,.92);backdrop-filter:blur(14px);
+  border-top:1px solid rgba(255,255,255,.1);
+  padding:16px 40px;display:flex;gap:40px;align-items:center;justify-content:center;
+  flex-wrap:wrap
+}
+.ins-item{text-align:center}
+.ins-item .v{font-size:20px;font-weight:800;font-family:sans-serif;font-style:normal}
+.ins-item .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#94A3B8;margin-top:2px}
+
+/* Top bar */
+#topbar{
+  position:absolute;top:0;left:0;right:0;
+  text-align:center;padding:14px;
+  background:rgba(6,15,30,.7);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.07);z-index:6
+}
+#topbar h1{font-size:clamp(14px,2vw,22px);font-style:italic;letter-spacing:.04em}
+#topbar p{font-size:11px;color:#52C5B6;letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+
+/* Tooltip */
+#tip{
+  position:fixed;background:rgba(6,15,30,.95);border:1px solid rgba(255,255,255,.15);
+  border-radius:9px;padding:11px 15px;font-size:11.5px;pointer-events:none;
+  opacity:0;transition:opacity .18s;z-index:20;max-width:220px;line-height:1.6
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- Top bar -->
+  <div id="topbar">
+    <h1>Two Voices</h1>
+    <p>Healthcare Worker Language vs. Patient Language · Canadian Primary Care Reddit</p>
+  </div>
+
+  <!-- Left: Patient voice -->
+  <div id="left">
+    <div class="section-label">
+      <div class="badge" style="background:rgba(231,111,81,.15);color:#E76F51;border:1px solid rgba(231,111,81,.3)">Patient Voice</div>
+      <h2>Searching for care</h2>
+      <p>Emotional language · Waiting, wanting, worrying</p>
+    </div>
+    <canvas id="cl" style="position:absolute;inset:0;pointer-events:none"></canvas>
+  </div>
+
+  <!-- Right: System / worker voice -->
+  <div id="right">
+    <div class="section-label">
+      <div class="badge" style="background:rgba(42,157,143,.15);color:#2A9D8F;border:1px solid rgba(42,157,143,.3)">System Voice</div>
+      <h2>Delivering care</h2>
+      <p>Clinical language · Referring, continuing, coordinating</p>
+    </div>
+    <canvas id="cr" style="position:absolute;inset:0;pointer-events:none"></canvas>
+  </div>
+
+  <!-- Center divider stats -->
+  <div id="divider">
+    <div class="line"></div>
+    <div class="badge-mid">
+      <div class="num" style="color:#E76F51">−0.411</div>
+      <div class="lbl">Waitlist avg sentiment</div>
+    </div>
+    <div class="badge-mid" style="margin:4px 0">
+      <div class="num" style="color:#2A9D8F">+0.482</div>
+      <div class="lbl">Primary Care avg sentiment</div>
+    </div>
+    <div class="badge-mid">
+      <div class="num" style="color:#E9C46A">0.893</div>
+      <div class="lbl">Sentiment gap (compound)</div>
+    </div>
+    <div class="line"></div>
+  </div>
+
+  <!-- Bottom insight row -->
+  <div id="insight">
+    <div class="ins-item"><div class="v" style="color:#E76F51">37,969</div><div class="l">Family Doctor mentions</div></div>
+    <div class="ins-item"><div class="v" style="color:#E9C46A">65.9%</div><div class="l">Waitlist posts are negative</div></div>
+    <div class="ins-item"><div class="v" style="color:#52C5B6">3,046</div><div class="l">Nurse Practitioner mentions</div></div>
+    <div class="ins-item"><div class="v" style="color:#2A9D8F">29.3%</div><div class="l">NP posts are positive</div></div>
+    <div class="ins-item"><div class="v" style="color:#94A3B8">89,398</div><div class="l">Total records</div></div>
+  </div>
+</div>
+
+<div id="tip"></div>
+
+<script>
+// ── KEYWORD DATA ──────────────────────────────────────────────────────────────
+// Patient-facing keywords (what patients search/mention)
+const PATIENT=[
+  {kw:'Family Doctor',  n:37969, neg_pct:38.3, avg_c:0.096,  side:'patient'},
+  {kw:'Appointment',    n:8842,  neg_pct:33.4, avg_c:0.099,  side:'patient'},
+  {kw:'Walk-In Clinic', n:3689,  neg_pct:34.1, avg_c:0.115,  side:'patient'},
+  {kw:'Waitlist',       n:7456,  neg_pct:65.9, avg_c:-0.411, side:'patient'},
+  {kw:'No Family Doctor',n:4200, neg_pct:58.0, avg_c:-0.28,  side:'patient'},  // estimated
+  {kw:'Urgent Care',    n:7614,  neg_pct:32.2, avg_c:0.392,  side:'patient'},
+  {kw:'Follow-Up',      n:1811,  neg_pct:27.8, avg_c:0.129,  side:'patient'},
+];
+
+// System/provider keywords
+const SYSTEM=[
+  {kw:'Primary Care',        n:8441, neg_pct:22.9, avg_c:0.482,  side:'system'},
+  {kw:'Nurse Practitioner',  n:3046, neg_pct:23.6, avg_c:0.259,  side:'system'},
+  {kw:'Referral',            n:5803, neg_pct:27.4, avg_c:0.127,  side:'system'},
+  {kw:'Family Physician',    n:2505, neg_pct:28.4, avg_c:0.227,  side:'system'},
+  {kw:'Continuity',          n:189,  neg_pct:19.6, avg_c:0.374,  side:'system'},
+  {kw:'Care Coordination',   n:1200, neg_pct:24.0, avg_c:0.18,   side:'system'}, // estimated
+];
+
+// ── BUBBLE LAYOUT ─────────────────────────────────────────────────────────────
+function colorForItem(item){
+  // Negative: coral palette; positive: teal palette
+  const t=Math.max(0,Math.min(1,(-item.avg_c+0.5))); // 0=positive, 1=very negative
+  if(item.side==='patient'){
+    // Coral range: from #52C5B6 (low neg) to #E76F51 (high neg)
+    const r=Math.round(82+(231-82)*t);
+    const g=Math.round(197+(111-197)*t);
+    const b=Math.round(182+(81-182)*t);
+    return `rgb(${r},${g},${b})`;
+  } else {
+    // Teal range: from #2A9D8F to #E9C46A (if somewhat negative)
+    const r=Math.round(42+(233-42)*t*0.6);
+    const g=Math.round(157+(196-157)*t*0.6);
+    const b=Math.round(143+(106-143)*t*0.6);
+    return `rgb(${r},${g},${b})`;
+  }
+}
+
+// Size: map n to radius
+const allN=[...PATIENT,...SYSTEM].map(x=>x.n);
+const minN=Math.min(...allN), maxN=Math.max(...allN);
+function sizeFor(n){ return 28+Math.sqrt((n-minN)/(maxN-minN))*62; }
+
+// Physics-based layout: simple repulsion settle
+class BubbleSim{
+  constructor(items,W,H,sideColor){
+    this.W=W; this.H=H; this.color=sideColor;
+    this.bubbles=items.map(item=>{
+      const r=sizeFor(item.n);
+      return {
+        ...item,r,
+        x:W/2+(Math.random()-.5)*W*.6,
+        y:H/2+(Math.random()-.5)*H*.5,
+        vx:0,vy:0,
+        color:colorForItem(item)
+      };
+    });
+    this.settled=false;
+    this.step=0;
+  }
+  tick(){
+    const {bubbles,W,H}=this;
+    const maxStep=300;
+    if(this.step>maxStep){this.settled=true;return;}
+    this.step++;
+    const damp=Math.max(0.1,1-this.step/maxStep);
+
+    for(let i=0;i<bubbles.length;i++){
+      const a=bubbles[i];
+      // Gravity toward center
+      a.vx+=(W/2-a.x)*.003*damp;
+      a.vy+=(H/2-a.y)*.003*damp;
+      // Keep below header
+      if(a.y-a.r<110){a.vy+=2;}
+      // Keep above insight bar
+      if(a.y+a.r>H-70){a.vy-=2;}
+      // Repel from other bubbles
+      for(let j=i+1;j<bubbles.length;j++){
+        const b=bubbles[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        const minD=a.r+b.r+10;
+        if(dist<minD&&dist>0){
+          const force=(minD-dist)/minD*0.6;
+          a.vx+=dx/dist*force*6;
+          a.vy+=dy/dist*force*6;
+          b.vx-=dx/dist*force*6;
+          b.vy-=dy/dist*force*6;
+        }
+      }
+    }
+    for(const b of bubbles){
+      b.vx*=0.7; b.vy*=0.7;
+      b.x+=b.vx; b.y+=b.vy;
+      b.x=Math.max(b.r+8,Math.min(W-b.r-8,b.x));
+      b.y=Math.max(b.r+110,Math.min(H-b.r-70,b.y));
+    }
+  }
+}
+
+// ── CANVAS RENDER ─────────────────────────────────────────────────────────────
+let simL,simR,animId;
+const tip=document.getElementById('tip');
+
+function initSims(){
+  const cl=document.getElementById('cl');
+  const cr=document.getElementById('cr');
+  const W=cl.offsetWidth, H=cl.offsetHeight;
+  cl.width=W*devicePixelRatio; cl.height=H*devicePixelRatio;
+  cr.width=W*devicePixelRatio; cr.height=H*devicePixelRatio;
+  cl.style.width=W+'px'; cl.style.height=H+'px';
+  cr.style.width=W+'px'; cr.style.height=H+'px';
+  simL=new BubbleSim(PATIENT,W,H,'#E76F51');
+  simR=new BubbleSim(SYSTEM,W,H,'#2A9D8F');
+}
+
+function render(){
+  const cl=document.getElementById('cl');
+  const cr=document.getElementById('cr');
+  const ctxL=cl.getContext('2d');
+  const ctxR=cr.getContext('2d');
+  const dpr=devicePixelRatio;
+
+  [
+    {ctx:ctxL,sim:simL,accent:'rgba(231,111,81,'},
+    {ctx:ctxR,sim:simR,accent:'rgba(42,157,143,'}
+  ].forEach(({ctx,sim,accent})=>{
+    const W=cl.width/dpr,H=cl.height/dpr;
+    ctx.clearRect(0,0,W*dpr,H*dpr);
+    ctx.save(); ctx.scale(dpr,dpr);
+    sim.tick();
+    for(const b of sim.bubbles){
+      // Glow
+      const grd=ctx.createRadialGradient(b.x,b.y,b.r*.2,b.x,b.y,b.r*1.4);
+      grd.addColorStop(0,b.color+'cc');
+      grd.addColorStop(1,b.color+'00');
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r*1.4,0,Math.PI*2);
+      ctx.fillStyle=grd; ctx.fill();
+      // Main circle
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fillStyle=b.color+'28';
+      ctx.fill();
+      ctx.strokeStyle=b.color; ctx.lineWidth=2;
+      ctx.stroke();
+      // Text
+      ctx.fillStyle='#E8EFF7';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      const fontSize=Math.max(9,Math.min(13,b.r/3.2));
+      ctx.font=`700 ${fontSize}px sans-serif`;
+      const words=b.kw.split(' ');
+      if(words.length>2){
+        ctx.fillText(words.slice(0,Math.ceil(words.length/2)).join(' '),b.x,b.y-fontSize*.6);
+        ctx.fillText(words.slice(Math.ceil(words.length/2)).join(' '),b.x,b.y+fontSize*.6);
+      } else if(words.length===2){
+        ctx.fillText(words[0],b.x,b.y-fontSize*.6);
+        ctx.fillText(words[1],b.x,b.y+fontSize*.6);
+      } else {
+        ctx.fillText(b.kw,b.x,b.y);
+      }
+      // Neg% sub-label
+      const sf=Math.max(7.5,fontSize*.72);
+      ctx.font=`${sf}px sans-serif`;
+      ctx.fillStyle=b.neg_pct>40?'#E76F51':'rgba(148,163,184,.7)';
+      ctx.fillText(b.neg_pct.toFixed(0)+'% neg',b.x,b.y+fontSize*1.0+2);
+    }
+    ctx.restore();
+  });
+
+  if(!simL.settled||!simR.settled){
+    animId=requestAnimationFrame(render);
+  } else {
+    // After settling, just redraw on hover
+    [
+      {ctx:ctxL,sim:simL},
+      {ctx:ctxR,sim:simR}
+    ].forEach(({ctx,sim})=>{
+      const W=cl.width/dpr,H=cl.height/dpr;
+      ctx.clearRect(0,0,W*dpr,H*dpr);
+      ctx.save(); ctx.scale(dpr,dpr);
+      for(const b of sim.bubbles){
+        const grd=ctx.createRadialGradient(b.x,b.y,b.r*.2,b.x,b.y,b.r*1.4);
+        grd.addColorStop(0,b.color+'bb');
+        grd.addColorStop(1,b.color+'00');
+        ctx.beginPath(); ctx.arc(b.x,b.y,b.r*1.4,0,Math.PI*2);
+        ctx.fillStyle=grd; ctx.fill();
+        ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+        ctx.fillStyle=b.color+'24'; ctx.fill();
+        ctx.strokeStyle=b.color; ctx.lineWidth=1.5; ctx.stroke();
+        ctx.fillStyle='#E8EFF7'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        const fontSize=Math.max(9,Math.min(13,b.r/3.2));
+        ctx.font=`700 ${fontSize}px sans-serif`;
+        const words=b.kw.split(' ');
+        if(words.length>2){
+          ctx.fillText(words.slice(0,Math.ceil(words.length/2)).join(' '),b.x,b.y-fontSize*.6);
+          ctx.fillText(words.slice(Math.ceil(words.length/2)).join(' '),b.x,b.y+fontSize*.6);
+        } else if(words.length===2){
+          ctx.fillText(words[0],b.x,b.y-fontSize*.6);
+          ctx.fillText(words[1],b.x,b.y+fontSize*.6);
+        } else {
+          ctx.fillText(b.kw,b.x,b.y);
+        }
+        const sf=Math.max(7.5,fontSize*.72);
+        ctx.font=`${sf}px sans-serif`;
+        ctx.fillStyle=b.neg_pct>40?'#E76F51':'rgba(148,163,184,.7)';
+        ctx.fillText(b.neg_pct.toFixed(0)+'% neg',b.x,b.y+fontSize+2);
+      }
+      ctx.restore();
+    });
+    setupHover();
+  }
+}
+
+// ── HOVER DETECTION ───────────────────────────────────────────────────────────
+function setupHover(){
+  const leftDiv=document.getElementById('left');
+  const rightDiv=document.getElementById('right');
+  function addHover(div,sim,canvas){
+    div.addEventListener('mousemove',e=>{
+      const rect=canvas.getBoundingClientRect();
+      const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+      let hit=null;
+      for(const b of sim.bubbles){
+        const dx=b.x-mx,dy=b.y-my;
+        if(dx*dx+dy*dy<=b.r*b.r){hit=b;break;}
+      }
+      if(hit){
+        tip.style.opacity='1';
+        tip.style.left=(e.clientX+14)+'px';
+        tip.style.top=(e.clientY-40)+'px';
+        const sentiment=hit.avg_c>=0.2?'Mostly Positive':hit.avg_c<=-0.2?'Mostly Negative':'Neutral/Mixed';
+        const sentColor=hit.avg_c>=0.2?'#2A9D8F':hit.avg_c<=-0.2?'#E76F51':'#E9C46A';
+        tip.innerHTML=`
+          <b style="color:#E8EFF7;font-size:12.5px">${hit.kw}</b><br>
+          <span style="color:#94A3B8">${hit.n.toLocaleString()} Reddit mentions</span><br>
+          <span style="color:#E76F51">${hit.neg_pct}% negative</span>
+          &nbsp;·&nbsp;
+          <span style="color:${sentColor}">${sentiment}</span><br>
+          <span style="color:#94A3B8;font-size:10.5px">Avg sentiment: <b style="color:${sentColor}">${hit.avg_c.toFixed(3)}</b></span>
+        `;
+      } else {
+        tip.style.opacity='0';
+      }
+    });
+    div.addEventListener('mouseleave',()=>tip.style.opacity='0');
+  }
+  addHover(leftDiv,simL,document.getElementById('cl'));
+  addHover(rightDiv,simR,document.getElementById('cr'));
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.addEventListener('load',()=>{ initSims(); render(); });
+window.addEventListener('resize',()=>{
+  cancelAnimationFrame(animId);
+  initSims();
+  render();
+});
+</script>
+</body>
+</html>

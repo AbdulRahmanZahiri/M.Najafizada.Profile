@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Drift — Longitudinal Sentiment · Canadian Primary Care</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:#060F1E;font-family:Georgia,serif;color:#E8EFF7}
+#wrap{height:600vh}
+#stage{position:sticky;top:0;width:100vw;height:100vh;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.cap{
+  position:absolute;right:52px;top:130px;width:270px;
+  background:rgba(6,15,30,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.13);border-radius:14px;
+  padding:22px 24px;opacity:0;transition:opacity .5s ease;pointer-events:none
+}
+.cap.on{opacity:1}
+.cap .yr{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#52C5B6;margin-bottom:7px}
+.cap h2{font-size:16px;line-height:1.35;color:#E8EFF7;margin-bottom:9px;font-style:italic}
+.cap .stat{font-size:28px;font-weight:800;font-style:normal;font-family:sans-serif;color:#E76F51;margin:8px 0 4px}
+.cap p{font-size:11.5px;line-height:1.65;color:#94A3B8}
+#hdr{position:absolute;top:36px;left:0;right:0;text-align:center;pointer-events:none}
+#hdr h1{font-size:clamp(18px,2.8vw,28px);letter-spacing:.05em;font-style:italic}
+#hdr p{font-size:11px;color:#52C5B6;letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+#legend{
+  position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
+  display:flex;gap:22px;align-items:center;
+  background:rgba(6,15,30,.75);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 18px
+}
+.li{display:flex;align-items:center;gap:7px;font-size:11px;color:#94A3B8;letter-spacing:.05em}
+.ld{width:12px;height:12px;border-radius:3px}
+#hint{
+  position:absolute;bottom:92px;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(148,163,184,.6);display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:opacity .4s
+}
+.arr{animation:bo 1.6s ease-in-out infinite}
+@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="c"></canvas>
+
+    <div id="hdr">
+      <h1>The Drift</h1>
+      <p>Longitudinal Sentiment Analysis · Canadian Primary Care Reddit · 2021–2025</p>
+    </div>
+
+    <div class="cap" id="c0">
+      <div class="yr">2021 — Early Signal</div>
+      <h2>"It wasn't always this bad."</h2>
+      <div class="stat">33.5%</div>
+      <p>Negative sentiment in January 2021. Frustration exists, but the conversation is just beginning. Volume is modest — under 300 records per month.</p>
+    </div>
+    <div class="cap" id="c1">
+      <div class="yr">Mid-2022 — The Crisis Erupts</div>
+      <h2>"I haven't had a family doctor in years."</h2>
+      <div class="stat">44.3%</div>
+      <p>July 2022 alone sees 1,577 records — volume triples as COVID backlogs collide with physician shortages. November peaks at 44% negativity.</p>
+    </div>
+    <div class="cap" id="c2">
+      <div class="yr">2023 — Resigned to It</div>
+      <h2>"I've given up expecting anything better."</h2>
+      <div class="stat">44.1%</div>
+      <p>December 2023. Canadians stop spiking with anger and start <em>sustaining</em> it. The crisis is no longer news — it's the background of daily life.</p>
+    </div>
+    <div class="cap" id="c3">
+      <div class="yr">Spring 2024 — Peak Frustration</div>
+      <h2>"The system is broken and no one is fixing it."</h2>
+      <div class="stat">44.6%</div>
+      <p>April and June 2024: the highest negative sentiment in the entire 4-year dataset. One in every 2.2 records expresses distress or frustration.</p>
+    </div>
+    <div class="cap" id="c4">
+      <div class="yr">2025 — The Drift Continues</div>
+      <h2>"Has anything actually changed?"</h2>
+      <div class="stat">+10.8 pp</div>
+      <p>Negative sentiment has risen 10.8 percentage points since January 2021. Four years of policy discussion — yet the drift persists upward.</p>
+    </div>
+
+    <div id="legend">
+      <div class="li"><div class="ld" style="background:#E76F51"></div>Negative</div>
+      <div class="li"><div class="ld" style="background:#E9C46A"></div>Mixed</div>
+      <div class="li"><div class="ld" style="background:#52C5B6"></div>Neutral</div>
+      <div class="li"><div class="ld" style="background:#2A9D8F"></div>Positive</div>
+    </div>
+
+    <div id="hint"><span>Scroll to explore</span><span class="arr">↓</span></div>
+  </div>
+</div>
+
+<script>
+// ── DATA: [label, pos, neg, neu, mix] ─────────────────────────────────────────
+const RAW=[
+  ['Jan 2021',76,87,70,27],['Feb 2021',87,68,73,44],['Mar 2021',114,154,106,53],
+  ['Apr 2021',185,401,211,111],['May 2021',127,241,164,63],['Jun 2021',182,280,196,76],
+  ['Jul 2021',201,196,153,68],['Aug 2021',173,211,172,73],['Sep 2021',200,361,205,92],
+  ['Oct 2021',147,196,143,70],['Nov 2021',231,358,233,85],['Dec 2021',226,290,214,102],
+  ['Jan 2022',317,357,255,138],['Feb 2022',138,202,114,68],['Mar 2022',174,200,125,74],
+  ['Apr 2022',227,297,167,94],['May 2022',228,355,179,107],['Jun 2022',223,355,180,112],
+  ['Jul 2022',437,665,273,202],['Aug 2022',247,390,161,98],
+  ['Sep 2022',338,542,255,126], // interpolated (missing in dataset)
+  ['Oct 2022',428,693,348,154],['Nov 2022',416,724,329,164],['Dec 2022',266,379,238,117],
+  ['Jan 2023',255,428,264,128],['Feb 2023',347,464,321,140],['Mar 2023',335,471,291,126],
+  ['Apr 2023',240,338,220,93],['May 2023',339,368,208,154],['Jun 2023',168,271,183,88],
+  ['Jul 2023',196,281,179,109],['Aug 2023',191,305,173,95],['Sep 2023',209,341,179,105],
+  ['Oct 2023',335,461,281,120],['Nov 2023',367,539,301,135],['Dec 2023',266,515,253,133],
+  ['Jan 2024',386,567,301,166],['Feb 2024',505,763,381,158],['Mar 2024',607,951,520,206],
+  ['Apr 2024',402,664,299,123],['May 2024',320,544,276,111],['Jun 2024',253,449,188,116],
+  ['Jul 2024',436,706,349,191],['Aug 2024',383,511,286,135],['Sep 2024',291,459,278,144],
+  ['Oct 2024',524,693,366,190],['Nov 2024',300,470,263,146],['Dec 2024',277,355,215,134],
+  ['Jan 2025',492,768,351,293],['Feb 2025',240,314,164,142],['Mar 2025',289,436,220,134],
+  ['Apr 2025',214,265,211,124],['May 2025',374,386,317,127],['Jun 2025',321,421,290,148],
+  ['Jul 2025',218,313,187,115],['Aug 2025',211,293,191,113]
+];
+
+// Compute proportions (stack bottom→top: pos, neu, mix, neg)
+const PROPS = RAW.map(([lbl,pos,neg,neu,mix])=>{
+  const t=pos+neg+neu+mix||1;
+  return {lbl,pos:pos/t,neu:neu/t,mix:mix/t,neg:neg/t,total:t};
+});
+
+const YEARS=[{yr:'2021',idx:0},{yr:'2022',idx:12},{yr:'2023',idx:24},{yr:'2024',idx:36},{yr:'2025',idx:48}];
+const COLORS={pos:'#2A9D8F',neu:'#52C5B6',mix:'#E9C46A',neg:'#E76F51'};
+const KEYS=['pos','neu','mix','neg'];
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,prog=0;
+
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
+  draw(prog);
+}
+window.addEventListener('resize',resize);
+
+// Catmull-Rom → Bezier
+function crBez(pts){
+  const s=[];
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(i-1,0)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(i+2,pts.length-1)];
+    s.push({
+      cp1x:p1.x+(p2.x-p0.x)/6, cp1y:p1.y+(p2.y-p0.y)/6,
+      cp2x:p2.x-(p3.x-p1.x)/6, cp2y:p2.y-(p3.y-p1.y)/6,
+      x:p2.x, y:p2.y
+    });
+  }
+  return s;
+}
+
+function fillBand(topPts,botPts,color,alpha){
+  if(topPts.length<2)return;
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.beginPath();
+  ctx.moveTo(topPts[0].x,topPts[0].y);
+  for(const s of crBez(topPts))ctx.bezierCurveTo(s.cp1x,s.cp1y,s.cp2x,s.cp2y,s.x,s.y);
+  ctx.lineTo(botPts[botPts.length-1].x,botPts[botPts.length-1].y);
+  const rev=[...botPts].reverse();
+  for(const s of crBez(rev))ctx.bezierCurveTo(s.cp1x,s.cp1y,s.cp2x,s.cp2y,s.x,s.y);
+  ctx.closePath();
+  ctx.fillStyle=color;
+  ctx.fill();
+  ctx.restore();
+}
+
+function draw(p){
+  prog=p;
+  ctx.clearRect(0,0,W,H);
+  const N=PROPS.length;
+  const pL=72,pR=44,pT=110,pB=90;
+  const cW=W-pL-pR, cH=H-pT-pB;
+  const bot=pT+cH;
+
+  // Background gradient
+  const bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#060F1E'); bg.addColorStop(1,'#0B1F3A');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  // Subtle horizontal guide lines
+  for(let pct=0.25;pct<1;pct+=0.25){
+    const y=pT+pct*cH;
+    ctx.beginPath(); ctx.moveTo(pL,y); ctx.lineTo(W-pR,y);
+    ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.lineWidth=1; ctx.stroke();
+  }
+  // % labels on left
+  [75,50,25].forEach((v,i)=>{
+    const y=pT+((100-v)/100)*cH;
+    ctx.font='9px sans-serif'; ctx.fillStyle='rgba(148,163,184,.4)'; ctx.textAlign='right';
+    ctx.fillText(v+'%',pL-6,y+3);
+  });
+
+  // X positions
+  const xs=PROPS.map((_,i)=>pL+(i/(N-1))*cW);
+  const beamX=pL+p*cW;
+
+  // Stacked y-values
+  const stk=PROPS.map(pr=>{
+    let cum=0; const o={};
+    for(const k of KEYS){ o[k+'_b']=bot-cum*cH; cum+=pr[k]; o[k+'_t']=bot-cum*cH; }
+    return o;
+  });
+
+  // Draw bands: dimmed version first, then clip-revealed version
+  for(const k of KEYS){
+    const tp=xs.map((x,i)=>({x,y:stk[i][k+'_t']}));
+    const bp=xs.map((x,i)=>({x,y:stk[i][k+'_b']}));
+    fillBand(tp,bp,COLORS[k],0.1);  // whole chart dim
+    ctx.save();
+    ctx.beginPath(); ctx.rect(pL,0,Math.max(0,beamX-pL),H); ctx.clip();
+    fillBand(tp,bp,COLORS[k],0.86); // revealed portion bright
+    ctx.restore();
+  }
+
+  // Scanner beam glow
+  if(p>0.01){
+    const bg2=ctx.createLinearGradient(beamX-28,0,beamX+6,0);
+    bg2.addColorStop(0,'rgba(255,255,255,0)');
+    bg2.addColorStop(.75,'rgba(255,255,255,.1)');
+    bg2.addColorStop(1,'rgba(255,255,255,.45)');
+    ctx.fillStyle=bg2; ctx.fillRect(beamX-28,pT,34,cH);
+  }
+
+  // Year markers + labels
+  for(const {yr,idx} of YEARS){
+    const x=xs[idx]; const lit=x<=beamX;
+    ctx.beginPath(); ctx.moveTo(x,pT); ctx.lineTo(x,bot);
+    ctx.strokeStyle=`rgba(255,255,255,${lit?.3:.08})`; ctx.lineWidth=1; ctx.setLineDash([3,5]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font='bold 12px Georgia,serif'; ctx.fillStyle=`rgba(232,239,247,${lit?.85:.25})`; ctx.textAlign='center';
+    ctx.fillText(yr,x,pT-10);
+  }
+
+  // Axis line
+  ctx.beginPath(); ctx.moveTo(pL,bot); ctx.lineTo(W-pR,bot);
+  ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1; ctx.stroke();
+
+  // Current month label at beam
+  const mi=Math.min(Math.round(p*(N-1)),N-1);
+  const negPct=Math.round(PROPS[mi].neg*100);
+  const bx=Math.min(beamX,W-90);
+  ctx.font='11px sans-serif'; ctx.fillStyle='rgba(255,255,255,.7)'; ctx.textAlign='center';
+  ctx.fillText(PROPS[mi].lbl,bx,bot+18);
+  ctx.font='bold 13px sans-serif'; ctx.fillStyle='#E76F51';
+  ctx.fillText(negPct+'% neg',bx,bot+34);
+
+  // Source
+  ctx.font='9.5px sans-serif'; ctx.fillStyle='rgba(148,163,184,.4)'; ctx.textAlign='right';
+  ctx.fillText('Source: Reddit primary care subreddits · VADER ML ensemble · n=89,398',W-pR,H-12);
+}
+
+// ── CAPTION REVEAL ────────────────────────────────────────────────────────────
+const CAPS=[
+  {id:'c0',lo:0.00,hi:0.20},{id:'c1',lo:0.20,hi:0.44},{id:'c2',lo:0.44,hi:0.64},
+  {id:'c3',lo:0.64,hi:0.84},{id:'c4',lo:0.84,hi:1.01}
+];
+function updateCaps(p){
+  CAPS.forEach(c=>{
+    document.getElementById(c.id).classList.toggle('on',p>=c.lo&&p<c.hi);
+  });
+}
+
+// ── SCROLL ────────────────────────────────────────────────────────────────────
+let hint=true;
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  draw(p); updateCaps(p);
+  if(hint&&p>0.02){hint=false;document.getElementById('hint').style.opacity='0';}
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+resize();
+document.getElementById('c0').classList.add('on');
+</script>
+</body>
+</html>
