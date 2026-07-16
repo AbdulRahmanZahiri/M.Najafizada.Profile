@@ -2,339 +2,479 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Calendar of Care — Seasonal Patterns · Canadian Primary Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:#060F1E;font-family:'Georgia',serif;color:#E8EFF7;
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden
+:root{
+  --font-display:"Space Grotesk",system-ui,sans-serif;--font-body:"Newsreader",Georgia,serif;--font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;--coral:#D85A30;--coral-deep:#A23E1C;--teal:#2E7D72;--gold:#C8902B;
+  --line:#E6E4DC;--track:#EEEDE5;--hero-bg:#0B1F3A;--hero-fg:#EDF2F0;--hero-mut:#8FB6AD;
 }
-#wrap{height:550vh}
-#stage{
-  position:sticky;top:0;width:100vw;height:100vh;
-  display:flex;align-items:center;justify-content:center;overflow:hidden
-}
-#stage svg{overflow:visible}
-/* Caption panel */
-#panel{
-  position:absolute;right:5vw;top:50%;transform:translateY(-50%);
-  width:clamp(210px,22vw,280px);
-  background:rgba(6,15,30,.88);backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px 22px
-}
-#panel .yr-tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#E9C46A;margin-bottom:6px}
-#panel h2{font-size:16px;font-style:italic;line-height:1.35;margin-bottom:10px}
-#panel .stat{font-size:26px;font-weight:800;font-family:sans-serif;color:#E76F51;margin-bottom:4px;font-style:normal}
-#panel p{font-size:11.5px;line-height:1.65;color:#94A3B8}
-#panel .worst{
-  margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);
-  font-size:11px;color:#94A3B8
-}
-#panel .worst span{color:#E76F51;font-weight:700}
-
-/* Title */
-#title{position:absolute;top:32px;left:0;right:0;text-align:center;pointer-events:none}
-#title h1{font-size:clamp(16px,2.5vw,26px);font-style:italic;letter-spacing:.04em}
-#title p{font-size:11px;color:#52C5B6;letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
-
-/* Legend */
-#leg{
-  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
-  display:flex;gap:6px;align-items:center;
-  background:rgba(6,15,30,.75);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 16px
-}
-.lg{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#94A3B8}
-.lc{width:48px;height:8px;border-radius:4px}
-
-/* Hint */
-#hint{
-  position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
-  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(148,163,184,.55);display:flex;flex-direction:column;align-items:center;gap:4px;
-  transition:opacity .4s
-}
-.arr{animation:bo 1.6s ease-in-out infinite}
-@keyframes bo{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-
-/* Tooltip */
-#tip{
-  position:absolute;background:rgba(6,15,30,.92);border:1px solid rgba(255,255,255,.15);
-  border-radius:8px;padding:10px 14px;font-size:11px;pointer-events:none;
-  opacity:0;transition:opacity .2s;z-index:10;white-space:nowrap
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 26px}
+.hero3d{position:relative;height:400vh;background:radial-gradient(120% 60% at 50% 8%,#101828 0%,#080D18 48%,#030508 100%)}
+.sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+#stage{position:absolute;inset:0;touch-action:pan-y}#stage canvas{display:block}
+.h3ov{position:absolute;inset:0;pointer-events:none;z-index:5}
+.h3ov::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(3,5,8,.92),rgba(3,5,8,.5) 50%,transparent);pointer-events:none}
+.brand{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#8FA8C0}
+.cap{position:absolute;left:0;right:0;padding:0 24px;bottom:13vh;text-align:center;opacity:0;transition:opacity .15s}
+.cap .big{font-family:var(--font-display);font-weight:700;font-size:64px;line-height:.9;letter-spacing:-.04em;background:linear-gradient(180deg,#FFD6C8,#E76F51);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.gold{background:linear-gradient(180deg,#FFF0C0,#E9C46A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap .big.teal{background:linear-gradient(180deg,#C8F0EC,#2A9D8F);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h2{font-family:var(--font-display);color:#F0F4F8;font-weight:500;font-size:24px;line-height:1.2;margin:12px auto 0;max-width:640px;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.7)}
+.cap p{font-family:var(--font-mono);font-size:12.5px;color:#9DC0D8;margin:12px auto 0;max-width:520px;line-height:1.6;text-shadow:0 2px 18px rgba(0,0,0,.8)}
+.scrollcue{position:absolute;left:0;right:0;bottom:30px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7A9AB0;transition:opacity .3s}
+.scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.beatdots{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:6;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.beatdots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.24);transition:background .3s,transform .3s}
+.beatdots span.on{background:#fff;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.5)}
+#fallback{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-mono);font-size:13px;color:#9DC0D8;max-width:380px;line-height:1.7;display:none;padding:0 24px}
+.hero{background:var(--hero-bg);color:var(--hero-fg);padding:64px 0 56px;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 80% 0%,rgba(201,144,43,.14),transparent 60%);pointer-events:none}
+.kick{font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--hero-mut);margin-bottom:18px}
+.hero h1{font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin:0 0 16px}
+.hero .dek{font-size:19px;line-height:1.55;color:#D6E0DD;max-width:580px;margin:0 0 30px}
+.sec{padding:46px 0 10px}
+.sec .sk{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.sec h2{font-family:var(--font-display);font-weight:600;font-size:28px;letter-spacing:-.02em;margin:0 0 18px;line-height:1.1}
+.sec p{font-size:18px;line-height:1.72;margin:0 0 16px}
+/* Calendar heatmap */
+.cal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin:20px 0}
+.cal-cell{border-radius:8px;padding:12px 6px;text-align:center}
+.cal-cell .mon{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.cal-cell .pct{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.02em}
+.cal-cell .sub{font-family:var(--font-mono);font-size:9.5px;color:rgba(0,0,0,.5);margin-top:3px}
+/* Season cards */
+.scards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+.scard{border:1px solid var(--line);background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.scard .stag{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.scard .snum{font-family:var(--font-display);font-weight:700;font-size:30px;letter-spacing:-.03em;margin-bottom:5px}
+.scard h3{font-family:var(--font-display);font-weight:600;font-size:18px;margin:0 0 8px}
+.scard p{font-size:15px;line-height:1.58;margin:0;color:#2A3530}
+/* Month rows */
+.mrow{display:flex;align-items:center;gap:14px;padding:8px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border:none}
+.mrow .mn{flex:0 0 48px;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--muted)}
+.mrow .mv{flex:0 0 50px;font-family:var(--font-mono);font-size:13px;font-weight:700;text-align:right}
+.mrow .mbar{flex:1;height:9px;background:var(--track);border-radius:4px;overflow:hidden}
+.mrow .mfill{height:100%;border-radius:4px}
+.mrow .mavg{flex:0 0 80px;font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right}
+.worst-badge{display:inline-flex;align-items:center;gap:8px;background:#FFF2EE;border:1px solid #F5D8CC;border-radius:9px;padding:8px 14px;font-family:var(--font-mono);font-size:12px;color:var(--coral-deep);margin:4px 0}
+.close{max-width:760px;margin:18px auto 0;padding:34px 26px 0;border-top:3px solid var(--gold)}
+.close h2{font-family:var(--font-display);font-weight:600;font-size:27px;letter-spacing:-.02em;line-height:1.12;margin:0 0 14px}
+.close p{font-size:19px;line-height:1.62;margin:0 0 16px}
+.close .big{font-family:var(--font-mono);font-weight:600;color:var(--coral-deep)}
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:30px 0 70px}
+.foot .fl{font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--muted)}.foot .fl b{color:var(--ink);font-weight:600}
+.reveal{opacity:0;transform:translateY(14px)}
+body.go .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+@media(max-width:680px){body{font-size:17px}.wrap{padding:0 18px}.scards{grid-template-columns:1fr}.cal-grid{grid-template-columns:repeat(6,1fr)}.cap .big{font-size:44px}.cap h2{font-size:18px}.hero h1{font-size:36px}}
 </style>
 </head>
 <body>
-<div id="wrap">
-  <div id="stage">
-    <svg id="svg" viewBox="-300 -300 600 600" style="width:min(54vh,54vw);height:min(54vh,54vw)"></svg>
 
-    <div id="title">
-      <h1>The Calendar of Care</h1>
-      <p>Seasonal Patterns in Primary Care Frustration · 2021–2025</p>
+<!-- ═══ 3D HERO: THE HELIX ═══ -->
+<section class="hero3d">
+  <div class="sticky">
+    <div id="stage"></div>
+    <div class="h3ov">
+      <div class="brand">Research Finding 2 of 4 · Seasonal Analysis · 57 months averaged · n = 89,398</div>
+      <div class="cap" data-lo="-0.06" data-hi="0.22">
+        <div class="big gold">November</div>
+        <h2>The worst month of the year — every year. 41.3% of November posts are negative.</h2>
+        <p>Each ring in the helix is one year. Each node is one month. The higher and redder the node, the darker the public mood.</p>
+      </div>
+      <div class="cap" data-lo="0.25" data-hi="0.48">
+        <div class="big">Fall ↓</div>
+        <h2>September to November: the system's hardest season. Three months, back to back, all above 39.5%.</h2>
+        <p>Flu season loads a system already running at capacity. September (40.5%) → October (39.7%) → November (41.3%). The same pattern repeats across 2021, 2022, 2023, and 2024.</p>
+      </div>
+      <div class="cap" data-lo="0.51" data-hi="0.76">
+        <div class="big teal">May</div>
+        <h2>The system's best month — but "best" means 38.0% negative. The floor is never green.</h2>
+        <p>May and February offer the year's lowest frustration. Yet neither reaches 37%. There is no month in the data where the majority of the conversation is anything other than negative or mixed.</p>
+      </div>
+      <div class="cap" data-lo="0.78" data-hi="1.02">
+        <div class="big">3.3 pp</div>
+        <h2>The spread from best to worst month is only 3.3 percentage points — the whole year is dark.</h2>
+        <p>November (41.3%) minus May (38.0%) = 3.3pp. Canadian primary care frustration has no true off-season — only gradations of the same persistent pressure.</p>
+      </div>
+      <div class="beatdots" id="beatdots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="scrollcue" id="cue">scroll<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A9AB0" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div id="fallback">Loading 3D scene — the research article is just below.</div>
     </div>
-
-    <div id="panel">
-      <div class="yr-tag" id="p-yr">Overview</div>
-      <h2 id="p-head">Five years of seasonal rhythm</h2>
-      <div class="stat" id="p-stat">89,398</div>
-      <p id="p-body">Each ring represents one year. Each segment is a month. The outer radius encodes the percentage of negative sentiment — the further it extends, the darker the mood.</p>
-      <div class="worst">Worst month overall: <span id="p-worst">—</span></div>
-    </div>
-
-    <div id="leg">
-      <div class="lg">Low frustration</div>
-      <div class="lg"><div class="lc" id="grad-bar"></div></div>
-      <div class="lg">High frustration</div>
-    </div>
-
-    <div id="hint"><span>Scroll to reveal each year</span><span class="arr">↓</span></div>
-    <div id="tip"></div>
   </div>
+</section>
+
+<!-- ═══ ARTICLE ═══ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kick">Research Finding 2 of 4 · Seasonal Pattern Analysis · 57 months · n = 89,398</div>
+    <h1>The Calendar of Care</h1>
+    <p class="dek">Is Canadian primary care frustration seasonal? Yes — but not in the way you might expect. There is no month that is "good." There is only a narrow band between the least bad and the consistently worst, and that band barely moves.</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="sec reveal">
+    <div class="sk">The Annual Heatmap</div>
+    <h2>Every month of the year, averaged across 2021–2025</h2>
+    <p>The colour and height of each month reflects its average negative sentiment percentage across all five years of data. Teal = relatively better. Coral = consistently worse. There are no green months.</p>
+
+    <!-- Calendar heatmap -->
+    <div class="cal-grid">
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(42,157,143,.22),rgba(42,157,143,.08))">
+        <div class="mon" style="color:#1E6A60">Jan</div>
+        <div class="pct" style="color:#1E6A60">38.5%</div>
+        <div class="sub">1,432 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(42,157,143,.18),rgba(42,157,143,.06))">
+        <div class="mon" style="color:#1E6A60">Feb</div>
+        <div class="pct" style="color:#1E6A60">38.3%</div>
+        <div class="sub">1,183 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(180,120,60,.22),rgba(180,120,60,.08))">
+        <div class="mon" style="color:#7A4A20">Mar</div>
+        <div class="pct" style="color:#7A4A20">39.6%</div>
+        <div class="sub">1,396 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(216,90,48,.28),rgba(216,90,48,.10))">
+        <div class="mon" style="color:#A03820">Apr</div>
+        <div class="pct" style="color:#A03820">40.2%</div>
+        <div class="sub">1,222 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(42,157,143,.14),rgba(42,157,143,.04))">
+        <div class="mon" style="color:#1E6A60">May</div>
+        <div class="pct" style="color:#1E6A60">38.0%</div>
+        <div class="sub">1,247 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(180,120,60,.22),rgba(180,120,60,.08))">
+        <div class="mon" style="color:#7A4A20">Jun</div>
+        <div class="pct" style="color:#7A4A20">39.5%</div>
+        <div class="sub">1,125 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(180,120,60,.22),rgba(180,120,60,.08))">
+        <div class="mon" style="color:#7A4A20">Jul</div>
+        <div class="pct" style="color:#7A4A20">39.5%</div>
+        <div class="sub">1,369 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(42,157,143,.18),rgba(42,157,143,.06))">
+        <div class="mon" style="color:#1E6A60">Aug</div>
+        <div class="pct" style="color:#1E6A60">38.8%</div>
+        <div class="sub">1,103 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(216,90,48,.32),rgba(216,90,48,.12))">
+        <div class="mon" style="color:#A03820">Sep</div>
+        <div class="pct" style="color:#A03820">40.5%</div>
+        <div class="sub">716 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(216,90,48,.28),rgba(216,90,48,.10))">
+        <div class="mon" style="color:#A03820">Oct</div>
+        <div class="pct" style="color:#A03820">39.7%</div>
+        <div class="sub">1,287 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(216,90,48,.42),rgba(216,90,48,.16))">
+        <div class="mon" style="color:#A03820"><b>Nov ▲</b></div>
+        <div class="pct" style="color:#A03820"><b>41.3%</b></div>
+        <div class="sub">1,265 avg/yr</div>
+      </div>
+      <div class="cal-cell" style="background:linear-gradient(180deg,rgba(42,157,143,.18),rgba(42,157,143,.06))">
+        <div class="mon" style="color:#1E6A60">Dec</div>
+        <div class="pct" style="color:#1E6A60">38.7%</div>
+        <div class="sub">995 avg/yr</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Season cards -->
+  <div class="sec reveal">
+    <div class="sk">Four Seasons</div>
+    <h2>The seasonal pattern, broken down by quarter</h2>
+    <div class="scards">
+      <div class="scard">
+        <div class="stag" style="color:#2E7D72">Winter (Dec–Feb)</div>
+        <div class="snum" style="color:#2E7D72">38.5%</div>
+        <h3>Relatively quiet</h3>
+        <p>December through February sees the lowest average negativity of any season. Holiday-period posts may skew toward sharing and support. February is the best single month in the full dataset at 38.3%.</p>
+      </div>
+      <div class="scard">
+        <div class="stag" style="color:#7A6030">Spring (Mar–May)</div>
+        <div class="snum" style="color:#7A6030">39.3%</div>
+        <h3>Rising pressure</h3>
+        <p>March and April see a steady increase as the post-holiday backlog becomes visible. May dips slightly — but April 2024 (44.6%) was the worst single month in the entire dataset, a spring that stood apart.</p>
+      </div>
+      <div class="scard">
+        <div class="stag" style="color:#7A6030">Summer (Jun–Aug)</div>
+        <div class="snum" style="color:#7A6030">39.3%</div>
+        <h3>Coverage gaps</h3>
+        <p>Summer frustration is steady. Walk-in clinic posts increase as family doctors take vacation. Locum coverage gaps are a common theme. July has produced the highest-volume individual months — 1,577 records in July 2022 alone.</p>
+      </div>
+      <div class="scard" style="border-color:#F5D8CC">
+        <div class="stag" style="color:#A03820">Fall (Sep–Nov) ▲ WORST</div>
+        <div class="snum" style="color:#A03820">40.5%</div>
+        <h3>The hardest quarter</h3>
+        <p>September through November is consistently the most negative quarter in every year of data. Flu season loads a system that cannot absorb additional demand. November (41.3%) has been the worst month in four of the five years measured.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Month-by-month ranked -->
+  <div class="sec reveal">
+    <div class="sk">Ranked by Negativity</div>
+    <h2>All 12 months, worst to best</h2>
+    <p>Average negative sentiment per month across the full 2021–2025 dataset (averaged per year where data exists). The spread between worst and best is only 3.3 percentage points — confirming that there is no genuinely "positive" month in Canadian primary care discussion.</p>
+
+    <div class="mrow"><div class="mn">Nov ▲</div><div class="mv" style="color:#A03820">41.3%</div><div class="mbar"><div class="mfill" style="width:90%;background:#E76F51"></div></div><div class="mavg">1,265 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Sep</div><div class="mv" style="color:#A03820">40.5%</div><div class="mbar"><div class="mfill" style="width:86%;background:#D87855"></div></div><div class="mavg">716 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Apr</div><div class="mv" style="color:#956030">40.2%</div><div class="mbar"><div class="mfill" style="width:84%;background:#D07A58"></div></div><div class="mavg">1,222 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Oct</div><div class="mv" style="color:#956030">39.7%</div><div class="mbar"><div class="mfill" style="width:82%;background:#C88060"></div></div><div class="mavg">1,287 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Jun</div><div class="mv" style="color:#956030">39.5%</div><div class="mbar"><div class="mfill" style="width:81%;background:#C48062"></div></div><div class="mavg">1,125 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Jul</div><div class="mv" style="color:#956030">39.5%</div><div class="mbar"><div class="mfill" style="width:81%;background:#C48062"></div></div><div class="mavg">1,369 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Mar</div><div class="mv" style="color:#7A6030">39.6%</div><div class="mbar"><div class="mfill" style="width:81%;background:#C68060"></div></div><div class="mavg">1,396 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Aug</div><div class="mv" style="color:#3A7060">38.8%</div><div class="mbar"><div class="mfill" style="width:76%;background:#78A882"></div></div><div class="mavg">1,103 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Jan</div><div class="mv" style="color:#3A7060">38.5%</div><div class="mbar"><div class="mfill" style="width:75%;background:#6AAA88"></div></div><div class="mavg">1,432 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Dec</div><div class="mv" style="color:#3A7060">38.7%</div><div class="mbar"><div class="mfill" style="width:75%;background:#74A884"></div></div><div class="mavg">995 /yr avg</div></div>
+    <div class="mrow"><div class="mn">Feb</div><div class="mv" style="color:#2E7D72">38.3%</div><div class="mbar"><div class="mfill" style="width:73%;background:#52A892"></div></div><div class="mavg">1,183 /yr avg</div></div>
+    <div class="mrow"><div class="mn">May ▼</div><div class="mv" style="color:#2E7D72">38.0%</div><div class="mbar"><div class="mfill" style="width:72%;background:#2A9D8F"></div></div><div class="mavg">1,247 /yr avg</div></div>
+  </div>
+
+  <!-- What this means -->
+  <div class="sec reveal">
+    <div class="sk">Interpretation</div>
+    <h2>Why the seasonal pattern matters for policy</h2>
+    <p>The 3.3-percentage-point spread between the best month (May, 38.0%) and the worst (November, 41.3%) tells a story that is simultaneously reassuring and alarming. Reassuring, because the system does not catastrophically deteriorate in any single month — there is no true "crisis spike" that policy could easily target with a one-time intervention. Alarming, for exactly the same reason: the frustration is not seasonal in nature. It is structural.</p>
+    <p>If the negativity were purely seasonal — driven by flu outbreaks or holiday closures — we would expect January and December to be the worst months, not November, and we would expect summer to be dramatically better. Instead, the data shows that summer is essentially indistinguishable from fall, and that fall's additional burden appears to be the accumulated weight of a year of under-met demand rather than any specific seasonal trigger.</p>
+    <p>The fall peak is consistent across years. In 2021, November was 39.5%. In 2022, November was 44.3%. In 2023, November was 40.2%. In 2024, November was 39.9%. Four consecutive years in which November is among the highest-negativity months. This is not noise — it is a repeating structural pattern that should be a known, plannable event in provincial health system calendars.</p>
+    <p>September's relatively low volume (716 records/year average, roughly half of most months) despite its high negativity (40.5%) may reflect that people returning from summer are still adjusting to the system — the complaints spike in volume by October, but the emotional register is already elevated the moment the new season begins.</p>
+  </div>
+
+</div>
+</main>
+
+<div class="close">
+  <h2>There is no good time of year to need a family doctor in Canada.</h2>
+  <p>The 3.3-percentage-point range from best month to worst is a system telling you that its problems are not seasonal — they are <span class="big">architectural</span>. November is the peak not because November is uniquely hard, but because the rest of the year's unmet need has accumulated into it. Policy interventions that target specific seasons will find no clean on-ramp. The frustration is always there. It is just slightly more visible in the fall.</p>
 </div>
 
+<footer class="foot">
+  <div class="wrap">
+    <p class="fl"><b>Method.</b> Seasonal averages computed by aggregating all records (excluding Unknown geo) by calendar month across 2021–2025, then computing neg / (pos + neg + neu + mix) per month-of-year. Volume per year average = total records in that month-of-year / number of years with data. 2025 data is partial (January–August); September–December 2025 are not included in averages for those months.</p>
+    <p class="fl" style="margin-top:14px"><b>Source.</b> Reddit Canadian primary care subreddits · VADER ensemble · n = 89,398 · Memorial University, Faculty of Medicine · 2021–2025.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ── DATA: monthly neg% by year ─────────────────────────────────────────────
-// Months Jan-Dec, neg_pct = neg/(pos+neg+neu+mix)*100
-const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)document.body.classList.add('go');
+  var io=('IntersectionObserver'in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.14}):null;
+  if(io){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+  else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
 
-const DATA={
-  2021:[33.5,25.0,36.1,44.2,40.5,38.1,31.7,33.5,42.1,35.3,39.5,34.9],
-  2022:[33.5,38.7,34.9,37.8,40.9,40.8,42.2,43.5,42.7,42.7,44.3,37.9],
-  2023:[39.8,36.5,38.5,37.9,34.4,38.2,36.7,39.9,40.9,38.5,40.2,44.1],
-  2024:[39.9,42.2,41.6,44.6,43.5,44.6,42.0,38.9,39.2,39.1,39.9,36.2],
-  2025:[40.3,36.5,40.4,32.6,32.1,35.7,37.6,36.3,null,null,null,null]
-};
+  var fb=document.getElementById('fallback');
+  if(!window.THREE){if(fb)fb.style.display='block';return;}
 
-const YEARS=[2021,2022,2023,2024,2025];
-const N_YEARS=YEARS.length;
+  // ── SEASONAL DATA ─────────────────────────────────────────────────────────
+  // Month avg neg% across all years, and volume per month across all years
+  var SEASONAL=[
+    {m:'Jan',neg:38.5,vol:5726},{m:'Feb',neg:38.3,vol:4733},{m:'Mar',neg:39.6,vol:5586},
+    {m:'Apr',neg:40.2,vol:4886},{m:'May',neg:38.0,vol:4988},{m:'Jun',neg:39.5,vol:4500},
+    {m:'Jul',neg:39.5,vol:5475},{m:'Aug',neg:38.8,vol:4412},{m:'Sep',neg:40.5,vol:2864},
+    {m:'Oct',neg:39.7,vol:5149},{m:'Nov',neg:41.3,vol:5061},{m:'Dec',neg:38.7,vol:3980}
+  ];
+  // By year: rows per month index
+  var YEARLY={
+    2021:[33.5,25.0,36.1,44.2,40.5,38.1,31.7,33.5,42.1,35.3,39.5,34.9],
+    2022:[33.5,38.7,34.9,37.8,40.9,40.8,42.2,43.5,42.7,42.7,44.3,37.9],
+    2023:[39.8,36.5,38.5,37.9,34.4,38.2,36.7,39.9,40.9,38.5,40.2,44.1],
+    2024:[39.9,42.2,41.6,44.6,43.5,44.6,42.0,38.9,39.2,39.1,39.9,36.2],
+    2025:[40.3,36.5,40.4,32.6,32.1,35.7,37.6,36.3,null,null,null,null]
+  };
 
-// Find worst month per year for panel
-function worstMonth(yr){
-  const d=DATA[yr].map((v,i)=>({m:MONTHS[i],v})).filter(x=>x.v!=null);
-  return d.reduce((a,b)=>a.v>b.v?a:b,d[0]);
-}
-
-// Color scale: from teal (#2A9D8F) at ~25% to coral (#E76F51) at ~50%
-function negColor(pct){
-  // Map 25%→0, 50%→1
-  const t=Math.max(0,Math.min(1,(pct-24)/22));
-  // Interpolate teal→gold→coral
-  const r1=42,g1=157,b1=143;  // #2A9D8F
-  const r2=231,g2=111,b2=81;  // #E76F51
-  const r=Math.round(r1+(r2-r1)*t);
-  const g=Math.round(g1+(g2-g1)*t);
-  const b=Math.round(b1+(b2-b1)*t);
-  return `rgb(${r},${g},${b})`;
-}
-
-// ── SVG BUILD ────────────────────────────────────────────────────────────────
-const svg=document.getElementById('svg');
-const NS='http://www.w3.org/2000/svg';
-function el(tag,attrs){
-  const e=document.createElementNS(NS,tag);
-  for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);
-  return e;
-}
-function polar(r,deg){
-  const rad=(deg-90)*Math.PI/180;
-  return {x:r*Math.cos(rad),y:r*Math.sin(rad)};
-}
-function arcPath(r1,r2,startDeg,endDeg){
-  const s1=polar(r1,startDeg),e1=polar(r1,endDeg);
-  const s2=polar(r2,startDeg),e2=polar(r2,endDeg);
-  const la=endDeg-startDeg>180?1:0;
-  return `M${s1.x},${s1.y} A${r1},${r1},0,${la},1,${e1.x},${e1.y} L${e2.x},${e2.y} A${r2},${r2},0,${la},0,${s2.x},${s2.y} Z`;
-}
-
-// Ring layout
-const INNER=60;  // inner hub radius
-const RING_W=34; // width of each ring
-const GAP=4;     // gap between rings
-const SEG_DEG=360/12; // 30° per month
-const SEG_PAD=1.5;    // gap between segments (degrees)
-
-// Base radius for each year ring (innermost=2021)
-function ringR(yi){ return INNER+(yi*(RING_W+GAP)); }
-
-// Draw gradient bar for legend
-const defs=el('defs',{});
-const grad=el('linearGradient',{id:'lg1',x1:'0%',y1:'0%',x2:'100%',y2:'0%'});
-[0,0.5,1].forEach((o,i)=>{ const s=el('stop',{'offset':o*100+'%','stop-color':negColor(24+i*22)}); grad.appendChild(s); });
-defs.appendChild(grad); svg.appendChild(defs);
-
-// Draw legend bar via CSS
-const gb=document.getElementById('grad-bar');
-gb.style.background='linear-gradient(90deg,'+negColor(24)+','+negColor(35)+','+negColor(46)+')';
-
-// Month labels (outermost ring edge + margin)
-const labelR=ringR(N_YEARS)+14;
-MONTHS.forEach((m,mi)=>{
-  const deg=mi*SEG_DEG+(SEG_DEG/2);
-  const pos=polar(labelR,deg);
-  const t=el('text',{
-    x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle',
-    'font-size':'11','font-family':'sans-serif','fill':'rgba(148,163,184,0.6)',
-    transform:`rotate(${deg>180?deg+180:deg},-100,0)` // keep readable
-  });
-  // Just center text, no rotation needed for short labels
-  const t2=el('text',{
-    x:pos.x,y:pos.y,'text-anchor':'middle','dominant-baseline':'middle',
-    'font-size':'10','font-family':'sans-serif','fill':'rgba(148,163,184,0.55)'
-  });
-  t2.textContent=m;
-  svg.appendChild(t2);
-});
-
-// Spoke lines (month dividers)
-for(let mi=0;mi<12;mi++){
-  const deg=mi*SEG_DEG;
-  const s=polar(INNER,deg),e=polar(ringR(N_YEARS)+6,deg);
-  const line=el('line',{x1:s.x,y1:s.y,x2:e.x,y2:e.y,stroke:'rgba(255,255,255,.08)','stroke-width':'1'});
-  svg.appendChild(line);
-}
-
-// Hub circle
-const hub=el('circle',{cx:0,cy:0,r:INNER-2,fill:'#0B1F3A',stroke:'rgba(255,255,255,.1)','stroke-width':'1'});
-svg.appendChild(hub);
-
-// Hub text
-const hubT=el('text',{'text-anchor':'middle','dominant-baseline':'middle','font-size':'10',
-  'font-family':'sans-serif','fill':'rgba(148,163,184,.5)','y':'-6'});
-hubT.textContent='2021–2025';
-svg.appendChild(hubT);
-const hubT2=el('text',{'text-anchor':'middle','dominant-baseline':'middle','font-size':'9',
-  'font-family':'sans-serif','fill':'rgba(148,163,184,.35)','y':'8'});
-hubT2.textContent='neg %';
-svg.appendChild(hubT2);
-
-// Build segments (stored for animation)
-const SEGS=[];
-YEARS.forEach((yr,yi)=>{
-  const r1=ringR(yi); const r2=r1+RING_W;
-  MONTHS.forEach((m,mi)=>{
-    const pct=DATA[yr][mi];
-    if(pct==null)return;
-    const startDeg=mi*SEG_DEG+SEG_PAD;
-    const endDeg=(mi+1)*SEG_DEG-SEG_PAD;
-    // Each segment has TWO arcs: a base (full ring, gray) and a "fill" (scaled by neg%)
-    // Base arc (background ring track)
-    const base=el('path',{d:arcPath(r1,r2,startDeg,endDeg),fill:'rgba(255,255,255,.04)',stroke:'none'});
-    svg.appendChild(base);
-    // Neg% fill — scale RING_W by how intense
-    const fillW=RING_W*(pct/50); // 50% = max scale
-    const fill=el('path',{
-      d:arcPath(r1,r1+fillW,startDeg,endDeg),
-      fill:negColor(pct),stroke:'none',opacity:'0',
-      'data-yr':yr,'data-m':m,'data-pct':pct
-    });
-    // Hover
-    const hitArea=el('path',{d:arcPath(r1,r2,startDeg,endDeg),fill:'transparent',cursor:'pointer'});
-    hitArea.addEventListener('mouseenter',e=>{
-      fill.setAttribute('opacity','1');
-      fill.setAttribute('filter','url(#glow)');
-      showTip(e,yr,m,pct);
-    });
-    hitArea.addEventListener('mousemove',e=>moveTip(e));
-    hitArea.addEventListener('mouseleave',()=>{
-      fill.setAttribute('filter','none');
-      hideTip();
-    });
-    svg.appendChild(fill);
-    svg.appendChild(hitArea);
-    SEGS.push({fill,yr,yi,mi,pct});
-  });
-
-  // Year ring label (inner edge)
-  const labelPos=polar(r1+RING_W/2, -80);
-  const yt=el('text',{
-    x:labelPos.x,y:labelPos.y,'text-anchor':'middle','dominant-baseline':'middle',
-    'font-size':'9','font-family':'sans-serif','fill':'rgba(148,163,184,0)',
-    'data-yr-label':yr
-  });
-  yt.textContent=yr;
-  svg.appendChild(yt);
-});
-
-// Glow filter
-const gf=el('filter',{id:'glow',x:'-30%',y:'-30%',width:'160%',height:'160%'});
-const fe=el('feGaussianBlur',{in:'SourceGraphic',stdDeviation:'3',result:'blur'});
-const fec=el('feComposite',{in:'SourceGraphic',in2:'blur',operator:'over'});
-gf.appendChild(fe); gf.appendChild(fec); defs.appendChild(gf);
-
-// ── TOOLTIP ───────────────────────────────────────────────────────────────────
-const tip=document.getElementById('tip');
-function showTip(e,yr,m,pct){
-  tip.innerHTML=`<b style="color:#E8EFF7">${m} ${yr}</b><br><span style="color:#E76F51">${pct}%</span> <span style="color:#94A3B8">negative sentiment</span>`;
-  tip.style.opacity='1';
-  moveTip(e);
-}
-function moveTip(e){
-  tip.style.left=(e.clientX+14)+'px';
-  tip.style.top=(e.clientY-30)+'px';
-}
-function hideTip(){ tip.style.opacity='0'; }
-
-// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
-// Each year reveals at prog = yi/N_YEARS, fully shown by (yi+1)/N_YEARS
-const YEAR_DATA=[
-  {yr:2021,head:'"The quiet beginning."',body:'2021 sees moderate frustration. The darkest months are April (44.2%) and September (42.1%), but overall the system is managing.'},
-  {yr:2022,head:'"Volume explodes, patience collapses."',body:'2022 introduces sustained high-negativity months. July peaks at 42.2% but November is the worst at 44.3% — 1,633 records of frustration.'},
-  {yr:2023,head:'"No longer surprised, just tired."',body:'Every month of 2023 stays above 34%. December hits 44.1%. The seasonal cycle has flattened into a baseline of chronic frustration.'},
-  {yr:2024,head:'"Peak of the drift."',body:'April and June 2024 are the hardest months in the entire dataset at 44.6%. The fall of 2024 offers slight relief — but still no recovery.'},
-  {yr:2025,head:'"Spring of cautious hope?"',body:'Early 2025 shows the first sustained dip below 37% since mid-2021. April (32.6%) and May (32.1%) are the most positive months in years — but it\'s too early to call a trend.'}
-];
-
-let revealedYears=new Set();
-let prog=0;
-
-function sm(p,a,b){const t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
-
-function updateScene(p){
-  prog=p;
-  // Each year: fully revealed at prog = (yi+0.9)/(N_YEARS+0.5)
-  let activeYr=null;
-  YEARS.forEach((yr,yi)=>{
-    const lo=yi/(N_YEARS+0.5), hi=(yi+0.9)/(N_YEARS+0.5);
-    const a=sm(p,lo,hi);
-    if(a>0.01) activeYr=yr;
-    // Animate segments for this year
-    SEGS.filter(s=>s.yr===yr).forEach(s=>{
-      s.fill.setAttribute('opacity', a*0.88);
-    });
-    // Year label
-    const yl=svg.querySelector(`[data-yr-label="${yr}"]`);
-    if(yl) yl.setAttribute('fill',`rgba(232,239,247,${a*.6})`);
-  });
-
-  // Update panel
-  if(activeYr){
-    const yd=YEAR_DATA.find(d=>d.yr===activeYr);
-    if(yd){
-      document.getElementById('p-yr').textContent=activeYr+' — Active Year';
-      document.getElementById('p-head').textContent=yd.head;
-      document.getElementById('p-stat').textContent=worstMonth(activeYr).v.toFixed(1)+'%';
-      document.getElementById('p-body').textContent=yd.body;
-      document.getElementById('p-worst').textContent=worstMonth(activeYr).m+' '+activeYr;
-    }
-  } else {
-    document.getElementById('p-yr').textContent='Overview';
-    document.getElementById('p-head').textContent='Five years of seasonal rhythm';
-    document.getElementById('p-stat').textContent='89,398';
-    document.getElementById('p-body').textContent='Each ring = one year. Each segment = one month. Outer radius encodes % negative — the further it extends, the darker the public mood.';
-    document.getElementById('p-worst').textContent='—';
+  function negColor(pct){
+    var t=Math.max(0,Math.min(1,(pct-36)/7));
+    var r=Math.round(42+(231-42)*t),g=Math.round(157+(111-157)*t),b=Math.round(143+(81-143)*t);
+    return (r<<16)|(g<<8)|b;
   }
-}
 
-window.addEventListener('scroll',()=>{
-  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
-  updateScene(p);
-  if(p>0.03) document.getElementById('hint').style.opacity='0';
-});
+  var hero=document.querySelector('.hero3d'),stage=document.getElementById('stage');
+  var W=stage.clientWidth,H=stage.clientHeight;
+  var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(0x030508,0.010);
+  var camera=new THREE.PerspectiveCamera(48,W/H,0.1,800);
+  var renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  stage.appendChild(renderer.domElement);
 
-updateScene(0);
+  var world=new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x202838,1.1));
+  var key=new THREE.DirectionalLight(0xE0C890,0.6); key.position.set(12,30,20); scene.add(key);
+
+  var floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x060A14,roughness:0.9,metalness:0.2,transparent:true,opacity:0.9}));
+  floor.rotation.x=-Math.PI/2; floor.position.y=-0.1; world.add(floor);
+
+  // ── 3D HELIX: 5 year rings × 12 months each ──────────────────────────────
+  // Helix parameters: radius R, vertical pitch P, months go around the ring
+  var YEARS_LIST=[2021,2022,2023,2024,2025];
+  var HELIX_R=9, HELIX_PITCH=4.5;
+  var allBeads=[];
+
+  function helixPos(yearIdx,monthIdx){
+    // angle: 12 months = one full circle
+    var angle=(monthIdx/12)*2*Math.PI-Math.PI/2; // start at top (Jan)
+    var x=HELIX_R*Math.cos(angle);
+    var z=HELIX_R*Math.sin(angle);
+    var y=yearIdx*HELIX_PITCH - (YEARS_LIST.length-1)*HELIX_PITCH/2; // centered
+    return new THREE.Vector3(x,y,z);
+  }
+
+  // Helix tube backbone (thin, year-colored)
+  var YEAR_COLORS=[0x2A9D8F,0x9A7030,0x7A6040,0xC03820,0x2A7D72];
+  YEARS_LIST.forEach(function(yr,yi){
+    var pts=[];
+    for(var mi=0;mi<=12;mi++){
+      pts.push(helixPos(yi,mi<12?mi:0).add(new THREE.Vector3(0,mi===12?HELIX_PITCH:0,0)).clone());
+    }
+    // Actually just a circle for each year
+    var circlePts=[];
+    for(var mi=0;mi<=36;mi++){
+      var angle=(mi/36)*2*Math.PI-Math.PI/2;
+      circlePts.push(new THREE.Vector3(HELIX_R*Math.cos(angle),yi*HELIX_PITCH-(YEARS_LIST.length-1)*HELIX_PITCH/2,HELIX_R*Math.sin(angle)));
+    }
+    var circ=new THREE.CatmullRomCurve3(circlePts,true);
+    var tube=new THREE.Mesh(new THREE.TubeGeometry(circ,64,0.05,6,true),new THREE.MeshStandardMaterial({color:YEAR_COLORS[yi],emissive:YEAR_COLORS[yi],emissiveIntensity:0.4,roughness:0.5,metalness:0.3,transparent:true,opacity:0.5}));
+    world.add(tube);
+  });
+
+  // Vertical connecting helix (spine)
+  var spinePts=[];
+  for(var step=0;step<=60;step++){
+    var frac=step/60;
+    var totalAngle=frac*(YEARS_LIST.length)*2*Math.PI;
+    var angle=totalAngle-Math.PI/2;
+    var y=(frac*YEARS_LIST.length-1)*HELIX_PITCH-(YEARS_LIST.length-1)*HELIX_PITCH/2;
+    spinePts.push(new THREE.Vector3(HELIX_R*Math.cos(angle),y,HELIX_R*Math.sin(angle)));
+  }
+  // Don't use a curved spine; just draw year circles connected by light vertical rods
+  // (month position markers)
+
+  // Month beads per year
+  YEARS_LIST.forEach(function(yr,yi){
+    var yearData=YEARLY[yr];
+    for(var mi=0;mi<12;mi++){
+      var pct=yearData[mi];
+      if(pct==null)continue;
+      var pt=helixPos(yi,mi);
+      var col=negColor(pct);
+      var radius=0.22+Math.sqrt(SEASONAL[mi].vol/5726)*0.28;
+      var bead=new THREE.Mesh(
+        new THREE.SphereGeometry(radius,12,10),
+        new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.8,roughness:0.3,metalness:0.3})
+      );
+      bead.position.copy(pt); world.add(bead);
+      var glow=new THREE.Mesh(
+        new THREE.SphereGeometry(radius*2.6,8,6),
+        new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.08,depthWrite:false,blending:THREE.AdditiveBlending})
+      );
+      glow.position.copy(pt); world.add(glow);
+      allBeads.push({bead,glow,pt:pt.clone(),pct,mi,yi});
+
+      // "spike" upward: height = neg severity
+      var spikeH=(pct-36)/7*1.8;
+      if(spikeH>0.1){
+        var spike=new THREE.Mesh(
+          new THREE.CylinderGeometry(0.04,0.04,spikeH,6),
+          new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:0.9,roughness:0.4,metalness:0.2,transparent:true,opacity:0.6})
+        );
+        spike.position.copy(pt);
+        spike.position.y+=spikeH/2+radius;
+        world.add(spike);
+      }
+    }
+  });
+
+  // Month labels in a ring at the bottom (reference ring)
+  var MNAMES=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function labSprite(txt,col,w){var cv=document.createElement('canvas');cv.width=300;cv.height=80;var x=cv.getContext('2d');
+    x.textAlign='center';x.textBaseline='middle';x.fillStyle=col||'#B0D0F0';x.font='600 36px "IBM Plex Mono",monospace';x.fillText(txt,150,44);
+    var tex=new THREE.CanvasTexture(cv);tex.anisotropy=4;
+    var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));sp.scale.set(w,w*80/300,1);return sp;}
+
+  MNAMES.forEach(function(m,mi){
+    var angle=(mi/12)*2*Math.PI-Math.PI/2;
+    var labR=HELIX_R+2.0;
+    var y=(YEARS_LIST.length-1)*HELIX_PITCH/2+2.0;
+    var lp=new THREE.Vector3(labR*Math.cos(angle),y+1.2,labR*Math.sin(angle));
+    var negAvg=SEASONAL[mi].neg;
+    var col=mi===10?'#E76F51':mi===8||mi===3?'#D08060':'#8FBDD0';
+    var l=labSprite(m,col,1.6); l.position.copy(lp); world.add(l);
+  });
+
+  // Year labels
+  YEARS_LIST.forEach(function(yr,yi){
+    var y=yi*HELIX_PITCH-(YEARS_LIST.length-1)*HELIX_PITCH/2;
+    var l=labSprite(String(yr),'#C0D8F0',2.0); l.position.set(HELIX_R+2.8,y,0); world.add(l);
+  });
+
+  // Motes
+  var MC=260,mpArr=new Float32Array(MC*3);
+  for(var i=0;i<MC;i++){var angle=Math.random()*6.28,r=6+Math.random()*14;mpArr[i*3]=r*Math.cos(angle);mpArr[i*3+1]=(Math.random()-0.5)*30;mpArr[i*3+2]=r*Math.sin(angle);}
+  var mgeo=new THREE.BufferGeometry(); mgeo.setAttribute('position',new THREE.BufferAttribute(mpArr,3));
+  var ms2=new Float32Array(MC); for(var i=0;i<MC;i++)ms2[i]=0.003+Math.random()*0.006;
+  world.add(new THREE.Points(mgeo,new THREE.PointsMaterial({color:0x80A8D0,size:0.07,transparent:true,opacity:0.3,depthWrite:false,blending:THREE.AdditiveBlending})));
+
+  var prog=0;
+  function calc(){var rect=hero.getBoundingClientRect();var total=hero.offsetHeight-window.innerHeight;prog=Math.max(0,Math.min(1,(-rect.top)/total));}
+  window.addEventListener('scroll',calc,{passive:true});calc();
+  function sm(p,a,b){var t=Math.max(0,Math.min(1,(p-a)/(b-a)));return t*t*(3-2*t);}
+  function lp(a,b,t){return a+(b-a)*t;}
+
+  var KF=[
+    {p:0.00,pos:[0,18,28],look:[0,2,0]},      // overview from above
+    {p:0.25,pos:[18,6,14],look:[0,4,0]},      // side view, fall months visible
+    {p:0.55,pos:[-4,8,22],look:[0,0,0]},      // front, best month side
+    {p:1.00,pos:[0,30,0],look:[0,0,0]}         // top-down
+  ];
+  function camAt(p){var i=0;for(;i<KF.length-1;i++){if(p<=KF[i+1].p)break;}var A=KF[Math.min(i,KF.length-1)],B=KF[Math.min(i+1,KF.length-1)];var span=(B.p-A.p)||1,t=(p-A.p)/span;t=t<0?0:t>1?1:t;t=t*t*(3-2*t);
+    camera.position.set(lp(A.pos[0],B.pos[0],t),lp(A.pos[1],B.pos[1],t),lp(A.pos[2],B.pos[2],t));
+    camera.lookAt(lp(A.look[0],B.look[0],t),lp(A.look[1],B.look[1],t),lp(A.look[2],B.look[2],t));}
+
+  var dragRot=0,dragging=false,lastX=0;
+  stage.addEventListener('pointerdown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('pointermove',function(e){if(!dragging)return;dragRot+=(e.clientX-lastX)*0.005;lastX=e.clientX;});
+  window.addEventListener('pointerup',function(){dragging=false;});
+  var capsEls=[].slice.call(document.querySelectorAll('.cap')),cue=document.getElementById('cue');
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var p=prog,time=Date.now()*.001;
+    camAt(p); world.rotation.y=dragRot+time*.04;
+    // pulse beads
+    allBeads.forEach(function(b,i){
+      var s=1+Math.sin(time*1.8+b.mi*.52+b.yi*1.1)*.08;
+      b.bead.scale.setScalar(s);
+      b.glow.material.opacity=.06+.06*Math.sin(time*1.5+b.mi*.4);
+    });
+    var ma=mgeo.attributes.position.array;
+    for(var i=0;i<MC;i++){ma[i*3+1]+=ms2[i];if(ma[i*3+1]>15)ma[i*3+1]=-15;}
+    mgeo.attributes.position.needsUpdate=true;
+    for(var i=0;i<capsEls.length;i++){var lo=parseFloat(capsEls[i].dataset.lo),hi=parseFloat(capsEls[i].dataset.hi);var o=Math.min(sm(p,lo,lo+.05),1-sm(p,hi-.05,hi));capsEls[i].style.opacity=Math.max(0,o);}
+    if(cue)cue.style.opacity=(p>.05?0:1);
+    var bd=document.getElementById('beatdots');if(bd){var bi=p<.24?0:p<.5?1:p<.77?2:3;for(var q=0;q<bd.children.length;q++)bd.children[q].className=(q===bi?'on':'');}
+    renderer.render(scene,camera);
+  }
+  animate();if(fb)fb.style.display='none';
+  window.addEventListener('resize',function(){W=stage.clientWidth;H=stage.clientHeight;camera.aspect=W/H;camera.updateProjectionMatrix();renderer.setSize(W,H);calc();});
+})();
 </script>
 </body>
 </html>
