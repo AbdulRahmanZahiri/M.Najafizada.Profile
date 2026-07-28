@@ -31,3 +31,4 @@ npm-debug.log*
 # Claude Code internal
 .sixth/
 .github/
+*.csv
