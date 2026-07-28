@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Canadian Primary Care — Reddit Discourse Dashboard v3 · n = 56,907</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --display:"Space Grotesk",system-ui,sans-serif;
+  --body:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --ink:#16211F;--paper:#FBFAF7;--muted:#65665E;
+  --coral:#D85A30;--coral2:#A23E1C;--teal:#2E7D72;--teal2:#1A5248;
+  --gold:#C8902B;--gold2:#8A6010;
+  --purple:#7B4FA0;--blue:#2A6AAD;
+  --line:#E6E4DC;--track:#EEEDE5;
+  --nav-bg:#0B1F1A;--nav-h:54px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;padding-top:var(--nav-h)}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--nav-bg);z-index:100;display:flex;align-items:center;gap:0;overflow-x:auto;border-bottom:2px solid var(--teal)}
+.nav-brand{padding:0 20px;font-family:var(--mono);font-size:11px;font-weight:600;color:#7ABFB0;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;border-right:1px solid rgba(255,255,255,.1)}
+.nav-tab{padding:0 18px;height:var(--nav-h);display:flex;align-items:center;font-family:var(--mono);font-size:11.5px;font-weight:500;color:#8BAAA5;cursor:pointer;border:none;background:none;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .2s,border-color .2s;letter-spacing:.04em}
+.nav-tab:hover{color:#D8EDE8}
+.nav-tab.active{color:#2A9D8F;border-bottom-color:#2A9D8F}
+.nav-num{font-size:9px;color:#4A7A72;margin-right:5px}
+
+/* ── PAGES ── */
+.page{display:none;min-height:calc(100vh - var(--nav-h))}
+.page.active{display:block}
+
+/* ── SHARED ── */
+.wrap{max-width:960px;margin:0 auto;padding:0 28px}
+.wrap-wide{max-width:1140px;margin:0 auto;padding:0 28px}
+.ph{padding:48px 0 12px}
+.ph .sk{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.ph h2{font-family:var(--display);font-weight:600;font-size:28px;letter-spacing:-.02em;line-height:1.1;margin:0 0 16px}
+.ph p{font-size:17px;line-height:1.7;margin:0 0 14px;color:#2A3530}
+.section-div{border-top:1px solid var(--line);margin-top:40px}
+
+/* ── PAGE HERO ── */
+.phero{background:linear-gradient(135deg,#07161A 0%,#0B1F18 60%,#060E14 100%);color:#EDF2F0;padding:40px 0 36px;border-bottom:3px solid var(--teal)}
+.phero .sk{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#7ABFB0;margin-bottom:12px}
+.phero h1{font-family:var(--display);font-weight:700;font-size:44px;letter-spacing:-.03em;line-height:.96;margin-bottom:14px}
+.phero .dek{font-size:18px;line-height:1.55;color:#C8DDD8;max-width:680px}
+
+/* ── STAT CARDS ── */
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0}
+.scard{border:1px solid var(--line);border-radius:14px;padding:20px 22px;background:#fff}
+.scard .sv{font-family:var(--display);font-weight:700;font-size:36px;letter-spacing:-.03em;line-height:1;margin-bottom:4px}
+.scard .sl{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.scard .sd{font-size:14px;color:var(--muted);margin-top:5px;line-height:1.4}
+.scard.coral .sv{color:var(--coral)}
+.scard.teal .sv{color:var(--teal)}
+.scard.gold .sv{color:var(--gold)}
+.scard.blue .sv{color:var(--blue)}
+.scard.purple .sv{color:var(--purple)}
+
+/* ── TABLES ── */
+.dtable{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;margin:14px 0}
+.dtable th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.dtable td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.dtable tr:last-child td{border:none}
+.dtable tr:hover td{background:#F8F7F2}
+.bar-cell{width:120px}
+.minibar{height:8px;background:var(--track);border-radius:4px;overflow:hidden}
+.minifill{height:100%;border-radius:4px}
+
+/* ── FIND CALLOUTS ── */
+.finding{background:linear-gradient(135deg,#F4FCF8,#EEF8F4);border:1px solid #B8E8C8;border-radius:14px;padding:20px 24px;margin:18px 0}
+.finding .ftag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.finding h3{font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:-.01em;margin:0 0 8px}
+.finding p{font-size:15px;line-height:1.6;margin:0}
+.finding.coral{background:linear-gradient(135deg,#FFF5F2,#FFEDEA);border-color:#F5C8C0}
+.finding.coral .ftag{color:var(--coral2)}
+.finding.gold{background:linear-gradient(135deg,#FFFBF0,#FFF5DC);border-color:#F0D8A0}
+.finding.gold .ftag{color:var(--gold2)}
+
+/* ── SVG CHARTS ── */
+.chart-wrap{margin:20px 0;overflow-x:auto}
+svg.chart{display:block;overflow:visible}
+.axis-label{font-family:var(--mono);font-size:10px;fill:#8A8A80}
+.bar-label{font-family:var(--mono);font-size:9.5px;fill:#5A5A50}
+.chart-title{font-family:var(--display);font-weight:600;font-size:13px;fill:#16211F}
+
+/* ── TOPIC BUBBLES ── */
+.bubble-wrap{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0;align-items:flex-end}
+.bubble{border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;transition:transform .2s}
+.bubble:hover{transform:scale(1.05)}
+.bubble .bn{font-family:var(--display);font-weight:700;color:#fff;line-height:1}
+.bubble .bl{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.8);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── PROVINCE BARS ── */
+.provgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0}
+@media(max-width:700px){.provgrid{grid-template-columns:1fr}}
+.provrow{display:flex;align-items:center;gap:10px;margin:6px 0}
+.provlabel{font-family:var(--mono);font-size:12px;font-weight:600;width:32px;color:var(--ink)}
+.provbar-wrap{flex:1;height:20px;background:var(--track);border-radius:6px;overflow:hidden}
+.provbar{height:100%;border-radius:6px;transition:width 1s ease}
+.provval{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:50px}
+
+/* ── 4C ── */
+.fourC-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+@media(max-width:720px){.fourC-grid{grid-template-columns:1fr 1fr}}
+.fourC-card{border-radius:14px;padding:20px;border:1px solid var(--line);text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;display:block;color:inherit}
+.fourC-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.fourC-card .fc-pct{font-family:var(--display);font-weight:700;font-size:38px;letter-spacing:-.03em;line-height:1}
+.fourC-card .fc-label{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin:6px 0 8px}
+.fourC-card .fc-n{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.fourC-card .fc-desc{font-size:13px;line-height:1.5;color:#2A3530;margin-top:8px}
+.fc-access{background:#FFF5F2;border-color:#F5C8C0}.fc-access .fc-pct{color:var(--coral)}.fc-access .fc-label{color:var(--coral2)}
+.fc-comp{background:#F4FCF8;border-color:#B8E8C8}.fc-comp .fc-pct{color:var(--teal)}.fc-comp .fc-label{color:var(--teal2)}
+.fc-coord{background:#FFFBF0;border-color:#F0D890}.fc-coord .fc-pct{color:var(--gold)}.fc-coord .fc-label{color:var(--gold2)}
+.fc-cont{background:#F4F0FF;border-color:#D0C0F8}.fc-cont .fc-pct{color:var(--purple)}.fc-cont .fc-label{color:#5A2C80}
+
+/* ── METHOD ── */
+.method-block{border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin:14px 0}
+.method-block h3{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.01em;margin:0 0 10px}
+.method-block p{font-size:15px;line-height:1.65;margin:0 0 10px;color:#2A3530}
+.method-block p:last-child{margin:0}
+.method-block code{font-family:var(--mono);font-size:12.5px;background:#F2F0EA;padding:1px 5px;border-radius:3px}
+
+.foot{border-top:1px solid var(--line);padding:28px 0 60px;margin-top:40px}
+.foot p{font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--muted)}
+.foot p b{color:var(--ink)}
+
+@media(max-width:620px){
+  .phero h1{font-size:30px}.statgrid{grid-template-columns:1fr 1fr}
+  .fourC-grid{grid-template-columns:1fr 1fr}.scard .sv{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="nav-brand">Primary Care · Reddit · v3 · n=56,907</div>
+  <button class="nav-tab active" onclick="showPage(0)"><span class="nav-num">01</span>Overview</button>
+  <button class="nav-tab" onclick="showPage(1)"><span class="nav-num">02</span>Geography</button>
+  <button class="nav-tab" onclick="showPage(2)"><span class="nav-num">03</span>Sentiment</button>
+  <button class="nav-tab" onclick="showPage(3)"><span class="nav-num">04</span>Topics</button>
+  <button class="nav-tab" onclick="showPage(4)"><span class="nav-num">05</span>4C Journey</button>
+  <button class="nav-tab" onclick="showPage(5)"><span class="nav-num">06</span>About & Method</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 1 · OVERVIEW
+════════════════════════════════════════════════════════════ -->
+<div class="page active" id="p0">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">Canadian Primary Care · Reddit Discourse · Version 3 · July 2026</div>
+      <h1>Overview</h1>
+      <p class="dek">56,907 posts and comments from Canadian primary care discussions on Reddit, spanning January 2021 to August 2025. Every record analysed for sentiment, geography, terms, and thematic content.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Corpus at a glance</div>
+      <h2>56,907 posts and comments · 55 months · 100% English</h2>
+    </div>
+
+    <div class="statgrid">
+      <div class="scard teal"><div class="sv">56,907</div><div class="sl">Total Records</div><div class="sd">Posts + comments, Jan 2021 – Aug 2025</div></div>
+      <div class="scard coral"><div class="sv">28,133</div><div class="sl">Top-Level Posts</div><div class="sd">49.4% of corpus — original threads</div></div>
+      <div class="scard blue"><div class="sv">28,774</div><div class="sl">Comments</div><div class="sd">50.6% — replies within threads</div></div>
+      <div class="scard gold"><div class="sv">55</div><div class="sl">Months Covered</div><div class="sd">Jan 2021 – Aug 2025 (1 gap: Sep 2022)</div></div>
+      <div class="scard"><div class="sv">156</div><div class="sl">Avg Words / Record</div><div class="sd">Median 86 words; max 7,447</div></div>
+      <div class="scard purple"><div class="sv">13.1</div><div class="sl">Avg Engagement Score</div><div class="sd">Top post: 9,284 upvotes</div></div>
+    </div>
+
+    <!-- Volume by year -->
+    <div class="ph section-div">
+      <div class="sk">Volume Growth</div>
+      <h2>Posts and comments per year — 2021 to 2025</h2>
+      <p>Volume has grown every year since 2021, with 2024 the largest at 16,694 records. The dataset covers January–August of 2025 only.</p>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart" width="680" height="260" viewBox="0 0 680 260">
+        <!-- Y axis labels -->
+        <text x="38" y="30" class="axis-label" text-anchor="end">18k</text>
+        <text x="38" y="80" class="axis-label" text-anchor="end">12k</text>
+        <text x="38" y="130" class="axis-label" text-anchor="end">6k</text>
+        <text x="38" y="180" class="axis-label" text-anchor="end">0</text>
+        <!-- Grid lines -->
+        <line x1="44" y1="28" x2="660" y2="28" stroke="#E6E4DC" stroke-width="1"/>
+        <line x1="44" y1="78" x2="660" y2="78" stroke="#E6E4DC" stroke-width="1"/>
+        <line x1="44" y1="128" x2="660" y2="128" stroke="#E6E4DC" stroke-width="1"/>
+        <line x1="44" y1="178" x2="660" y2="178" stroke="#2E7D72" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- Bars: max=16694, scale to 150px height -->
+        <!-- 2021: 7056 → 7056/16694*150=63.4 -->
+        <rect x="60" y="114" width="80" height="63" fill="#2E7D72" rx="5"/>
+        <text x="100" y="107" class="axis-label" text-anchor="middle" font-weight="600" fill="#2E7D72">7,056</text>
+        <text x="100" y="196" class="axis-label" text-anchor="middle">2021</text>
+        <!-- 2022: 10160 → 91.2 -->
+        <rect x="172" y="87" width="80" height="91" fill="#5AA090" rx="5"/>
+        <text x="212" y="80" class="axis-label" text-anchor="middle" font-weight="600" fill="#5AA090">10,160</text>
+        <text x="212" y="196" class="axis-label" text-anchor="middle">2022</text>
+        <!-- 2023: 12467 → 112.0 -->
+        <rect x="284" y="66" width="80" height="112" fill="#C8902B" rx="5"/>
+        <text x="324" y="59" class="axis-label" text-anchor="middle" font-weight="600" fill="#C8902B">12,467</text>
+        <text x="324" y="196" class="axis-label" text-anchor="middle">2023</text>
+        <!-- 2024: 16694 → 150 -->
+        <rect x="396" y="28" width="80" height="150" fill="#D85A30" rx="5"/>
+        <text x="436" y="21" class="axis-label" text-anchor="middle" font-weight="600" fill="#D85A30">16,694</text>
+        <text x="436" y="196" class="axis-label" text-anchor="middle">2024</text>
+        <!-- 2025: 10530 (Jan-Aug) → 94.5 -->
+        <rect x="508" y="84" width="80" height="94" fill="#7B4FA0" rx="5"/>
+        <text x="548" y="77" class="axis-label" text-anchor="middle" font-weight="600" fill="#7B4FA0">10,530</text>
+        <text x="548" y="196" class="axis-label" text-anchor="middle">2025*</text>
+        <text x="548" y="210" class="axis-label" text-anchor="middle" fill="#9A9A90">Jan–Aug</text>
+        <!-- Axis -->
+        <line x1="44" y1="178" x2="660" y2="178" stroke="#C8C6BE" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- Key findings -->
+    <div class="ph section-div">
+      <div class="sk">Key Findings</div>
+      <h2>What the data says at the highest level</h2>
+    </div>
+
+    <div class="finding">
+      <div class="ftag">Finding 1 · Access dominates</div>
+      <h3>81% of records touch Contact/Access — finding a family doctor is the central concern</h3>
+      <p>Of 56,907 records, 46,438 (81.6%) include at least one Contact/Access term. The remaining 19% address Comprehensiveness (15%), Coordination (8%), or Continuity (7%). The distribution reflects a system where the primary problem is getting in the door.</p>
+    </div>
+    <div class="finding coral">
+      <div class="ftag">Finding 2 · Cost & Walk-in tie at #1 topic</div>
+      <h3>37% of records discuss cost or billing; 37% discuss walk-in or urgent care</h3>
+      <p>These are the two largest thematic clusters — equal in size and deeply linked. Walk-in visits are often the entry point to private or out-of-pocket cost. 29% discuss access and waitlists directly; 23% discuss system-level reform.</p>
+    </div>
+    <div class="finding gold">
+      <div class="ftag">Finding 3 · Sentiment improved in 2025</div>
+      <h3>Average compound sentiment rose from −0.203 (2024) to +0.274 in 2025</h3>
+      <p>After peaking in negativity in late 2022 (avg compound 0.160 in October), the discourse has slowly improved. April and May 2025 show the lowest negativity percentages of the entire 55-month dataset: 27.0% and 25.7% respectively.</p>
+    </div>
+
+    <!-- Monthly sparkline -->
+    <div class="ph section-div">
+      <div class="sk">Monthly Volume Trend</div>
+      <h2>Record count per month · Jan 2021 – Aug 2025</h2>
+    </div>
+    <div class="chart-wrap">
+      <svg class="chart" id="sparkline" width="900" height="130" viewBox="0 0 900 130"></svg>
+    </div>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>Data.</b> Reddit Canadian primary care subreddits · v3 dataset · n = 56,907 posts and comments · Jan 2021 – Aug 2025. One collection gap: September 2022 (no records in source file). Memorial University Faculty of Medicine.</p>
+  </div></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 2 · GEOGRAPHY
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="p1">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">Geographic Distribution · Subreddit + Text-Inferred Location</div>
+      <h1>Geography</h1>
+      <p class="dek">Province and city-level distribution of 56,907 records, inferred from subreddit membership and text signals. Nova Scotia has the highest per-capita rate. Ontario dominates raw counts. Manitoba and New Brunswick are severely under-represented.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Important caveat</div>
+      <h2>Two types of geographic signal</h2>
+      <p>Records are classified as <b>strong_subreddit</b> (36,630 — from a Canada-specific provincial/city subreddit) or <b>weak_canada_confirmed</b> (20,277 — text mentions Canada but subreddit is ambiguous). City-level figures are subreddit-inferred and over-represent cities with active healthcare subreddits. They indicate where the conversation is happening online, not necessarily where all patients live.</p>
+    </div>
+
+    <!-- Province raw counts -->
+    <div class="ph section-div">
+      <div class="sk">Raw Volume by Province</div>
+      <h2>Posts and comments by inferred province</h2>
+    </div>
+    <div id="prov-raw-chart"></div>
+
+    <!-- Province table -->
+    <table class="dtable" style="margin-top:20px">
+      <thead>
+        <tr>
+          <th>Province</th><th>Raw Records</th><th>Pop (100k)</th><th>Per 100k</th><th>Neg %</th><th>Avg Compound</th><th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#F8FCF4">
+          <td><b>NS</b> Nova Scotia</td><td>3,656</td><td>9.79</td>
+          <td style="font-weight:700;color:#1E6A60">373</td>
+          <td>27.5%</td><td style="color:#2E7D72">+0.245</td>
+          <td><span style="font-size:10.5px;font-family:var(--mono);background:#D8F4EE;color:#1E6A60;padding:2px 7px;border-radius:99px">Per-capita #1 — Halifax subreddit</span></td>
+        </tr>
+        <tr>
+          <td><b>AB</b> Alberta</td><td>5,625</td><td>44.28</td>
+          <td style="color:#2E7D72">127</td>
+          <td>28.7%</td><td style="color:#2E7D72">+0.250</td><td style="font-size:12px;font-family:var(--mono);color:var(--muted)">Edmonton + Calgary sub-cities</td>
+        </tr>
+        <tr>
+          <td><b>MB</b> Manitoba</td><td>1,630</td><td>13.80</td>
+          <td style="color:#5A8060">118</td>
+          <td>23.5%</td><td style="color:#2E7D72">+0.309</td><td style="font-size:12px;font-family:var(--mono);color:var(--muted)">Mostly Winnipeg subreddit</td>
+        </tr>
+        <tr>
+          <td><b>NL</b> Newfoundland</td><td>607</td><td>5.21</td>
+          <td style="color:#5A8060">117</td>
+          <td>30.1%</td><td style="color:#5A7040">+0.225</td><td style="font-size:12px;font-family:var(--mono);color:var(--muted)">Highest negativity of mid-tier provinces</td>
+        </tr>
+        <tr>
+          <td><b>ON</b> Ontario</td><td>14,561</td><td>148.26</td>
+          <td style="color:#8A8070">98</td>
+          <td>31.7%</td><td style="color:#8A7050">+0.190</td>
+          <td><span style="font-size:10.5px;font-family:var(--mono);background:#FFF0EC;color:#7A4020;padding:2px 7px;border-radius:99px">Largest raw · most negative</span></td>
+        </tr>
+        <tr>
+          <td><b>BC</b> British Columbia</td><td>4,884</td><td>53.11</td>
+          <td style="color:#8A8070">92</td>
+          <td>27.0%</td><td style="color:#2E7D72">+0.265</td><td style="font-size:12px;font-family:var(--mono);color:var(--muted)">Vancouver drives most of volume</td>
+        </tr>
+        <tr>
+          <td><b>SK</b> Saskatchewan</td><td>442</td><td>11.94</td>
+          <td style="color:#A06040">37</td>
+          <td>29.4%</td><td style="color:#8A7050">+0.239</td><td style="font-size:12px;font-family:var(--mono);color:var(--muted)">Low participation rate</td>
+        </tr>
+        <tr style="background:#FFF5F2">
+          <td><b>NB</b> New Brunswick</td><td>2</td><td>8.36</td>
+          <td style="font-weight:700;color:#A03820">&lt;1</td>
+          <td>100%</td><td style="color:#A03820">−0.764</td>
+          <td><span style="font-size:10.5px;font-family:var(--mono);background:#FDE8E2;color:#A03820;padding:2px 7px;border-radius:99px">Near-zero — structural exclusion</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px">Pop figures from 2021 Census. Per-capita = province records ÷ (population / 100,000). Includes city-tagged records mapped to province.</p>
+
+    <!-- City breakdown -->
+    <div class="ph section-div">
+      <div class="sk">City-Level Breakdown</div>
+      <h2>Top cities by inferred subreddit</h2>
+    </div>
+    <table class="dtable">
+      <thead><tr><th>City</th><th>Records</th><th>Province</th><th>% of Province</th><th>Sentiment Avg</th></tr></thead>
+      <tbody>
+        <tr><td><b>Ottawa</b></td><td>4,024</td><td>ON</td><td>27.6%</td><td style="color:#2E7D72">+0.23</td></tr>
+        <tr><td><b>Vancouver</b></td><td>2,762</td><td>BC</td><td>56.6%</td><td style="color:#2E7D72">+0.26</td></tr>
+        <tr><td><b>Halifax</b></td><td>2,613</td><td>NS</td><td>71.5%</td><td style="color:#2E7D72">+0.24</td></tr>
+        <tr><td><b>Edmonton</b></td><td>1,574</td><td>AB</td><td>28.0%</td><td style="color:#5A7040">+0.25</td></tr>
+        <tr><td><b>Calgary</b></td><td>1,510</td><td>AB</td><td>26.8%</td><td style="color:#5A7040">+0.25</td></tr>
+        <tr><td><b>Winnipeg</b></td><td>1,499</td><td>MB</td><td>91.9%</td><td style="color:#2E7D72">+0.31</td></tr>
+        <tr><td><b>Toronto</b></td><td>1,089</td><td>ON</td><td>7.5%</td><td style="color:#8A7050">+0.19</td></tr>
+        <tr><td><b>Newfoundland</b></td><td>607</td><td>NL</td><td>100%</td><td style="color:#5A7040">+0.23</td></tr>
+        <tr><td><b>Saskatchewan</b></td><td>442</td><td>SK</td><td>100%</td><td style="color:#5A7040">+0.24</td></tr>
+        <tr><td><b>Ask Canada</b></td><td>467</td><td>National</td><td>—</td><td style="color:#5A7040">+0.23</td></tr>
+      </tbody>
+    </table>
+
+    <div class="finding">
+      <div class="ftag">Geographic Key Finding</div>
+      <h3>Nova Scotia at 373/100k — driven by an active Halifax healthcare subreddit</h3>
+      <p>Halifax contributes 2,613 records — 71.5% of all Nova Scotia records. This high concentration reflects an active local subreddit, not necessarily worse health outcomes. Ontario's 98/100k is close to national proportionality. Saskatchewan (37/100k) and especially New Brunswick (near-zero) are structurally excluded from the online discourse, even though both provinces face serious primary care access challenges.</p>
+    </div>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>Geography note.</b> Location is subreddit-inferred (strong signal: 36,630 records) or text-inferred (weak signal: 20,277). The 20,277 weak-signal records tagged "Canada-unknown" are excluded from province analysis. City data reflects subreddit membership, not verified residence.</p>
+  </div></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 3 · SENTIMENT
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="p2">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">VADER Sentiment Analysis · Compound Score + Negativity %</div>
+      <h1>Sentiment</h1>
+      <p class="dek">Every record scored with VADER (Valence Aware Dictionary and sEntiment Reasoner). The compound score runs from −1 (most negative) to +1 (most positive). Negativity peaked in late 2022 and has partially recovered through 2025.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Yearly Summary</div>
+      <h2>Year-over-year sentiment trajectory</h2>
+    </div>
+    <div class="statgrid">
+      <div class="scard teal"><div class="sv">+0.266</div><div class="sl">2021 avg compound</div><div class="sd">27.4% negative · most optimistic year</div></div>
+      <div class="scard coral"><div class="sv">+0.213</div><div class="sl">2022 avg compound</div><div class="sd">31.4% negative · sharp drop</div></div>
+      <div class="scard coral"><div class="sv">+0.224</div><div class="sl">2023 avg compound</div><div class="sd">31.0% negative · plateau</div></div>
+      <div class="scard coral"><div class="sv">+0.203</div><div class="sl">2024 avg compound</div><div class="sd">32.3% negative · lowest point</div></div>
+      <div class="scard teal"><div class="sv">+0.274</div><div class="sl">2025 avg compound</div><div class="sd">29.0% negative · recovery signal</div></div>
+    </div>
+
+    <!-- Monthly compound chart -->
+    <div class="ph section-div">
+      <div class="sk">Monthly Compound Score</div>
+      <h2>VADER average compound score · all 55 months (Sep 2022 gap noted)</h2>
+      <p>Higher = more positive discourse overall. The dashed line marks the overall mean (approx +0.237). Values below it represent months where frustration dominated.</p>
+    </div>
+    <div class="chart-wrap"><svg class="chart" id="compound-chart" width="860" height="200" viewBox="0 0 860 200"></svg></div>
+
+    <!-- Monthly negativity chart -->
+    <div class="ph section-div">
+      <div class="sk">Monthly Negativity %</div>
+      <h2>Percentage of records classified negative (VADER compound ≤ −0.05)</h2>
+    </div>
+    <div class="chart-wrap"><svg class="chart" id="neg-chart" width="860" height="200" viewBox="0 0 860 200"></svg></div>
+
+    <!-- Term sentiment -->
+    <div class="ph section-div">
+      <div class="sk">Term-Level Sentiment</div>
+      <h2>How different primary care terms compare — avg compound score</h2>
+      <p>"Primary care" as an abstract concept generates far more positive discourse (+0.531) than "family doctor" as a personal need (+0.180). Walk-in terms are the most negative — they appear in posts about access failure.</p>
+    </div>
+    <div id="term-sent-chart"></div>
+
+    <div class="finding coral">
+      <div class="ftag">Sentiment Key Finding</div>
+      <h3>The word "Primary Care" is 3× more positive than "Family Doctor" (+0.531 vs +0.180)</h3>
+      <p>This replicates the finding from the earlier dataset. When people write about "primary care" abstractly, they are discussing reform, policy, and solutions — more hopeful discourse. When they write about "my family doctor," they are describing a specific personal gap — less hopeful. Walk-in standalone terms have the lowest scores (avg +0.160) — they appear almost exclusively in posts about access failure and long waits.</p>
+    </div>
+    <div class="finding">
+      <div class="ftag">2025 Signal</div>
+      <h3>April (27.0%) and May (25.7%) 2025 are the lowest-negativity months in 55 months</h3>
+      <p>These represent a genuine improvement relative to the 2022–2024 plateau of 30–35% negativity. Whether this reflects real-world improvements (NP scope expansion, new graduates entering practice) or seasonal/cyclical patterns will be clearer once autumn 2025 data is available. The compound score recovery from +0.177 (May 2024) to +0.310 (May 2025) is the largest year-over-year improvement in the dataset.</p>
+    </div>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>Method.</b> VADER (Hutto &amp; Gilbert, 2014) applied per record. Compound score = normalized weighted sum of valence scores from the VADER lexicon. Records with compound ≥ +0.05 classified Positive; ≤ −0.05 Negative; between: Neutral. Term sentiment calculated by averaging compound scores across all records containing that term. September 2022 missing from source data.</p>
+  </div></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 4 · TOPIC MODELING
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="p3">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">Keyword-Based Thematic Clustering · 10 Topic Categories</div>
+      <h1>Topics</h1>
+      <p class="dek">Each record was assigned to one or more of 10 thematic topic clusters based on keyword matching across the full text. Records often span multiple topics — co-occurrence is high. Results reflect what Canadians are actually writing about when discussing primary care.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Topic Distribution</div>
+      <h2>How 56,907 records distribute across 10 themes</h2>
+      <p>Percentages exceed 100% because one record can belong to multiple topics. "Cost & Billing" and "Walk-in & Urgent Care" are statistically tied as the two largest themes — each present in 37% of the corpus.</p>
+    </div>
+
+    <!-- Topic bubble visual -->
+    <div class="bubble-wrap" id="topic-bubbles"></div>
+
+    <!-- Topic bars -->
+    <div id="topic-bars-chart" style="margin-top:24px"></div>
+
+    <!-- Topic detail table -->
+    <div class="ph section-div">
+      <div class="sk">Topic Detail</div>
+      <h2>All 10 topics — count, share, and key signal words</h2>
+    </div>
+    <table class="dtable">
+      <thead><tr><th>Topic</th><th>Records</th><th>% of Corpus</th><th>Volume bar</th><th>Key terms detected</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600">Cost &amp; Billing</td><td>21,519</td><td>37.8%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:100%;background:#D85A30"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">pay, paid, cost, fee, private, insurance, out of pocket</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Walk-in &amp; Urgent Care</td><td>21,292</td><td>37.4%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:99%;background:#C8402A"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">walk-in, urgent care, after hours, drop-in, same day</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Access &amp; Waitlists</td><td>16,734</td><td>29.4%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:78%;background:#C8902B"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">waitlist, not accepting, no family doctor, roster, closed panel</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">System Reform</td><td>13,099</td><td>23.0%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:61%;background:#2A6AAD"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">health system, reform, policy, government, shortage, crisis</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Referrals &amp; Specialists</td><td>12,830</td><td>22.6%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:60%;background:#7B4FA0"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">referral, specialist, cardio, gastro, dermatol, ortho</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Pharmacy &amp; Medications</td><td>8,708</td><td>15.3%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:40%;background:#2E7D72"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">pharmacy, prescription, refill, drug, pharmacist, pharmacare</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Mental Health</td><td>7,400</td><td>13.0%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:34%;background:#D85A30"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">mental health, anxiety, depression, ADHD, therapist, psychiatrist</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Chronic Disease</td><td>4,555</td><td>8.0%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:21%;background:#C8902B"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">diabetes, chronic, hypertension, asthma, cancer, thyroid</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Nurse Practitioners</td><td>4,363</td><td>7.7%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:20%;background:#2E7D72"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">nurse practitioner, NP, advanced practice</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600">Telehealth &amp; Virtual</td><td>2,947</td><td>5.2%</td>
+          <td class="bar-cell"><div class="minibar"><div class="minifill" style="width:14%;background:#7B4FA0"></div></div></td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">virtual, telehealth, video, Maple, Rocket Doctor, phone consult</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ph section-div">
+      <div class="sk">Key Topic Insights</div>
+      <h2>What these themes reveal</h2>
+    </div>
+    <div class="finding">
+      <div class="ftag">Cost as a primary theme</div>
+      <h3>37% mention cost — fee-based workarounds have become normalized</h3>
+      <p>Cost and billing appear in 21,519 records — tied for first with walk-in care. Private clinics, virtual services with fees, and file-transfer charges are not edge cases in this dataset: they are the majority experience described when Canadians try to navigate a system nominally built on universal coverage.</p>
+    </div>
+    <div class="finding coral">
+      <div class="ftag">Mental Health as access problem</div>
+      <h3>13% discuss mental health — almost always as an access failure, not a clinical discussion</h3>
+      <p>Of 7,400 mental health records, the dominant framing is not "I got help" but "I cannot access help." The topic co-occurs heavily with Access/Waitlists (both present in thousands of records). ADHD and anxiety are the most-cited conditions, consistently paired with referral barriers and out-of-pocket assessment costs.</p>
+    </div>
+    <div class="finding gold">
+      <div class="ftag">NP as solution signal</div>
+      <h3>4,363 records mention Nurse Practitioners — and they trend more positive than family doctor records</h3>
+      <p>NP records average +0.344 compound sentiment vs +0.180 for family doctor records. The NP keyword consistently appears in posts where someone has found a workable alternative — a solution rather than a problem. This is the clearest positive signal in the dataset for a specific care model.</p>
+    </div>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>Method.</b> Topic assignment by keyword matching across full record text (case-insensitive). Each record assigned to all matching topics — not mutually exclusive. Percentages are share of 56,907 total records containing at least one topic keyword. Co-occurrence means both topic keyword sets appear in the same record.</p>
+  </div></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 5 · 4C JOURNEY
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="p4">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">Starfield's 4C Framework · Contact · Comprehensiveness · Coordination · Continuity</div>
+      <h1>4C Journey</h1>
+      <p class="dek">Starfield's 4C framework classifies primary care encounters across four pillars. Each record was mapped to one or more pillars based on the pc_direct_terms field. Four composite characters — assembled from posts and comments — embody each pillar.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Pillar Distribution</div>
+      <h2>How 56,907 records distribute across the 4Cs</h2>
+      <p>Records may belong to multiple pillars. Contact/Access dominates — finding a family doctor is the central preoccupation of 81% of the corpus.</p>
+    </div>
+
+    <div class="fourC-grid">
+      <a class="fourC-card fc-access" href="primary-care-dashboard/starfield/sara_3d_journey_first_contact.html">
+        <div class="fc-pct">81%</div>
+        <div class="fc-label">Contact / Access</div>
+        <div class="fc-n">46,438 records</div>
+        <div class="fc-desc">Finding a family doctor, registering, being accepted as a patient. The first door — and the one most often closed.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--coral2)">→ Meet Sara</div>
+      </a>
+      <a class="fourC-card fc-comp" href="primary-care-dashboard/starfield/lucienne_comprehensiveness_3d.html">
+        <div class="fc-pct">15%</div>
+        <div class="fc-label">Comprehensiveness</div>
+        <div class="fc-n">9,051 records</div>
+        <div class="fc-desc">The range of what primary care covers — and what it doesn't. Mental health, dental, vision, chronic disease management.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--teal2)">→ Meet Lucienne</div>
+      </a>
+      <a class="fourC-card fc-coord" href="primary-care-dashboard/starfield/mathieu_coordination_3d.html">
+        <div class="fc-pct">8%</div>
+        <div class="fc-label">Coordination</div>
+        <div class="fc-n">4,641 records</div>
+        <div class="fc-desc">Referrals, shared records, inter-provider communication. What happens between the family doctor and everyone else.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--gold2)">→ Meet Mathieu</div>
+      </a>
+      <a class="fourC-card fc-cont" href="primary-care-dashboard/starfield/margaret_continuity_3d.html">
+        <div class="fc-pct">7%</div>
+        <div class="fc-label">Continuity</div>
+        <div class="fc-n">3,956 records</div>
+        <div class="fc-desc">The long-term relationship. The doctor who knows you. Lost when a physician retires — and very hard to replace.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:#5A2C80">→ Meet Margaret</div>
+      </a>
+    </div>
+
+    <!-- 4C bar chart -->
+    <div class="ph section-div">
+      <div class="sk">4C Proportion Chart</div>
+      <h2>Relative pillar sizes — the shape of the primary care discourse</h2>
+    </div>
+    <div style="margin:16px 0">
+      <div class="provrow"><div class="provlabel" style="color:var(--coral);width:120px">Contact/Access</div><div class="provbar-wrap"><div class="provbar" style="width:100%;background:var(--coral)"></div></div><div class="provval">46,438 · 81.6%</div></div>
+      <div class="provrow"><div class="provlabel" style="color:var(--teal);width:120px">Comprehensiveness</div><div class="provbar-wrap"><div class="provbar" style="width:19.5%;background:var(--teal)"></div></div><div class="provval">9,051 · 15.9%</div></div>
+      <div class="provrow"><div class="provlabel" style="color:var(--gold);width:120px">Coordination</div><div class="provbar-wrap"><div class="provbar" style="width:10%;background:var(--gold)"></div></div><div class="provval">4,641 · 8.2%</div></div>
+      <div class="provrow"><div class="provlabel" style="color:var(--purple);width:120px">Continuity</div><div class="provbar-wrap"><div class="provbar" style="width:8.5%;background:var(--purple)"></div></div><div class="provval">3,956 · 7.0%</div></div>
+    </div>
+
+    <div class="finding">
+      <div class="ftag">Framework Interpretation</div>
+      <h3>A system where 81% of online discourse is about getting in, not getting care</h3>
+      <p>The 81% Contact/Access share is the defining feature of this dataset. In a well-functioning primary care system, Comprehensiveness and Continuity would be proportionally larger — patients would be talking about the quality and range of care they receive, not just whether they can access it at all. The 4C distribution here is a structural diagnostic: the system's primary failure is at the gate.</p>
+    </div>
+
+    <div class="ph section-div">
+      <div class="sk">The Four Composite Characters</div>
+      <h2>Built from posts and comments — not from individual people</h2>
+      <p>Each composite character is assembled from hundreds or thousands of posts and comments within that pillar. They are fiction in name only — the experiences, timelines, and costs are drawn from what was actually written. Click any card above to explore a character's 3D journey.</p>
+    </div>
+    <table class="dtable">
+      <thead><tr><th>Character</th><th>Pillar</th><th>Records</th><th>Key experience</th><th>Key stat from data</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--coral);font-weight:600">Sara</td><td>Contact/Access</td><td>46,438</td><td>Searching for a family doctor for a year or more</td><td>8–12h walk-in waits · 2-year waitlists most cited</td></tr>
+        <tr><td style="color:var(--teal);font-weight:600">Lucienne</td><td>Comprehensiveness</td><td>9,051</td><td>Managing chronic illness, mental health, ADHD, dental gaps</td><td>34.4% of posts: mental health; therapy $100–$400/session</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600">Mathieu</td><td>Coordination</td><td>4,641</td><td>Navigating referrals, lost results, inter-provider gaps</td><td>Referral waits: 3–6 months most cited</td></tr>
+        <tr><td style="color:var(--purple);font-weight:600">Margaret</td><td>Continuity</td><td>3,956</td><td>A 25-year relationship with one doctor, ended by retirement</td><td>Doctor retiring = 5.8% of continuity posts; file fees $30–$200+</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>4C Framework.</b> Starfield B. (1998). Primary Care: Balancing Health Needs, Services, and Technology. Oxford University Press. The four dimensions — Contact/Access, Comprehensiveness, Coordination, Continuity — are used here as a classification framework for the discourse corpus, not as a clinical measurement tool.</p>
+  </div></footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 6 · ABOUT & METHOD
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="p5">
+  <div class="phero">
+    <div class="wrap">
+      <div class="sk">Data Source · Collection · Analysis · Limitations</div>
+      <h1>About &amp; Method</h1>
+      <p class="dek">Full methodological disclosure for the v3 dataset. How records were collected, how geography was inferred, how sentiment was measured, and what the data cannot tell us.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div class="sk">Dataset</div>
+      <h2>reddit_pc-direct_v3_2026-07-22.csv</h2>
+    </div>
+
+    <div class="method-block">
+      <h3>Source and Scope</h3>
+      <p><b>Platform:</b> Reddit (100% of records). <b>Language:</b> English only (100%). <b>Date range:</b> January 1, 2021 – August 30, 2025. <b>Total records:</b> 56,907 (28,133 top-level posts + 28,774 comments). <b>Known gap:</b> September 2022 is absent from the source file — no records for that month in the dataset.</p>
+      <p><b>Collection query:</b> <code>primary_care_keywords_v2</code> — a keyword set targeting primary care terms including <code>family_doctor</code>, <code>walk_in_clinic</code>, <code>primary_care</code>, <code>nurse_practitioner</code>, and 25+ additional terms. Records were retrieved April 8, 2026.</p>
+    </div>
+
+    <div class="method-block">
+      <h3>Geographic Inference</h3>
+      <p><b>Strong signal (36,630 records, 64.4%):</b> <code>geo_inferred_level = subreddit</code>. Location inferred from subreddit membership (e.g., r/Halifax → Canada-halifax → Nova Scotia). Classified as <code>strong_subreddit</code>.</p>
+      <p><b>Weak signal (20,277 records, 35.6%):</b> <code>geo_inferred_level = weak</code>. Location inferred from text mentions of Canadian place names or health system references. Classified as <code>weak_canada_confirmed</code>. These records are tagged <code>Canada-unknown</code> and excluded from province-level analysis.</p>
+      <p><b>Limitation:</b> Subreddit membership does not confirm current residence. A person living in Ontario may post in r/Halifax. City-level figures reflect subreddit activity patterns, not verified geographic health utilisation data.</p>
+    </div>
+
+    <div class="method-block">
+      <h3>Sentiment Analysis — VADER</h3>
+      <p>VADER (Valence Aware Dictionary and sEntiment Reasoner; Hutto &amp; Gilbert, 2014) was applied to every record's full text. VADER is a rule-based lexicon designed specifically for social media text — it handles informal language, slang, capitalization emphasis, and punctuation signals.</p>
+      <p><b>Compound score:</b> Normalized weighted composite of positive, negative, and neutral valence scores. Range: −1.0 (most negative) to +1.0 (most positive). <b>Classification threshold:</b> compound ≥ +0.05 → Positive; ≤ −0.05 → Negative; between → Neutral.</p>
+      <p><b>Limitation:</b> VADER was built primarily on English social media text and product reviews. It may underperform on highly technical medical language, sarcasm, or culturally-specific Canadian idioms. It does not capture inter-sentence contradictions in long posts.</p>
+    </div>
+
+    <div class="method-block">
+      <h3>Term Classification (pc_direct_terms)</h3>
+      <p>Each record includes a <code>pc_direct_terms</code> field — a pipe-separated list of primary care terms matched in the record text. These were assigned at collection time using the <code>primary_care_keywords_v2</code> query. The top terms by frequency: <code>family_doctor</code> (36,615 records, 64.3%), <code>walk_in_clinic</code> (9,550), <code>primary_care</code> (7,628), <code>nurse_practitioner</code> (3,359).</p>
+      <p>One record may match multiple terms. Term-level sentiment averages are calculated across all records containing that term.</p>
+    </div>
+
+    <div class="method-block">
+      <h3>4C Framework Classification</h3>
+      <p>Starfield's four dimensions of primary care — Contact/Access, Comprehensiveness, Coordination, Continuity — were used as a post-hoc classification framework. Records were assigned to pillars based on which <code>pc_direct_terms</code> tags they contained. The classification is indicative, not clinically validated. A record tagged <code>family_doctor</code> is classified as Contact/Access because finding a family doctor is the quintessential access problem, not because the record necessarily discusses a successful encounter.</p>
+    </div>
+
+    <div class="method-block">
+      <h3>Topic Modeling</h3>
+      <p>Ten thematic clusters were defined by keyword lists applied to full record text (case-insensitive substring matching). This is a dictionary-based approach, not a probabilistic topic model (e.g., LDA). The advantage: interpretable, transparent, reproducible. The limitation: keyword lists may miss emerging terminology and may over-assign records with common words (e.g., "pay" → Cost/Billing, even in neutral contexts).</p>
+    </div>
+
+    <div class="method-block">
+      <h3>What This Data Cannot Tell Us</h3>
+      <p><b>It cannot count unique people.</b> 56,907 records ≠ 56,907 individuals. One active poster may contribute dozens of records. The dataset counts posts and comments, not patients.</p>
+      <p><b>It cannot represent all Canadians.</b> Reddit users skew younger, urban, and English-speaking. Populations with lower internet access, lower Reddit participation, or non-English primary language (including many rural, Indigenous, and recent-immigrant communities) are structurally under-represented.</p>
+      <p><b>It cannot establish causation.</b> A negative post about walk-in clinics does not mean walk-in clinics are failing — it may mean they are the only option and therefore where frustration concentrates. Sentiment reflects emotional experience, not clinical outcomes.</p>
+      <p><b>It cannot determine clinical accuracy.</b> Reported waits, costs, and experiences are self-reported and may not reflect administrative or clinical reality.</p>
+    </div>
+
+    <div class="ph section-div">
+      <div class="sk">Citation</div>
+      <h2>How to reference this analysis</h2>
+    </div>
+    <div class="method-block">
+      <p>Najafizada, M. (2026). Canadian Primary Care Discourse on Reddit: Longitudinal Sentiment and Thematic Analysis, 2021–2025. Version 3. Memorial University Faculty of Medicine. Dataset: reddit_pc-direct_v3_2026-07-22 (n = 56,907).</p>
+    </div>
+  </div>
+
+  <footer class="foot"><div class="wrap">
+    <p><b>Built.</b> Dashboard v3 · Analysis run July 27, 2026 · Memorial University Faculty of Medicine · Data current to August 30, 2025.</p>
+    <p style="margin-top:10px"><b>Tools.</b> VADER (Python vaderSentiment library) · Keyword-based topic classification · SVG visualization · Google Fonts (Space Grotesk, Newsreader, IBM Plex Mono).</p>
+  </div></footer>
+</div>
+
+<script>
+// ── PAGE NAV ─────────────────────────────────────────────────────────────────
+var pages = document.querySelectorAll('.page');
+var tabs  = document.querySelectorAll('.nav-tab');
+function showPage(i) {
+  pages.forEach(function(p,j){ p.classList.toggle('active', j===i); });
+  tabs.forEach(function(t,j){ t.classList.toggle('active', j===i); });
+  window.scrollTo(0,0);
+}
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+var MONTHLY = [
+  ['2021-01',400,27.2,0.279],['2021-02',389,27.8,0.282],['2021-03',464,27.6,0.290],
+  ['2021-04',595,27.1,0.295],['2021-05',544,25.0,0.292],['2021-06',629,26.2,0.273],
+  ['2021-07',615,29.6,0.272],['2021-08',658,28.3,0.256],['2021-09',728,31.5,0.222],
+  ['2021-10',625,31.0,0.238],['2021-11',687,30.3,0.256],['2021-12',722,26.5,0.263],
+  ['2022-01',919,29.7,0.238],['2022-02',572,29.2,0.266],['2022-03',604,25.3,0.312],
+  ['2022-04',758,29.0,0.255],['2022-05',818,32.2,0.236],['2022-06',822,30.5,0.219],
+  ['2022-07',1341,33.6,0.185],['2022-08',841,31.6,0.220],
+  // 2022-09 missing
+  ['2022-10',1162,34.6,0.160],['2022-11',1316,34.7,0.180],['2022-12',1007,34.4,0.182],
+  ['2023-01',1107,29.8,0.238],['2023-02',1140,29.2,0.255],['2023-03',1107,30.7,0.230],
+  ['2023-04',924,31.5,0.233],['2023-05',1080,28.3,0.278],['2023-06',725,29.7,0.234],
+  ['2023-07',876,31.7,0.228],['2023-08',947,33.2,0.195],['2023-09',902,33.6,0.187],
+  ['2023-10',1204,31.5,0.207],['2023-11',1309,31.5,0.225],['2023-12',1146,34.7,0.176],
+  ['2024-01',1342,34.2,0.196],['2024-02',1554,32.4,0.187],['2024-03',1950,32.1,0.201],
+  ['2024-04',1357,32.6,0.206],['2024-05',1158,36.0,0.177],['2024-06',984,33.6,0.191],
+  ['2024-07',1487,32.3,0.204],['2024-08',1225,32.6,0.204],['2024-09',1240,31.5,0.202],
+  ['2024-10',1749,31.3,0.237],['2024-11',1361,32.9,0.202],['2024-12',1287,32.6,0.222],
+  ['2025-01',1770,31.9,0.238],['2025-02',1202,30.7,0.259],['2025-03',1414,31.8,0.242],
+  ['2025-04',1117,27.0,0.306],['2025-05',1294,25.7,0.310],['2025-06',1181,29.1,0.275],
+  ['2025-07',1332,29.0,0.281],['2025-08',1220,28.4,0.299]
+];
+
+var TOPICS = [
+  {name:'Cost & Billing',       n:21519, color:'#D85A30'},
+  {name:'Walk-in & Urgent',     n:21292, color:'#C8401A'},
+  {name:'Access & Waitlists',   n:16734, color:'#C8902B'},
+  {name:'System Reform',        n:13099, color:'#2A6AAD'},
+  {name:'Referrals & Specialists',n:12830,color:'#7B4FA0'},
+  {name:'Pharmacy & Meds',      n:8708,  color:'#2E7D72'},
+  {name:'Mental Health',        n:7400,  color:'#A83850'},
+  {name:'Chronic Disease',      n:4555,  color:'#B07030'},
+  {name:'Nurse Practitioners',  n:4363,  color:'#1A6A5A'},
+  {name:'Telehealth & Virtual', n:2947,  color:'#5040A0'},
+];
+
+var TERMS = [
+  {name:'walk_in_standalone', n:8630, avg:0.160, neg:35.1},
+  {name:'walk_in_clinic',     n:9550, avg:0.166, neg:34.5},
+  {name:'family_doctor',      n:36615,avg:0.180, neg:34.1},
+  {name:'gp',                 n:4616, avg:0.275, neg:29.9},
+  {name:'family_physician',   n:2943, avg:0.290, neg:29.0},
+  {name:'family_medicine',    n:1442, avg:0.371, neg:25.2},
+  {name:'family_practice',    n:735,  avg:0.340, neg:26.0},
+  {name:'nurse_practitioner', n:3359, avg:0.344, neg:24.6},
+  {name:'health_care_connect',n:398,  avg:0.440, neg:18.1},
+  {name:'general_practice',   n:459,  avg:0.407, neg:22.7},
+  {name:'pcp',                n:695,  avg:0.499, neg:21.3},
+  {name:'primary_care',       n:7628, avg:0.531, neg:16.7},
+];
+
+// ── SPARKLINE (overview page) ──────────────────────────────────────────────
+(function(){
+  var svg = document.getElementById('sparkline');
+  if (!svg) return;
+  var W=900, H=130, pad={l:10,r:10,t:20,b:30};
+  var maxN = Math.max.apply(null, MONTHLY.map(function(m){return m[1];}));
+  var n = MONTHLY.length;
+  function bx(i){ return pad.l + i*(W-pad.l-pad.r)/(n-1); }
+  function by(v){ return pad.t + (1-v/maxN)*(H-pad.t-pad.b); }
+  // Area fill
+  var apts = MONTHLY.map(function(m,i){return bx(i)+','+by(m[1]);}).join(' ');
+  var area = 'M'+bx(0)+','+(H-pad.b)+' '+MONTHLY.map(function(m,i){return 'L'+bx(i)+','+by(m[1]);}).join(' ')+' L'+bx(n-1)+','+(H-pad.b)+' Z';
+  var areaEl = document.createElementNS('http://www.w3.org/2000/svg','path');
+  areaEl.setAttribute('d', area);
+  areaEl.setAttribute('fill','rgba(46,125,114,0.12)');
+  svg.appendChild(areaEl);
+  // Line
+  var linePts = MONTHLY.map(function(m,i){return bx(i)+' '+by(m[1]);}).join(', ');
+  var polyline = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  polyline.setAttribute('points', MONTHLY.map(function(m,i){return bx(i)+','+by(m[1]);}).join(' '));
+  polyline.setAttribute('fill','none'); polyline.setAttribute('stroke','#2E7D72'); polyline.setAttribute('stroke-width','2');
+  svg.appendChild(polyline);
+  // Year labels
+  ['2021','2022','2023','2024','2025'].forEach(function(yr,yi){
+    var idx = MONTHLY.findIndex(function(m){return m[0].startsWith(yr);});
+    if (idx<0) return;
+    var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', bx(idx)); t.setAttribute('y', H-5);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('style','font-family:var(--mono);font-size:10px;fill:#8A8A80');
+    t.textContent = yr; svg.appendChild(t);
+    var vl = document.createElementNS('http://www.w3.org/2000/svg','line');
+    vl.setAttribute('x1',bx(idx)); vl.setAttribute('x2',bx(idx));
+    vl.setAttribute('y1',pad.t); vl.setAttribute('y2',H-pad.b);
+    vl.setAttribute('stroke','rgba(46,125,114,0.3)'); vl.setAttribute('stroke-dasharray','3,3');
+    svg.insertBefore(vl, polyline);
+  });
+  // Sep 2022 gap marker
+  var gapIdx = MONTHLY.findIndex(function(m){return m[0]==='2022-10';}) - 1;
+  if (gapIdx>=0){
+    var gx = (bx(gapIdx)+bx(gapIdx+1))/2;
+    var gt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    gt.setAttribute('x',gx); gt.setAttribute('y',pad.t+8);
+    gt.setAttribute('text-anchor','middle');
+    gt.setAttribute('style','font-family:var(--mono);font-size:8.5px;fill:#C8902B');
+    gt.textContent='gap'; svg.appendChild(gt);
+  }
+})();
+
+// ── COMPOUND CHART ────────────────────────────────────────────────────────────
+function lineChart(svgId, dataIdx, minVal, maxVal, lineColor, refVal, refLabel) {
+  var svg = document.getElementById(svgId);
+  if (!svg) return;
+  var W=860, H=200, pl=46, pr=12, pt=18, pb=30;
+  var cw=W-pl-pr, ch=H-pt-pb;
+  var n=MONTHLY.length;
+  function bx(i){ return pl+i*cw/(n-1); }
+  function by(v){ return pt+(1-(v-minVal)/(maxVal-minVal))*ch; }
+  // Grid & axes
+  [minVal, (minVal+maxVal)/2, maxVal].forEach(function(v,i){
+    var y=by(v);
+    var gl=document.createElementNS('http://www.w3.org/2000/svg','line');
+    gl.setAttribute('x1',pl); gl.setAttribute('x2',W-pr);
+    gl.setAttribute('y1',y); gl.setAttribute('y2',y);
+    gl.setAttribute('stroke','#E6E4DC'); gl.setAttribute('stroke-width','1');
+    svg.appendChild(gl);
+    var tl=document.createElementNS('http://www.w3.org/2000/svg','text');
+    tl.setAttribute('x',pl-4); tl.setAttribute('y',y+4);
+    tl.setAttribute('text-anchor','end');
+    tl.setAttribute('style','font-family:var(--mono);font-size:9.5px;fill:#8A8A80');
+    tl.textContent = v.toFixed(dataIdx===3?3:1)+(dataIdx===2?'%':'');
+    svg.appendChild(tl);
+  });
+  // Reference line
+  if (refVal !== undefined){
+    var ry=by(refVal);
+    var rl=document.createElementNS('http://www.w3.org/2000/svg','line');
+    rl.setAttribute('x1',pl); rl.setAttribute('x2',W-pr);
+    rl.setAttribute('y1',ry); rl.setAttribute('y2',ry);
+    rl.setAttribute('stroke','rgba(200,144,43,0.6)'); rl.setAttribute('stroke-width','1.5');
+    rl.setAttribute('stroke-dasharray','5,3'); svg.appendChild(rl);
+    var rt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    rt.setAttribute('x',W-pr-2); rt.setAttribute('y',ry-4);
+    rt.setAttribute('text-anchor','end');
+    rt.setAttribute('style','font-family:var(--mono);font-size:9px;fill:#C8902B');
+    rt.textContent=refLabel||''; svg.appendChild(rt);
+  }
+  // Area
+  var aEl=document.createElementNS('http://www.w3.org/2000/svg','path');
+  var ad='M'+bx(0)+','+(pt+ch);
+  MONTHLY.forEach(function(m,i){ ad+=' L'+bx(i)+','+by(m[dataIdx]); });
+  ad+=' L'+bx(n-1)+','+(pt+ch)+' Z';
+  aEl.setAttribute('d',ad); aEl.setAttribute('fill','rgba(46,125,114,0.08)');
+  svg.appendChild(aEl);
+  // Line
+  var pl2=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  pl2.setAttribute('points', MONTHLY.map(function(m,i){return bx(i)+','+by(m[dataIdx]);}).join(' '));
+  pl2.setAttribute('fill','none'); pl2.setAttribute('stroke',lineColor); pl2.setAttribute('stroke-width','1.8');
+  svg.appendChild(pl2);
+  // Year markers
+  ['2021','2022','2023','2024','2025'].forEach(function(yr){
+    var idx=MONTHLY.findIndex(function(m){return m[0].startsWith(yr);});
+    if(idx<0)return;
+    var vl=document.createElementNS('http://www.w3.org/2000/svg','line');
+    vl.setAttribute('x1',bx(idx)); vl.setAttribute('x2',bx(idx));
+    vl.setAttribute('y1',pt); vl.setAttribute('y2',pt+ch);
+    vl.setAttribute('stroke','rgba(100,100,90,0.2)'); vl.setAttribute('stroke-dasharray','3,3');
+    svg.insertBefore(vl, aEl);
+    var tl=document.createElementNS('http://www.w3.org/2000/svg','text');
+    tl.setAttribute('x',bx(idx)); tl.setAttribute('y',pt+ch+16);
+    tl.setAttribute('text-anchor','middle');
+    tl.setAttribute('style','font-family:var(--mono);font-size:9px;fill:#8A8A80');
+    tl.textContent=yr; svg.appendChild(tl);
+  });
+  // Dots for extremes
+  var maxM=MONTHLY.reduce(function(a,b){return b[dataIdx]>a[dataIdx]?b:a;});
+  var minM=MONTHLY.reduce(function(a,b){return b[dataIdx]<a[dataIdx]?b:a;});
+  [maxM,minM].forEach(function(m,ei){
+    var idx=MONTHLY.indexOf(m);
+    var dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx',bx(idx)); dot.setAttribute('cy',by(m[dataIdx]));
+    dot.setAttribute('r','4'); dot.setAttribute('fill',ei===0?'#D85A30':'#2E7D72');
+    svg.appendChild(dot);
+    var dt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    dt.setAttribute('x',bx(idx)); dt.setAttribute('y',by(m[dataIdx])+(ei===0?-7:14));
+    dt.setAttribute('text-anchor','middle');
+    dt.setAttribute('style','font-family:var(--mono);font-size:9px;font-weight:600;fill:'+(ei===0?'#D85A30':'#2E7D72'));
+    dt.textContent=m[0].slice(2)+': '+m[dataIdx].toFixed(dataIdx===3?3:1)+(dataIdx===2?'%':'');
+    svg.appendChild(dt);
+  });
+}
+lineChart('compound-chart', 3, 0.12, 0.35, '#2E7D72', 0.237, 'mean +0.237');
+lineChart('neg-chart', 2, 22, 40, '#D85A30', 31.0, 'mean ~31%');
+
+// ── TERM SENTIMENT CHART ─────────────────────────────────────────────────────
+(function(){
+  var el = document.getElementById('term-sent-chart');
+  if (!el) return;
+  var sorted = TERMS.slice().sort(function(a,b){return a.avg-b.avg;});
+  var maxAvg = 0.55;
+  var rows = sorted.map(function(t){
+    var w = Math.round((t.avg/maxAvg)*200);
+    var col = t.avg < 0.25 ? '#D85A30' : t.avg < 0.35 ? '#C8902B' : '#2E7D72';
+    return '<div style="display:flex;align-items:center;gap:10px;margin:5px 0">'
+      +'<div style="width:160px;font-family:var(--mono);font-size:11.5px;text-align:right;color:var(--muted)">'
+        +t.name.replace(/_/g,' ')+'</div>'
+      +'<div style="flex:1;height:22px;background:var(--track);border-radius:6px;overflow:hidden">'
+        +'<div style="width:'+w+'px;height:100%;background:'+col+';border-radius:6px;display:flex;align-items:center;padding:0 8px">'
+          +'<span style="font-family:var(--mono);font-size:10px;font-weight:600;color:#fff">'+t.avg.toFixed(3)+'</span>'
+        +'</div></div>'
+      +'<div style="width:80px;font-family:var(--mono);font-size:10.5px;color:var(--muted)">'+t.n.toLocaleString()+' records</div>'
+      +'</div>';
+  }).join('');
+  el.innerHTML = '<div style="max-width:700px">'+rows+'</div>';
+  el.insertAdjacentHTML('afterbegin','<div style="display:flex;gap:10px;margin-bottom:10px;padding-left:170px">'
+    +'<span style="font-family:var(--mono);font-size:10px;color:var(--coral)">■ lower</span>'
+    +'<span style="font-family:var(--mono);font-size:10px;color:var(--gold)">■ mid</span>'
+    +'<span style="font-family:var(--mono);font-size:10px;color:var(--teal)">■ higher</span>'
+    +'</div>');
+})();
+
+// ── TOPIC BUBBLES ────────────────────────────────────────────────────────────
+(function(){
+  var el = document.getElementById('topic-bubbles');
+  if (!el) return;
+  var maxN = TOPICS[0].n;
+  TOPICS.forEach(function(t){
+    var pct = t.n/56907*100;
+    var size = Math.round(Math.sqrt(t.n/maxN)*140);
+    var fsize = size > 90 ? 16 : size > 60 ? 13 : 10;
+    var div = document.createElement('div');
+    div.className='bubble';
+    div.style.width=size+'px'; div.style.height=size+'px';
+    div.style.background=t.color;
+    div.innerHTML='<span class="bn" style="font-size:'+fsize+'px;padding:4px">'+pct.toFixed(0)+'%</span>'
+      +(size>60?'<span class="bl">'+t.name+'</span>':'');
+    div.title=t.name+': '+t.n.toLocaleString()+' records ('+pct.toFixed(1)+'%)';
+    el.appendChild(div);
+  });
+})();
+
+// ── TOPIC BARS ────────────────────────────────────────────────────────────────
+(function(){
+  var el = document.getElementById('topic-bars-chart');
+  if (!el) return;
+  var maxN = TOPICS[0].n;
+  var html = '<div style="max-width:700px">';
+  TOPICS.forEach(function(t){
+    var pct = t.n/56907*100;
+    var w = Math.round((t.n/maxN)*100);
+    html += '<div style="display:flex;align-items:center;gap:10px;margin:6px 0">'
+      +'<div style="width:180px;font-family:var(--mono);font-size:11.5px;text-align:right;color:var(--ink);font-weight:500">'+t.name+'</div>'
+      +'<div style="flex:1;height:24px;background:var(--track);border-radius:6px;overflow:hidden">'
+        +'<div style="width:'+w+'%;height:100%;background:'+t.color+';border-radius:6px"></div>'
+      +'</div>'
+      +'<div style="width:110px;font-family:var(--mono);font-size:10.5px;color:var(--muted)">'+t.n.toLocaleString()+' · '+pct.toFixed(1)+'%</div>'
+      +'</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+})();
+
+// ── PROVINCE RAW CHART ───────────────────────────────────────────────────────
+(function(){
+  var el = document.getElementById('prov-raw-chart');
+  if (!el) return;
+  var provs = [
+    {name:'Ontario',n:14561,col:'#D85A30'},
+    {name:'Alberta',n:5625,col:'#C8902B'},
+    {name:'BC',n:4884,col:'#2A6AAD'},
+    {name:'Nova Scotia',n:3656,col:'#2E7D72'},
+    {name:'Manitoba',n:1630,col:'#7B4FA0'},
+    {name:'Newfoundland',n:607,col:'#1A8060'},
+    {name:'Saskatchewan',n:442,col:'#906030'},
+    {name:'New Brunswick',n:2,col:'#A83820'},
+  ];
+  var maxN=14561;
+  var html='<div style="max-width:640px">';
+  provs.forEach(function(p){
+    var w=Math.round((p.n/maxN)*100);
+    html+='<div style="display:flex;align-items:center;gap:10px;margin:6px 0">'
+      +'<div style="width:130px;font-family:var(--mono);font-size:11.5px;text-align:right;color:var(--ink)">'+p.name+'</div>'
+      +'<div style="flex:1;height:22px;background:var(--track);border-radius:6px;overflow:hidden">'
+        +'<div style="width:'+w+'%;height:100%;background:'+p.col+';border-radius:6px;min-width:'+(p.n>10?0:4)+'px"></div>'
+      +'</div>'
+      +'<div style="width:80px;font-family:var(--mono);font-size:10.5px;color:var(--muted)">'+p.n.toLocaleString()+'</div>'
+      +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+})();
+</script>
+</body>
+</html>
